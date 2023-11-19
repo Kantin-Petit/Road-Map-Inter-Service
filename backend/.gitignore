@@ -1,0 +1,9 @@
+# dependencies
+/node_modules
+
+# Dotenv
+# .env.*
+# .env
+
+# Images
+/images/user_*
