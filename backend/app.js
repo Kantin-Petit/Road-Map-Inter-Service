@@ -14,7 +14,7 @@ app.use((req, res, next) => {
     next();
 });
 
-app.use(cors({origin: 'http://localhost:3006', credentials: true }))
+app.use(cors({origin: 'http://localhost:4200', credentials: true }))
 app.use(express.json());
 app.use('/images', express.static(path.join(__dirname, 'images')));
 app.use(cookieParser());
