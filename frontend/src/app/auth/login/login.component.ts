@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 
 @Component({
@@ -6,6 +7,8 @@ import { Component } from '@angular/core';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent {
+  constructor(private http: HttpClient) { }
+
   form: any = {
     email: null,
     password: null
@@ -13,5 +16,9 @@ export class LoginComponent {
 
   onSubmit(){
     console.log(this.form)
+    this.http.post("http://localhost:8888/routes/auth", this.form).subscribe(
+      data => console.log(data),
+      err => console.log(err)
+    )
   }
 }
