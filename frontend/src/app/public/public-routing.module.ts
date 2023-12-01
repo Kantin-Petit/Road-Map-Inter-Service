@@ -9,8 +9,8 @@ const routes: Routes = [
     path: '', component: PlayoutComponent, children: [
       { path: '', component: TimelineCommunicationComponent},
 
-      { path: 'timeline-communication', component: TimelineCommunicationComponent },
-      { path: 'timeline-planning', component: TimelinePlanningComponent}
+      { path: 'Communication', component: TimelineCommunicationComponent },
+      { path: 'Planning', component: TimelinePlanningComponent}
     ]
   }
 ];
