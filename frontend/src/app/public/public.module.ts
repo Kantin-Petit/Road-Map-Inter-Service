@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { TimelineCommunicationComponent } from './timeline-communication/timeline-communication.component';
 import { TimelinePlanningComponent } from './timeline-planning/timeline-planning.component';
 import { PlayoutComponent } from './playout/playout.component';
+import { PublicRoutingModule } from './public-routing.module';
 
 
 
@@ -13,7 +14,8 @@ import { PlayoutComponent } from './playout/playout.component';
     PlayoutComponent
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    PublicRoutingModule
   ]
 })
 export class PublicModule { }
