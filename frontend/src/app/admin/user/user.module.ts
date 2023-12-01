@@ -5,13 +5,15 @@ import { UserRoutingModule } from './user-routing.module';
 import { UindexComponent } from './uindex/uindex.component';
 import { UeditComponent } from './uedit/uedit.component';
 import { UaddComponent } from './uadd/uadd.component';
+import { UdeleteComponent } from './udelete/udelete.component';
 
 
 @NgModule({
   declarations: [
     UindexComponent,
     UeditComponent,
-    UaddComponent
+    UaddComponent,
+    UdeleteComponent
   ],
   imports: [
     CommonModule,
