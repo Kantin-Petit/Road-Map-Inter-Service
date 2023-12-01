@@ -3,11 +3,13 @@ import { CommonModule } from '@angular/common';
 
 import { UserRoutingModule } from './user-routing.module';
 import { UindexComponent } from './uindex/uindex.component';
+import { UeditComponent } from './uedit/uedit.component';
 
 
 @NgModule({
   declarations: [
-    UindexComponent
+    UindexComponent,
+    UeditComponent
   ],
   imports: [
     CommonModule,
