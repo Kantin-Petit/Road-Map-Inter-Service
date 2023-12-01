@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-sedit',
@@ -6,5 +7,13 @@ import { Component } from '@angular/core';
   styleUrls: ['./sedit.component.scss']
 })
 export class SeditComponent {
+  constructor(private activated: ActivatedRoute) { }
 
+  ngOnInit(): void {
+    this.activated.params.subscribe(
+      (data) => {
+        console.log(data)
+      }
+    )
+  }
 }
