@@ -3,11 +3,13 @@ import { CommonModule } from '@angular/common';
 
 import { ServiceRoutingModule } from './service-routing.module';
 import { SindexComponent } from './sindex/sindex.component';
+import { SeditComponent } from './sedit/sedit.component';
 
 
 @NgModule({
   declarations: [
-    SindexComponent
+    SindexComponent,
+    SeditComponent
   ],
   imports: [
     CommonModule,
