@@ -1,0 +1,19 @@
+form{
+    width: 300px;
+    margin: auto;
+    margin-top: 50px;
+}
+.group{
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+    font-size: 20px;
+}
+.group input{
+    width: 90%;
+    height: 20px;
+}
+.group button{
+    width: 100%;
+}
