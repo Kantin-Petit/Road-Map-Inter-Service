@@ -1,5 +1,7 @@
-import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
+import { ICredential } from 'src/app/_interfaces/credential';
+import { IToken } from 'src/app/_interfaces/token';
+import { AuthService } from 'src/app/_service/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -7,17 +9,17 @@ import { Component } from '@angular/core';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent {
-  constructor(private http: HttpClient) { }
+  constructor(private authService: AuthService) { }
 
-  form: any = {
-    email: null,
-    password: null
+  form: ICredential = {
+    email: '',
+    password: ''
   }
 
   onSubmit(){
     console.log(this.form)
-    this.http.post("http://localhost:8888/routes/auth", this.form).subscribe(
-      data => console.log(data),
+    this.authService.login(this.form).subscribe(
+      data  => console.log(data.token),
       err => console.log(err)
     )
   }
