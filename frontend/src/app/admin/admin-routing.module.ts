@@ -7,19 +7,12 @@ import { DashboardComponent } from './dashboard/dashboard.component'
 
 const routes: Routes = [
   {
-    path: '', component AlayoutComponent, children: 
-    [
-      { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
-      
-      { path: 'dashboard', component: DashboardComponent },
-      {
-        path: 'user', loadChildren: () => import('./user/user.module')
-          .then(m => m.UserModule)
-      },
-      {
-        path: 'service', loadChildren: () => import('./service/service.module')
-          .then(m => m.ServiceModule)
-      }
+    path: '', component: AlayoutComponent, children: [
+      { path: '', redirectTo: 'dashboard', pathMatch: 'full'},
+
+      { path: 'dashboard', component: DashboardComponent},
+      { path: 'user', loadChildren: () => import('./user/user.module').then(m => m.UserModule) },
+      { path: 'service', loadChildren: () => import('./service/service.module').then(m => m.ServiceModule) }
     ]
   }
 ];
