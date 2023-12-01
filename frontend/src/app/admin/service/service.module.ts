@@ -5,13 +5,15 @@ import { ServiceRoutingModule } from './service-routing.module';
 import { SindexComponent } from './sindex/sindex.component';
 import { SeditComponent } from './sedit/sedit.component';
 import { SaddComponent } from './sadd/sadd.component';
+import { SdeleteComponent } from './sdelete/sdelete.component';
 
 
 @NgModule({
   declarations: [
     SindexComponent,
     SeditComponent,
-    SaddComponent
+    SaddComponent,
+    SdeleteComponent
   ],
   imports: [
     CommonModule,
