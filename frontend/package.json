@@ -7,9 +7,9 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "compodoc": "npx compodoc -p src/tsconfig.app.json",
-    "compodoc:serv": "npx compodoc -p src/tsconfig.app.json -s",
-    "compodoc:serve:watch": "npm compodoc-p src/tsconfig.app.json -s -x"
+    "compodoc": "npx compodoc -p src/tsconfig.doc.json",
+    "compodoc:serv": "npx compodoc -p src/tsconfig.doc.json -s",
+    "compodoc:serve:watch": "npm compodoc-p src/tsconfig.doc.json -s -x"
   },
   "private": true,
   "dependencies": {
@@ -22,6 +22,7 @@
     "@angular/platform-browser": "^16.2.0",
     "@angular/platform-browser-dynamic": "^16.2.0",
     "@angular/router": "^16.2.0",
+    "@compodoc/compodoc": "^1.1.23",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.13.0"
