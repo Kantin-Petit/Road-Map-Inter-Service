@@ -4,6 +4,7 @@ import { TimelineCommunicationComponent } from './timeline-communication/timelin
 import { TimelinePlanningComponent } from './timeline-planning/timeline-planning.component';
 import { PlayoutComponent } from './playout/playout.component';
 import { PublicRoutingModule } from './public-routing.module';
+import { PheaderComponent } from './pheader/pheader.component';
 
 
 
@@ -11,7 +12,8 @@ import { PublicRoutingModule } from './public-routing.module';
   declarations: [
     TimelineCommunicationComponent,
     TimelinePlanningComponent,
-    PlayoutComponent
+    PlayoutComponent,
+    PheaderComponent
   ],
   imports: [
     CommonModule,
