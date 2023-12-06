@@ -1,0 +1,29 @@
+<form class="registration-form" (ngSubmit)="onSubmit()" [formGroup]="registrationForm">
+    <div class="form-group">
+      <label for="firstName">Prénom</label>
+      <input type="text" formControlName="firstName" id="firstName" required>
+    </div>
+    <div class="form-group">
+      <label for="lastName">Nom</label>
+      <input type="text" formControlName="lastName" id="lastName" required>
+    </div>
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input type="email" formControlName="email" id="email" required>
+      <p *ngIf="emailExists" class="error-message">Email déjà utiliser</p>
+    </div>
+    <div class="form-group">
+      <label for="password">Mot de Passe</label>
+      <input type="password" formControlName="password" id="password" required>
+    </div>
+    <div class="form-group">
+      <label for="confirmPassword">Confirmez le Mot de Passe</label>
+      <input type="password" formControlName="confirmPassword" id="confirmPassword" required>
+    </div>
+    <div class="form-group">
+      <label for="role">Role</label>
+      <input type="input" formControlName="role" id="role" required>
+    </div>
+    <button type="submit" [disabled]="registrationForm.invalid">Enregistrer</button>
+  </form>
+  
