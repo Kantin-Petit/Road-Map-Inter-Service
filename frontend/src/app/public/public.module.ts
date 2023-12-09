@@ -7,6 +7,10 @@ import { PublicRoutingModule } from './public-routing.module';
 import { PheaderComponent } from './pheader/pheader.component';
 
 
+import { TimelineModule } from 'primeng/timeline';
+import { CardModule } from 'primeng/card';
+
+import { SplitterModule } from 'primeng/splitter';
 
 @NgModule({
   declarations: [
@@ -17,7 +21,12 @@ import { PheaderComponent } from './pheader/pheader.component';
   ],
   imports: [
     CommonModule,
-    PublicRoutingModule
+    PublicRoutingModule,
+    
+    TimelineModule,
+    CardModule,
+    
+    SplitterModule
   ]
 })
 export class PublicModule { }

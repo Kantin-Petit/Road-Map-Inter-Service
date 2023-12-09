@@ -1,1 +1,14 @@
-<p>timeline-communication works!</p>
+<p-timeline class="custom-timeline" [value]="events" layout="horizontal" align="top">
+    <ng-template pTemplate="content" let-event>
+        <p-card header="{{ event.name }}" class="custom-card" [style]="getCardBackground(event)">
+            <ng-template pTemplate="content">
+                <p class="custom-card-content">
+                    {{ event.desc }}
+                </p>
+            </ng-template>
+            <ng-template pTemplate="footer">
+                {{ event.date.getDate() }}/{{ event.date.getMonth() }}/{{ event.date.getFullYear() }}
+            </ng-template>
+        </p-card>
+    </ng-template>
+</p-timeline>
