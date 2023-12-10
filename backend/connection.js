@@ -10,6 +10,7 @@ const ENV = process.env.ENV;
 
 const sequelize = new Sequelize(`${DB_NAME}`, `${DB_USER}`, `${DB_PASSWORD}`, {
     host: `${DB_HOST}`,
+    port: 3306,
     dialect: 'mysql',
 });
 

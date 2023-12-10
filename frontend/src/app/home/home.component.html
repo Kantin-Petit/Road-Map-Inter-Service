@@ -1,0 +1,9 @@
+<ul>
+    <li><a (click)="showTimeLine('communication')">Communication</a> </li>
+    <li><a (click)="showTimeLine('planning')">Planning</a></li>
+</ul>
+
+<app-communication *ngIf="displayCommunication"></app-communication> 
+<app-planning *ngIf="displayPlanning"></app-planning>
+<app-timeline></app-timeline>
+```

@@ -4,7 +4,7 @@ import { AuthService } from '../services/auth.service';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { UserRegistration } from '../interfaces/user-registration';
-import { passwordMatchValidator } from 'src/app/shared/password-match.directive';
+import { passwordMatchValidator } from '../shared/password-match.directive';
 
 @Component({
   selector: 'app-user-registration',
