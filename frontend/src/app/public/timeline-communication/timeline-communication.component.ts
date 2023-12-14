@@ -15,7 +15,7 @@ interface EventItem {
   styleUrls: ['./timeline-communication.component.scss']
 })
 export class TimelineCommunicationComponent {
-  sidebarVisible: boolean = false;
+  sidebarVisible: boolean[];
 
   [x: string]: any;
 
@@ -112,6 +112,11 @@ export class TimelineCommunicationComponent {
             color: '#67B73A'
           }
         ];
+        
+        this.sidebarVisible = [];
+        for(let i = 0; i < this.events.length; i++){
+          this.sidebarVisible.push(false);
+        }
         
         this.events.sort((a, b) => a.dateStart.getTime() - b.dateStart.getTime());
     }
