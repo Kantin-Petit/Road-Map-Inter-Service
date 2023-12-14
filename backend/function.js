@@ -28,3 +28,9 @@ exports.setCookie = (res, refreshToken) => {
 exports.clearCookies = (res, token) => {
    return res.cookie('jwt', token, {httpOnly: true, maxAge: 0, secure: false})
 };
+
+// Associations
+
+exports.belongsTo = (tab1, tab2, key) => {
+   return tab1.belongsTo(tab2, { foreignKey: key });
+}

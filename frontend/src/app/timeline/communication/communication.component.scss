@@ -8,23 +8,26 @@
     .p-timeline-horizontal {
         overflow-x: auto;
         padding: 0 50px;
+        display: flex;
+        gap: 15px;
     }
 
-    .p-timeline-event{
-        min-width: 15%;
-        max-width: 15%;
-    }
-    .p-timeline-event:last-child{
-        width: fit-content;
-        min-width: unset;
-    }
+    // .p-timeline-event{
+    //     min-width: 15%;
+    //     max-width: 15%;
+    // }
+    
+    // .p-timeline-event:last-child{
+    //     width: fit-content;
+    //     min-width: unset;
+    // }
 
 
 
     .custom-card {
-        display: block;
-        width: fit-content;
-        height: fit-content;
+        // display: block;
+        // width: fit-content;
+        // height: fit-content;
         
         .custom-card-content{
             word-wrap: break-word;
