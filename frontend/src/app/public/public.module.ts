@@ -6,11 +6,16 @@ import { PlayoutComponent } from './playout/playout.component';
 import { PublicRoutingModule } from './public-routing.module';
 import { PheaderComponent } from './pheader/pheader.component';
 
-
 import { TimelineModule } from 'primeng/timeline';
 import { CardModule } from 'primeng/card';
 
 import { SplitterModule } from 'primeng/splitter';
+
+import { ButtonModule } from 'primeng/button';
+import { SidebarModule } from 'primeng/sidebar';
+
+import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -26,7 +31,9 @@ import { SplitterModule } from 'primeng/splitter';
     TimelineModule,
     CardModule,
     
-    SplitterModule
+    SplitterModule,
+    ButtonModule,
+    SidebarModule
   ]
 })
 export class PublicModule { }
