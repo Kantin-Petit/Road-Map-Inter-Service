@@ -1,16 +1,15 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ErrorComponent } from './_utils/error/error.component';
-import { AuthGuard } from './_helper/auth.guard';
+import { HomeComponent } from './home/home.component';
+import { UserLoginComponent } from './user-login/user-login.component';
+import { AdminComponent } from './admin/admin.component';
 
 const routes: Routes = [
-  { path: '', loadChildren: () => import('./public/public.module').then(m => m.PublicModule) },
-
-  { path: 'admin', loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule), canActivate:[AuthGuard] },
-
-  { path: 'auth', loadChildren: () => import('./auth/auth.module').then(m => m.AuthModule)},
-
-  { path: '**', component: ErrorComponent }
+  { path: '', component: HomeComponent },
+  { path: 'dashboard', loadChildren: () => import('./dashboard/dashboard.module').then(res => res.AdminModule) },
+  { path: 'connexion', component: UserLoginComponent},
+  { path: 'admin', component: AdminComponent},
+  { path: '**', redirectTo: '/', pathMatch: 'full' }
 ];
 
 @NgModule({
