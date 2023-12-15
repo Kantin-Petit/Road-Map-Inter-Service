@@ -4,4 +4,6 @@ export const API = {
     SIGNOUT: 'auth/signout',
     TOKEN: 'token',
     USER: 'user',
+    ALL_SERVICE: 'service/allservice',
+    ONE_SERVICE: 'service/service',
 };

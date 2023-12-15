@@ -3,6 +3,9 @@ import { User } from '../models/user-model';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { UserService } from '../services/user.service';
 import { Table } from 'primeng/table';
+import { Department } from '../models/department-model';
+import { DepartmentService } from '../services/department.service';
+import { Observable } from 'rxjs';
 
 
 @Component({
@@ -24,8 +27,13 @@ export class AdminComponent implements OnInit {
     submitted: boolean = false;
     statuses!: any[];
     Delete! : string;
+    service!: Department[];
 
-    constructor(private userService: UserService, private messageService: MessageService, private confirmationService: ConfirmationService) {}
+    constructor(
+      private userService: UserService, 
+      private departmentService: DepartmentService,
+      private messageService: MessageService, 
+      private confirmationService: ConfirmationService) {}
 
     ngOnInit() {
       this.userService.getAllUser().subscribe(
@@ -36,6 +44,18 @@ export class AdminComponent implements OnInit {
           console.error(error); 
         }
       );
+
+      this.departmentService.allService().subscribe(
+        (data: Department[]) => {
+          this.service = data; 
+          console.log(data)
+        },
+        (error: Department) => {
+          console.error(error); 
+        }
+      );
+
+      
 
     }
 
@@ -56,7 +76,7 @@ export class AdminComponent implements OnInit {
         this.confirmationService.confirm({
             message: 'Êtes-vous sûr de vouloir supprimer les produits sélectionnés ?',
             header: 'Confirmation',
-            icon: 'pi pi-exclamation-triangle',
+            icon: 'pi pi-exclamation-triangle m-2',
             accept: () => {
                 this.products = this.products.filter((val) => !this.selectedProducts?.includes(val));
                 this.selectedProducts = null;

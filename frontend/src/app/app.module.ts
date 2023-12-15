@@ -17,7 +17,6 @@ import { CommunicationComponent } from './timeline/communication/communication.c
 import { HeaderComponent } from './header/header.component';
 import { UserRegistrationComponent } from './user-registration/user-registration.component';
 import { UserLoginComponent } from './user-login/user-login.component';
-import { TimelineComponent } from './timeline/timeline.component';
 
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
@@ -30,6 +29,8 @@ import { InputTextModule } from 'primeng/inputtext';
 import { TimelineModule } from 'primeng/timeline';
 import { CardModule } from 'primeng/card';
 import { SplitterModule } from 'primeng/splitter';
+import { SidebarModule } from 'primeng/sidebar';
+
 
 registerLocaleData(localeFr);
 
@@ -43,7 +44,6 @@ registerLocaleData(localeFr);
     HeaderComponent,
     UserRegistrationComponent,
     UserLoginComponent,
-    TimelineComponent,
   ],
   imports: [
     BrowserModule,
@@ -63,6 +63,8 @@ registerLocaleData(localeFr);
     ConfirmDialogModule,
     InputTextModule,
     MessageModule,
+    SidebarModule
+
   ],
   providers: [
     [{ provide: LOCALE_ID, useValue: 'fr' }],
