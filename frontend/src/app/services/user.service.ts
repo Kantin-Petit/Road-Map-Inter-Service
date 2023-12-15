@@ -17,15 +17,6 @@ export class UserService {
   private apiUrl = environment.apiUrl;
 
 
-  clean(): void {
-    window.sessionStorage.clear();
-  }
-
-  public saveUser(user: any): void {
-    window.sessionStorage.removeItem(USER_KEY);
-    window.sessionStorage.setItem(USER_KEY, JSON.stringify(user));
-  }
-
   // Ajouter le widthcredentials: true
   getAllUser(): Observable<User[]> {
     return this.http.get<User[]>(`${this.apiUrl}/${API.USER}`);
@@ -39,7 +30,20 @@ export class UserService {
     return this.http.delete<User[]>(`${this.apiUrl}/${API.USER}/${userId}`);
   }
 
-  public getUser(): any {
+
+  ////////////////////////////////////////////
+
+
+  clean(): void {
+    window.sessionStorage.clear();
+  }
+
+  saveUser(user: any): void {
+    window.sessionStorage.removeItem(USER_KEY);
+    window.sessionStorage.setItem(USER_KEY, JSON.stringify(user));
+  }
+
+  getUser(): any {
     const user = window.sessionStorage.getItem(USER_KEY);
     if (user) {
       return JSON.parse(user);
@@ -48,7 +52,7 @@ export class UserService {
     return {};
   }
 
-  public isLoggedIn(): boolean {
+  isLoggedIn(): boolean {
     const user = window.sessionStorage.getItem(USER_KEY);
     if (user) {
       return true;
