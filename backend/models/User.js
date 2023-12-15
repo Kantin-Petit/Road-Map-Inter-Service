@@ -38,15 +38,15 @@ const User = connection.define('User', {
     serviceId: {
         type: DataTypes.INTEGER,
         allowNull: true, 
-        validate: {
-            allowNullBasedOnRole(value) {
-                if (this.role !== 'admin') {
-                    if (value === null || value === undefined) {
-                        throw new Error('Service ne peut être nul que pour le rôle amin');
-                    }
-                }
-            }
-        }
+        // validate: {
+        //     allowNullBasedOnRole(value) {
+        //         if (this.role !== 'admin') {
+        //             if (value === null || value === undefined) {
+        //                 throw new Error('Service ne peut être nul que pour le rôle admin');
+        //             }
+        //         }
+        //     }
+        // }
     }
 }, { timestamps: false, deletedAt: false, paranoid: true } );
 
