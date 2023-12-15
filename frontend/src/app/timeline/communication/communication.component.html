@@ -1,0 +1,32 @@
+<div style="display: flex;">
+    <img src="http://placehold.it/300x300" class="logo">
+<p-timeline class="custom-timeline" [value]="events" layout="horizontal" align="top">
+    <ng-template pTemplate="content" let-event let i = index>
+        <p-sidebar [(visible)]="sidebarVisible[events.indexOf(event)]" styleClass="w-100rem" position="right">
+            <ng-template pTemplate="header">
+                <h1 [style]="getTextColor(event)">{{ event.titre }}</h1>
+            </ng-template>
+            <ng-template pTemplate="content">
+                <div class="custom-card-content">
+                    <img src="{{ event.image }}" alt="Image" class="custom-card-image" />
+                    <p>{{ event.texte }}</p>
+                </div>
+            </ng-template>
+            <ng-template pTemplate="footer">
+                <p>Debut: {{ event.dateStart.getDate() }}/{{ event.dateStart.getMonth() }}/{{ event.dateStart.getFullYear() }}</p>
+                <p>Fin: {{ event.dateEnd.getDate() }}/{{ event.dateEnd.getMonth() }}/{{ event.dateEnd.getFullYear() }}</p>
+            </ng-template>
+        </p-sidebar>
+
+        <p-button type="button" [link]="true" (click)="sidebarVisible[events.indexOf(event)] = true">
+            <p-card [style]="getTextColor(event)" header="{{ event.titre }}" class="custom-card">
+                <ng-template pTemplate="content">
+                    <p class="custom-card-content">
+                        {{ event.texte }}
+                    </p>
+                </ng-template>
+            </p-card>
+        </p-button>
+    </ng-template>
+</p-timeline>
+</div>

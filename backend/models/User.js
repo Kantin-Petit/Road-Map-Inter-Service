@@ -29,13 +29,24 @@ const User = connection.define('User', {
         type: DataTypes.STRING(50),
         allowNull: false,
     },
-    role : {
-        type: DataTypes.TEXT('tiny'),
-        allowNull: true,
+    role: {
+        type: DataTypes.ENUM({
+            values: ['admin', 'admin_service', 'user'],
+            allowNull: false
+          })
     },
-    is_admin: {
-        type: DataTypes.BOOLEAN,
-        defaultValue: false
+    serviceId: {
+        type: DataTypes.INTEGER,
+        allowNull: true, 
+        // validate: {
+        //     allowNullBasedOnRole(value) {
+        //         if (this.role !== 'admin') {
+        //             if (value === null || value === undefined) {
+        //                 throw new Error('Service ne peut être nul que pour le rôle admin');
+        //             }
+        //         }
+        //     }
+        // }
     }
 }, { timestamps: false, deletedAt: false, paranoid: true } );
 
