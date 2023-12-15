@@ -3,4 +3,5 @@ export const API = {
     SIGNIN: 'auth/signin',
     SIGNOUT: 'auth/signout',
     TOKEN: 'token',
+    USER: 'user',
 };

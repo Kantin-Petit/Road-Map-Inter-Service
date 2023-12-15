@@ -62,13 +62,13 @@ exports.makeAdmin = (req, res, next) => {
 exports.deleteUser = (req, res, next) => {
     User.findOne({where: {id: req.params.id}})
     .then(user => {
-    if(user.id !== req.auth.userId) if(req.auth.isAdmin === false) return
-    const dir = `images/user_${req.params.id}`
-    if(fs.existsSync(dir)) {
-        fs.rmdir(dir, { recursive: true, force: true }, (err) => {
-          if (err) {console.error(err)}
-        })
-      } 
+    // if(user.id !== req.auth.userId) if(req.auth.isAdmin === false) return
+    // const dir = `images/user_${req.params.id}`
+    // if(fs.existsSync(dir)) {
+    //     fs.rmdir(dir, { recursive: true, force: true }, (err) => {
+    //       if (err) {console.error(err)}
+    //     })
+    //   } 
        user.destroy()
        .then(() => res.status(201).json({message: 'Utilisateur supprimé !'}))
        .catch(error => res.status(400).json({ error }));

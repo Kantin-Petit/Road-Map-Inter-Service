@@ -1,4 +1,4 @@
 export const APP = {
-    REGISTER: 'Inscription',
-    SIGNIN: 'Connection',
+    REGISTER: 'inscription',
+    SIGNIN: 'connexion',
 };

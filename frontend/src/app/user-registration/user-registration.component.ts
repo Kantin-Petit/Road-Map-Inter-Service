@@ -28,7 +28,7 @@ export class UserRegistrationComponent {
       email: [null, [Validators.required, Validators.email]],
       password: [null, [Validators.required, Validators.pattern(this.urlRegex)]],
       confirmPassword: [null, [Validators.required, Validators.pattern(this.urlRegex)]],
-      role: ['Informatique', Validators.required]
+      role: ['admin', Validators.required]
     }, {
       validators: passwordMatchValidator
     });

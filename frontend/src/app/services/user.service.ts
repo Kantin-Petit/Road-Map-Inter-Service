@@ -1,4 +1,9 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { User} from '../models/user-model';
+import { environment } from 'src/environments/environment';
+import { API } from 'src/app/routes/api';
 
 const USER_KEY = 'auth-user';
 
@@ -7,7 +12,10 @@ const USER_KEY = 'auth-user';
 })
 export class UserService {
 
-  constructor() { }
+  constructor(private http: HttpClient) { }
+
+  private apiUrl = environment.apiUrl;
+
 
   clean(): void {
     window.sessionStorage.clear();
@@ -16,6 +24,19 @@ export class UserService {
   public saveUser(user: any): void {
     window.sessionStorage.removeItem(USER_KEY);
     window.sessionStorage.setItem(USER_KEY, JSON.stringify(user));
+  }
+
+  // Ajouter le widthcredentials: true
+  getAllUser(): Observable<User[]> {
+    return this.http.get<User[]>(`${this.apiUrl}/${API.USER}`);
+  }
+
+  // getOneUser(userId): Observable<User[]> {
+  //   return this.http.get<User[]>(`${this.apiUrl}/${API.USER}/${userId}`);
+  // }
+
+  deleteUser(userId: number): Observable<User[]> {
+    return this.http.delete<User[]>(`${this.apiUrl}/${API.USER}/${userId}`);
   }
 
   public getUser(): any {
