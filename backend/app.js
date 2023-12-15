@@ -1,11 +1,19 @@
 const express = require('express');
 const app = express();
 const connection = require('./connection');
+const func  = require('./function');
 const cookieParser = require('cookie-parser');
 const path = require('path');
 const cors = require('cors');
 
 connection;
+
+// Associations
+
+const User = require('./models/User');
+const Service = require('./models/Service');
+
+func.belongsTo(User, Service, 'serviceId')
 
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
