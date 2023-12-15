@@ -5,8 +5,7 @@ import { UserService } from '../services/user.service';
 import { Table } from 'primeng/table';
 import { Department } from '../models/department-model';
 import { DepartmentService } from '../services/department.service';
-import { Observable } from 'rxjs';
-
+//test/
 
 @Component({
   selector: 'app-admin',
@@ -54,8 +53,6 @@ export class AdminComponent implements OnInit {
           console.error(error); 
         }
       );
-
-      
 
     }
 
