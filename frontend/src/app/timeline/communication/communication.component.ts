@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { ServiceService } from 'src/app/services/service.service';
 
 interface EventItem {
   titre?: string;
@@ -15,13 +16,13 @@ interface EventItem {
   styleUrls: ['./communication.component.scss']
 })
 export class CommunicationComponent {
+  departments: any[] = [];
   sidebarVisible: boolean[];
-
-  [x: string]: any;
-
   events: EventItem[];
 
-    constructor() {
+  
+
+    constructor(private serviceService: ServiceService) {
         this.events = [
           {
             titre: "Titre de l'article 1",
@@ -121,13 +122,39 @@ export class CommunicationComponent {
         this.events.sort((a, b) => a.dateStart.getTime() - b.dateStart.getTime());
     }
     
+
+    ngOnInit(){
+      this.serviceService.getAllService().subscribe(
+        (data: any) => {
+          this.departments = data;
+          console.log(this.departments);
+          for (let i = 0; i < this.departments.length; i++) {
+        
+            this.serviceService.getService(this.departments[i].id).subscribe(
+              (data: any) => {
+                this.departments[i].services = data;
+                console.log(this.departments[i].services)
+              },
+              (error: any) => {
+                console.error(error); 
+              }
+            );
+          }
+        },
+        (error: any) => {
+          console.error(error); 
+        }
+      );
+      
+    }
+
     getTextColor(event: EventItem){
       return{
         'color': event.color || 'black'
       };
     }
 
-    getCardBackground(event: EventItem){
+    getMarkerBackground(event: EventItem){
       return{
         'backgroundColor': event.color || 'transparent'
       };

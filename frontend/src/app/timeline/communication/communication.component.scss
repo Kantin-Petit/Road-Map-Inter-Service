@@ -29,12 +29,26 @@
         width: 20vw;
     }
 
+    .custom-marker{
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        border: 1px solid #fff;
+        box-shadow: 0 2px 3px rgba(0,0,0,0.1);
+    }
+
+    .p-timeline-event-connector{
+        height: 5px;
+        border-radius: 5%;
+        box-shadow: 0 2px 3px rgba(0,0,0,0.1);
+    }
+
     .p-timeline-event:last-child{
         width: fit-content;
     }
 
     .p-sidebar-active{
-        min-width: 50vw;
+        min-width: 25vw;
     }
 
     .custom-card {
