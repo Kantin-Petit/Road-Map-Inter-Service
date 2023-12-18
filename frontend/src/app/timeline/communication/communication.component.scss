@@ -13,6 +13,15 @@
         height: 100%;
     }
 
+    .p-card-body {
+        width: 250px;
+        height: 300px;
+
+        .custom-card-content.ng-star-inserted {
+            height: 220px;
+        }
+    }
+
     .p-timeline-horizontal::-webkit-scrollbar{
         height: 5px;
     }

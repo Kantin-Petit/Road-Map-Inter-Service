@@ -30,6 +30,7 @@ import { TimelineModule } from 'primeng/timeline';
 import { CardModule } from 'primeng/card';
 import { SplitterModule } from 'primeng/splitter';
 import { SidebarModule } from 'primeng/sidebar';
+import { HorizontalComponent } from './timeline/horizontal/horizontal.component';
 
 
 registerLocaleData(localeFr);
@@ -44,6 +45,7 @@ registerLocaleData(localeFr);
     HeaderComponent,
     UserRegistrationComponent,
     UserLoginComponent,
+    HorizontalComponent,
   ],
   imports: [
     BrowserModule,
@@ -64,6 +66,7 @@ registerLocaleData(localeFr);
     InputTextModule,
     MessageModule,
     SidebarModule
+    
 
   ],
   providers: [
