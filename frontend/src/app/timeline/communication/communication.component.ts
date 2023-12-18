@@ -15,6 +15,7 @@ interface EventItem {
   styleUrls: ['./communication.component.scss']
 })
 export class CommunicationComponent {
+  
   sidebarVisible: boolean[];
 
   [x: string]: any;

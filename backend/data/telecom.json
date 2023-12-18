@@ -1,25 +1,25 @@
 { 
-  "poste": {
+  "telecom": {
     "photo": "chemin/vers/photo1.jpg",
     "description": "Description du service 1",
     "data": [
       {
-        "titre": "Titre de poste 1",
-        "texte": "Ceci est le contenu de poste 1. Lorem ipsum dolor sit amet",
+        "titre": "Titre de l'article 1",
+        "texte": "Ceci est le contenu de l'article 1. Lorem ipsum dolor sit amet",
         "image": "http://placehold.it/350x150",
         "dateStart": "2016-01-01",
         "dateEnd": "2016-01-02"
       },
       {
-        "titre": "Titre de poste 2",
-        "texte": "Ceci est le contenu de poste 1. Lorem ipsum dolor sit amet",
+        "titre": "Titre de l'article 1",
+        "texte": "Ceci est le contenu de l'article 1. Lorem ipsum dolor sit amet",
         "image": "http://placehold.it/350x150",
         "dateStart": "2016-01-01",
         "dateEnd": "2016-01-02"
       },
       {
-        "titre": "Titre de poste 3",
-        "texte": "Ceci est le contenu de poste 1. Lorem ipsum dolor sit amet",
+        "titre": "Titre de l'article 1",
+        "texte": "Ceci est le contenu de l'article 1. Lorem ipsum dolor sit amet",
         "image": "http://placehold.it/350x150",
         "dateStart": "2016-01-01",
         "dateEnd": "2016-01-02"

@@ -1,5 +1,4 @@
-
-export class Department {
+export class ServiceList {
     id!: number;
     name!: string;
 }
