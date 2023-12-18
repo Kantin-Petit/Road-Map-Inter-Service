@@ -13,7 +13,7 @@ import { AppComponent } from './app.component';
 import { ErrorComponent } from './_utils/error/error.component';
 import { HomeComponent } from './home/home.component';
 import { PlanningComponent } from './timeline/planning/planning.component';
-import { CommunicationComponent } from './timeline/communication/communication.component';
+// import { CommunicationComponent } from './timeline/communication/communication.component';
 import { HeaderComponent } from './header/header.component';
 import { UserRegistrationComponent } from './user-registration/user-registration.component';
 import { UserLoginComponent } from './user-login/user-login.component';
@@ -41,7 +41,7 @@ registerLocaleData(localeFr);
     ErrorComponent,
     HomeComponent,
     PlanningComponent,
-    CommunicationComponent,
+    // CommunicationComponent,
     HeaderComponent,
     UserRegistrationComponent,
     UserLoginComponent,
