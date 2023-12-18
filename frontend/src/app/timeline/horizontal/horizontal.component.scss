@@ -10,6 +10,7 @@ $timeline-gradient: linear-gradient(270deg, var(--timeline-gradient));
     position: relative;
     white-space: nowrap;
     max-width: 1400px;
+    width: 100%;
     padding: 0 10px;
     margin: 50px auto;
     display: grid;
@@ -93,6 +94,10 @@ $timeline-gradient: linear-gradient(270deg, var(--timeline-gradient));
 
         &:last-child {
           width: 340px;
+        }
+
+        &.card_selected > div {
+          background-color: #e5f33d;
         }
 
         &:not(:first-child) {

@@ -6,8 +6,9 @@
         <p>{{ service.value.description }}</p>
       </div>
       <ol>
-        <li *ngFor="let data of service.value.data">
-          <div (click)="sidebarVisible = true" (click)="openSidebar(data.titre, data.texte)">
+        <li *ngFor="let data of service.value.data; let i = index" 
+        [class.card_selected]="sidebarVisible && selectedItemIndex === i">
+          <div (click)="sidebarVisible = true" (click)="toggleSidebar(i, data.titre, data.texte)">
             <time> {{data.titre}}</time> 
             <p>{{data.texte}} </p>
           </div>

@@ -17,14 +17,20 @@ export class HorizontalComponent implements OnInit {
 
   sidebarVisible: boolean = false;
   sidebarData: { title: string, text: string } = { title: '', text: '' };
+  selectedItemIndex!: number |  null;
   
   ngOnInit() {
     this.getServices();
   }
 
-
-  openSidebar(title: string, text: string) {
-    this.sidebarData = { title, text };
+  toggleSidebar(index: number, titre: string, texte: string): void {
+    if (!this.sidebarVisible || this.selectedItemIndex !== index) {
+      this.selectedItemIndex = index;
+      this.sidebarData = { title: titre, text: texte };
+    } else {
+      this.selectedItemIndex = null;
+      this.sidebarData = { title: '', text: '' };
+    }
   }
 
   getServices() {
