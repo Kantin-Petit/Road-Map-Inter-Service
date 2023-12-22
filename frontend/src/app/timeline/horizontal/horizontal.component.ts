@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
-import { Service } from 'src/app/models/service-model';
 import { ServiceService } from 'src/app/services/service.service';
+import { Service } from 'src/app/models/service-model';
+import { Observable } from 'rxjs';
 
 @Component({
-  selector: 'app-communication',
-  templateUrl: './communication.component.html',
-  styleUrls: ['./communication.component.scss']
+  selector: 'app-horizontal',
+  templateUrl: './horizontal.component.html',
+  styleUrls: ['./horizontal.component.scss']
 })
-export class CommunicationComponent implements OnInit{
+export class HorizontalComponent implements OnInit {
 
 
   constructor(private serviceService: ServiceService) { }
@@ -31,5 +31,4 @@ export class CommunicationComponent implements OnInit{
     this.services = this.serviceService.getAllService();
   }
 
-    
 }

@@ -4,18 +4,18 @@
     <p-toolbar styleClass="mb-4 gap-2">
         <ng-template pTemplate="left">
             <button pButton pRipple label="Nouveau" icon="pi pi-plus mr-2" class="p-button-success mr-2" (click)="openNew()"></button>
-            <button pButton pRipple [label]="Delete" icon="pi pi-trash" class="p-button-danger" (click)="deleteSelectedProducts()" [disabled]="!selectedProducts || !selectedProducts.length"></button>
+            <button pButton pRipple [label]="Delete" icon="pi pi-trash" class="p-button-danger" (click)="deleteSelectedUsers()" [disabled]="!selectedUsers || !selectedUsers.length"></button>
         </ng-template>
     </p-toolbar>
 
     <p-table
         #dt
-        [value]="products"
+        [value]="utilisateurs"
         [rows]="10"
         [paginator]="true"
         [globalFilterFields]="['name']"
         [tableStyle]="{ 'min-width': '75rem' }"
-        [(selection)]="selectedProducts"
+        [(selection)]="selectedUsers"
         [rowHover]="true"
         dataKey="id"
         currentPageReportTemplate="Utilisateur de {first} à {last}"
@@ -41,42 +41,42 @@
                 <th></th>
             </tr>
         </ng-template>
-        <ng-template pTemplate="body" let-product>
+        <ng-template pTemplate="body" let-utilisateur>
             <tr>
                 <td>
-                    <p-tableCheckbox [value]="product"></p-tableCheckbox>
+                    <p-tableCheckbox [value]="utilisateur"></p-tableCheckbox>
                 </td>
-                <td>{{ product.last_name }}</td>
-                <td>{{ product.first_name }}</td>
+                <td>{{ utilisateur.last_name }}</td>
+                <td>{{ utilisateur.first_name }}</td>
                 <td>
-                    <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editProduct(product)"></button>
-                    <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="deleteProduct(product)"></button>
+                    <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editUser(utilisateur)"></button>
+                    <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="deleteUser(utilisateur)"></button>
                 </td>
             </tr>
         </ng-template>
         <ng-template pTemplate="summary">
-            <div class="flex align-items-center justify-content-between">Au total, il y a {{ products ? products.length : 0 }} utilisateurs.</div>
+            <div class="flex align-items-center justify-content-between">Au total, il y a {{ utilisateurs ? utilisateurs.length : 0 }} utilisateurs.</div>
         </ng-template>
     </p-table>
 </div>
-<p-dialog [(visible)]="productDialog" [style]="{ width: '450px' }" header="Info Utilisateur" [modal]="true" styleClass="p-fluid">
+<p-dialog [(visible)]="utilisateurDialog" [style]="{ width: '450px' }" header="Info Utilisateur" [modal]="true" styleClass="p-fluid">
     <ng-template pTemplate="content">
         <div class="field flex flex-column">
             <label for="last_name">Nom</label>
-            <input  class="h-2rem" type="text" pInputText id="last_name" [(ngModel)]="product.last_name" required autofocus />
-            <small class="p-error" *ngIf="submitted && !product.last_name">Le Nom est requis.</small>
+            <input  class="h-2rem" type="text" pInputText id="last_name" [(ngModel)]="utilisateur.last_name" required autofocus />
+            <small class="p-error" *ngIf="submitted && !utilisateur.last_name">Le Nom est requis.</small>
         </div>
         <div class="field flex flex-column">
             <label for="first_name">Prénom</label>
-            <input class="h-2rem" type="text" pInputText id="first_name" [(ngModel)]="product.first_name" required autofocus />
-            <small class="p-error" *ngIf="submitted && !product.first_name">Le Prénom est requis.</small>
+            <input class="h-2rem" type="text" pInputText id="first_name" [(ngModel)]="utilisateur.first_name" required autofocus />
+            <small class="p-error" *ngIf="submitted && !utilisateur.first_name">Le Prénom est requis.</small>
         </div>
     
     </ng-template>
 
     <ng-template pTemplate="footer">
         <button pButton pRipple label="Annuler" icon="pi pi-times mr-2" class="p-button-text" (click)="hideDialog()"></button>
-        <button pButton pRipple label="Enregistrer" icon="pi pi-check mr-2" class="p-button-text" (click)="saveProduct()"></button>
+        <button pButton pRipple label="Enregistrer" icon="pi pi-check mr-2" class="p-button-text" (click)="saveUser()"></button>
     </ng-template>
 </p-dialog>
 
