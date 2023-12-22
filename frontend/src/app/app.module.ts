@@ -30,7 +30,8 @@ import { TimelineModule } from 'primeng/timeline';
 import { CardModule } from 'primeng/card';
 import { SplitterModule } from 'primeng/splitter';
 import { SidebarModule } from 'primeng/sidebar';
-
+import { HorizontalComponent } from './timeline/horizontal/horizontal.component';
+import { MatListModule } from '@angular/material/list';
 
 registerLocaleData(localeFr);
 
@@ -44,6 +45,7 @@ registerLocaleData(localeFr);
     HeaderComponent,
     UserRegistrationComponent,
     UserLoginComponent,
+    HorizontalComponent,
   ],
   imports: [
     BrowserModule,
@@ -63,7 +65,9 @@ registerLocaleData(localeFr);
     ConfirmDialogModule,
     InputTextModule,
     MessageModule,
-    SidebarModule
+    SidebarModule,
+    MatListModule
+    
 
   ],
   providers: [

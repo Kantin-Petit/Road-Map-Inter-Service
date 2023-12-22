@@ -3,10 +3,8 @@ import { User } from '../models/user-model';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { UserService } from '../services/user.service';
 import { Table } from 'primeng/table';
-import { Department } from '../models/department-model';
-import { DepartmentService } from '../services/department.service';
-import { Observable } from 'rxjs';
-
+import { ServiceService } from '../services/service.service'
+import { ServiceList } from '../models/serviceList-model';
 
 @Component({
   selector: 'app-admin',
@@ -20,42 +18,40 @@ export class AdminComponent implements OnInit {
 
     @ViewChild('dt') dt!: Table;
 
-    products!: User[];
-    product!: User;
-    productDialog: boolean = false;
-    selectedProducts!: User[] | null;
+    utilisateurs!: User[];
+    utilisateur!: User;
+    utilisateurDialog: boolean = false;
+    selectedUsers!: User[] | null;
     submitted: boolean = false;
     statuses!: any[];
     Delete! : string;
-    service!: Department[];
+    service!: ServiceList[];
 
     constructor(
       private userService: UserService, 
-      private departmentService: DepartmentService,
+      private ServiceService: ServiceService,
       private messageService: MessageService, 
       private confirmationService: ConfirmationService) {}
 
     ngOnInit() {
       this.userService.getAllUser().subscribe(
         (data: User[]) => {
-          this.products = data; 
+          this.utilisateurs = data; 
         },
         (error: any) => {
           console.error(error); 
         }
       );
 
-      this.departmentService.allService().subscribe(
-        (data: Department[]) => {
-          this.service = data; 
-          console.log(data)
-        },
-        (error: Department) => {
-          console.error(error); 
-        }
+      this.ServiceService.getAllService().subscribe(
+        // (data: ServiceList[]) => {
+        //   this.service = data; 
+        //   console.log(data)
+        // },
+        // (error: string) => {
+        //   console.error(error); 
+        // }
       );
-
-      
 
     }
 
@@ -66,44 +62,44 @@ export class AdminComponent implements OnInit {
     }
 
     openNew() {
-      this.product = new User();
+      this.utilisateur = new User();
       this.submitted = false;
-      this.productDialog = true;
+      this.utilisateurDialog = true;
     }
 
-    deleteSelectedProducts() {
-      console.log(this.selectedProducts)
+    deleteSelectedUsers() {
+      console.log(this.selectedUsers)
         this.confirmationService.confirm({
             message: 'Êtes-vous sûr de vouloir supprimer les produits sélectionnés ?',
             header: 'Confirmation',
             icon: 'pi pi-exclamation-triangle m-2',
             accept: () => {
-                this.products = this.products.filter((val) => !this.selectedProducts?.includes(val));
-                this.selectedProducts = null;
+                this.utilisateurs = this.utilisateurs.filter((val) => !this.selectedUsers?.includes(val));
+                this.selectedUsers = null;
                 this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Utilisateur Supprimer', life: 3000 });
             }
         });
     }
 
-    editProduct(product: User) {
-        console.log(product)
-        this.product = { ...product };
-        this.productDialog = true;
+    editUser(utilisateur: User) {
+        console.log(utilisateur)
+        this.utilisateur = { ...utilisateur };
+        this.utilisateurDialog = true;
     }
 
-    deleteProduct(product: User) {
-      console.log(product['id'])
+    deleteUser(utilisateur: User) {
+      console.log(utilisateur['id'])
       this.confirmationService.confirm({
-        message: 'Êtes-vous sûr de vouloir supprimer ' + product.last_name + '?',
+        message: 'Êtes-vous sûr de vouloir supprimer ' + utilisateur.last_name + '?',
         header: 'Confirmation',
         icon: 'pi pi-exclamation-triangle m-2',
         accept: () => {
-          this.products = this.products.filter((val) => val.id !== product.id);
-          this.product = new User(); 
+          this.utilisateurs = this.utilisateurs.filter((val) => val.id !== utilisateur.id);
+          this.utilisateur = new User(); 
           this.messageService.add({ severity: 'success', summary: 'Réussite', detail: 'Utilisateur supprimé', life: 3000 });
-          this.userService.deleteUser(product['id']).subscribe(
+          this.userService.deleteUser(utilisateur['id']).subscribe(
             (data: User[]) => {
-              this.products = data; 
+              this.utilisateurs = data; 
             },
             (error: any) => {
               console.error(error); 
@@ -114,34 +110,34 @@ export class AdminComponent implements OnInit {
     }
 
     hideDialog() {
-        this.productDialog = false;
+        this.utilisateurDialog = false;
         this.submitted = false;
     }
 
-    saveProduct() {
+    saveUser() {
         this.submitted = true;
 
-        if (this.product.last_name?.trim()) {
-          if (this.product.id) {
-            this.products[this.findIndexById(String(this.product.id))] = this.product;
+        if (this.utilisateur.last_name?.trim()) {
+          if (this.utilisateur.id) {
+            this.utilisateurs[this.findIndexById(String(this.utilisateur.id))] = this.utilisateur;
             this.messageService.add({ severity: 'success', summary: 'Réussite', detail: 'Utilisateur Modifier', life: 3000 });
           } else {
-            this.product.id = Number(this.createId());
-            this.products.push(this.product);
+            this.utilisateur.id = Number(this.createId());
+            this.utilisateurs.push(this.utilisateur);
             this.messageService.add({ severity: 'success', summary: 'Réussite', detail: 'Utilisateur Créer', life: 3000 });
           }
 
-          this.products = [...this.products];
-          this.productDialog = false;
-          this.product = new User(); 
+          this.utilisateurs = [...this.utilisateurs];
+          this.utilisateurDialog = false;
+          this.utilisateur = new User(); 
         }
     }
 
     findIndexById(id: string): number {
       let index = -1;
       const numericId = Number(id); 
-      for (let i = 0; i < this.products.length; i++) {
-        if (this.products[i].id === numericId) { 
+      for (let i = 0; i < this.utilisateurs.length; i++) {
+        if (this.utilisateurs[i].id === numericId) { 
           index = i;
           break;
         }
