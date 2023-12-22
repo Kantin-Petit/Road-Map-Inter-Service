@@ -1,64 +1,76 @@
 // const bcrypt = require('bcrypt');
 const path = require('path');
-const fs = require('fs').promises;
+const fs = require('fs');
 const Service = require('../models/Service');
-const directoryPath = './data';
-
-// exports.allService = (req, res, next) => {
-//     Service.findAll()
-//     .then(Services => res.send(Services))
-//     .catch(error => res.status(500).json({ error }));
-// };
+const directoryPath = path.join(__dirname, '../data'); 
 
 exports.allService = async (req, res, next) => {
 
-    let fileContents = {};
+  let fileContents = {};
 
-    try {
-        const files = await fs.readdir(directoryPath);
+  try {
+    const files = fs.readdirSync(directoryPath);
 
-        for (const file of files) {
-            if (file.endsWith('.json')) {
-                const fileName = file.replace('.json', '');
-                const filePath = `${directoryPath}/${file}`;
-                const content = await fs.readFile(filePath, 'utf-8');
-                let jsonData = JSON.parse(content);
+    for (const file of files) {
+      if (file.endsWith('.json')) {
+        const fileName = file.replace('.json', '');
+        const filePath = path.join(directoryPath, file);
+        const content = fs.readFileSync(filePath, 'utf-8');
+        let jsonData = JSON.parse(content);
 
-                if (jsonData.hasOwnProperty(fileName)) {
-                    jsonData = jsonData[fileName]; 
-                }
-
-                fileContents[fileName] = jsonData; 
-            }
+        if (jsonData.hasOwnProperty(fileName)) {
+          jsonData = jsonData[fileName];
         }
 
-        res.status(200).json(fileContents);
-    } catch (error) {
-        res.status(500).json({ error: `Erreur lors de la lecture du répertoire : ${error.message}` });
+        fileContents[fileName] = jsonData;
+      }
     }
+
+    res.status(200).json(fileContents);
+  } catch (error) {
+    res.status(500).json({ error: `Erreur lors de la lecture du répertoire : ${error.message}` });
+  }
 };
 
 
 
 exports.service = (req, res, next) => {
 
-    Service.findOne({where: {id: req.params.id}})
-    .then(data => {
-        
-        const DataService = `../data/${data.name}.json`;
-        const filePath = path.join(__dirname, DataService);
-    
-        fs.readFile(filePath, 'utf8')
-            .then(data => {
-                res.send(data);
-            })
-            .catch(error => {
-                res.status(500).send('Erreur lors du téléchargement du fichier.');
-            });
-    })   
-
+    const { fileName } = req.params;
+  
+    if (!fs.existsSync(directoryPath)) {
+      return res.status(404).send('Le dossier spécifié n\'existe pas.');
+    }
+  
+    const filePath = path.join(directoryPath, `${fileName}.json`);
+  
+    if (!fs.existsSync(filePath)) {
+      return res.status(404).send('Le fichier JSON spécifié n\'existe pas.');
+    }
+  
+    fs.readFile(filePath, 'utf8', (err, data) => {
+      if (err) {
+        return res.status(500).send('Erreur lors de la lecture du fichier JSON.');
+      }
+      res.status(200).json(JSON.parse(data));
+    });
   
 };
+
+exports.getAllServiceName = (req, res, next) => {
+
+    fs.readdir(directoryPath, (err, files) => {
+      if (err) {
+        return res.status(500).json({ error: 'Erreur lors de la lecture du répertoire' });
+      }
+  
+      const fileNames = files
+        .filter(file => path.extname(file).toLowerCase() === '.json')
+        .map(file => path.basename(file, '.json')); 
+  
+      res.status(200).json({ files: fileNames });
+    });
+}
 
 // exports.service = (req, res, next) => {
 //     User.findOne({where: {id: req.params.id}, attributes: {exclude: ['password']}})

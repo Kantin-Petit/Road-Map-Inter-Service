@@ -1,10 +1,16 @@
 const User = require('../models/User');
+const Service = require('../models/Service');
 const bcrypt = require('bcrypt');
 const fs = require('fs');
 const path = require('path');
 
 exports.getAllUsers = (req, res, next) => {
-    User.findAll()
+    User.findAll({
+        include: [{
+          model: Service,
+          attributes: ['name']
+        }]
+      })
     .then(users => res.send(users))
     .catch(error => res.status(500).json({ error }));
 };

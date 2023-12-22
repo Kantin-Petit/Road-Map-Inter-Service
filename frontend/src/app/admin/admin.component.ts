@@ -5,6 +5,8 @@ import { UserService } from '../services/user.service';
 import { Table } from 'primeng/table';
 import { ServiceService } from '../services/service.service'
 import { ServiceList } from '../models/serviceList-model';
+import { Observable } from 'rxjs';
+
 
 @Component({
   selector: 'app-admin',
@@ -34,25 +36,15 @@ export class AdminComponent implements OnInit {
       private confirmationService: ConfirmationService) {}
 
     ngOnInit() {
-      this.userService.getAllUser().subscribe(
-        (data: User[]) => {
-          this.utilisateurs = data; 
-        },
-        (error: any) => {
-          console.error(error); 
-        }
-      );
+      this.userService.getAllUser().subscribe(users => {
+        this.utilisateurs = users;
+      });
 
-      this.ServiceService.getAllService().subscribe(
-        // (data: ServiceList[]) => {
-        //   this.service = data; 
-        //   console.log(data)
-        // },
-        // (error: string) => {
-        //   console.error(error); 
-        // }
-      );
-
+      this.statuses = [
+        {label: 'INSTOCK', value: 'instock'},
+        {label: 'LOWSTOCK', value: 'lowstock'},
+        {label: 'OUTOFSTOCK', value: 'outofstock'}
+      ];
     }
 
     filterGlobal(event: Event) {
@@ -154,7 +146,6 @@ export class AdminComponent implements OnInit {
         }
         return id;
     }
-
 }
 
 

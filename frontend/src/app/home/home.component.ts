@@ -10,15 +10,17 @@ export class HomeComponent {
   displayCommunication: boolean = true;
   displayPlanning: boolean = false;
 
-  showTimeLine(timeline: string) {
 
+  showTimeLine(timeline: string) {
+    this.displayPlanning = false;
+    this.displayCommunication = false;
+    this.displayCommunication = false;
+
+    if(timeline === 'planning') {
+      this.displayPlanning = true;
+    }
     if(timeline === 'communication') {
       this.displayCommunication = true;
-      this.displayPlanning = false;
-    }
-    if(timeline === 'planning') {
-      this.displayCommunication = false;
-      this.displayPlanning = true;
     }
   }
 
