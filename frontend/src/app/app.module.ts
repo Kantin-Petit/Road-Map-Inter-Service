@@ -30,7 +30,10 @@ import { TimelineModule } from 'primeng/timeline';
 import { CardModule } from 'primeng/card';
 import { SplitterModule } from 'primeng/splitter';
 import { SidebarModule } from 'primeng/sidebar';
-import { HorizontalComponent } from './timeline/horizontal/horizontal.component';
+import { CommunicationComponent } from './timeline/communication/communication.component';
+import { FileUploadModule } from 'primeng/fileupload';
+import { MatListModule } from '@angular/material/list';
+// import { JsonEditorComponent } from './json-editor/json-editor.component';
 
 
 registerLocaleData(localeFr);
@@ -41,15 +44,16 @@ registerLocaleData(localeFr);
     ErrorComponent,
     HomeComponent,
     PlanningComponent,
-    // CommunicationComponent,
     HeaderComponent,
     UserRegistrationComponent,
     UserLoginComponent,
-    HorizontalComponent,
+    CommunicationComponent,
+    // JsonEditorComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
+    MatListModule,
     HttpClientModule,
     SplitterModule,
     ReactiveFormsModule,
@@ -65,9 +69,8 @@ registerLocaleData(localeFr);
     ConfirmDialogModule,
     InputTextModule,
     MessageModule,
-    SidebarModule
-    
-
+    SidebarModule,
+    FileUploadModule,
   ],
   providers: [
     [{ provide: LOCALE_ID, useValue: 'fr' }],

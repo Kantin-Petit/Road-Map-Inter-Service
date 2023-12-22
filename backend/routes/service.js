@@ -3,7 +3,8 @@ const router = express.Router();
 const serviceCtrl = require('../controllers/service');
 
 router.get('/allservice', serviceCtrl.allService);
-router.get('/service/:id', serviceCtrl.service);
+router.get('/service/:fileName', serviceCtrl.service);
+router.get('/servicesname', serviceCtrl.getAllServiceName);
 // router.post('/service', serviceCtrl.addService);
 // router.put('/service', serviceCtrl.modifyService);
 // router.delete('/service', serviceCtrl.deleteService);

@@ -1,4 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+import { Observable } from 'rxjs';
+import { Service } from 'src/app/models/service-model';
+import { ServiceService } from 'src/app/services/service.service';
 import { DataSet, Timeline } from "vis-timeline/standalone";
 
 @Component({
@@ -13,19 +16,34 @@ export class PlanningComponent implements OnInit, AfterViewInit {
   options!: {};
   data: any;
   groups: any;
+  services!: Observable<{ [key: string]: Service }>;
 
   @ViewChild('timeline', {static: false}) timelineContainer!: ElementRef;
 
-  constructor() {
+  constructor(private serviceService: ServiceService) {
     this.data = new DataSet();
     this.groups = new DataSet();
-    this.getTimelineData();
-    this.getTimelineGroups();
-    this.getOptions();
   }
 
   ngOnInit() {
     // Initialisation indépendante de ViewChild
+    this.getServices();
+    this.services.subscribe((data) => {
+      const keys = Object.keys(data);
+      let compteur = 1;
+      for (let i = 0; i < keys.length; i++) {
+        this.groups.add({id: i, content: keys[i]});
+        for (let j = 0; j < data[keys[i]].data.length; j++) {
+          this.data.add({id: compteur, content: data[keys[i]].data[j].titre, start: data[keys[i]].data[j].dateStart, end: data[keys[i]].data[j].dateEnd, group: i});
+          compteur++;
+        }
+      } 
+    });
+    this.getOptions();
+  }
+
+  getServices() {
+    this.services = this.serviceService.getAllService();
   }
 
   ngAfterViewInit() {
@@ -38,30 +56,9 @@ export class PlanningComponent implements OnInit, AfterViewInit {
     });
   }
 
-  getTimelineGroups() {
-    this.groups.add([
-      {id: 1, content: 'Group 1'},
-      {id: 2, content: 'Group 2'}
-    ]);
-  }
-
-  getTimelineData() {
-    this.data.add([
-      {id: 1, content: 'Editable', editable: true, start: '2010-08-23', group: 1, className: 'vis-test' },
-      {id: 2, content: 'Editable', editable: true, start: '2010-08-23T23:00:00', group: 2},
-      {id: 3, content: 'Read-only', editable: false, start: '2010-08-24T16:00:00', group: 1},
-      {id: 4, content: 'Read-only', editable: false, start: '2010-08-26', end: '2010-09-02', group: 2},
-      {id: 5, content: 'Edit Time Only', editable: { updateTime: true, updateGroup: false, remove: false }, start: '2010-08-28', group: 1},
-      {id: 6, content: 'Edit Group Only', editable: { updateTime: false, updateGroup: true, remove: false }, start: '2010-08-29', group: 2},
-      {id: 7, content: 'Remove Only', editable: { updateTime: false, updateGroup: false, remove: true }, start: '2010-08-31', end: '2010-09-03', group: 1},
-      {id: 8, content: 'Default', start: '2010-09-04T12:00:00', group: 2},
-    ]);
-  }
-  
-
   getOptions() {
     this.options = {
-      editable: true,
+      selectable: false,
       locale: 'fr',
       // template: function (item: any, element: any, data: any) {
       //   var html = '<h1>' + item.content + '</h1>';
