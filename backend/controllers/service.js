@@ -30,6 +30,7 @@ exports.allService = async (req, res, next) => {
   } catch (error) {
     res.status(500).json({ error: `Erreur lors de la lecture du répertoire : ${error.message}` });
   }
+
 };
 
 
@@ -57,6 +58,43 @@ exports.service = (req, res, next) => {
   
 };
 
+exports.servicesFiltered = (req, res, next) => {
+
+  const serviceName = req.params.serviceName;
+  const subjectName = req.params.subjectName;
+
+  try {
+    const files = fs.readdirSync(directoryPath);
+    let services = {};
+
+    for (const file of files) {
+      if (file.endsWith('.json')) {
+        const fileName = file.replace('.json', '');
+        const filePath = path.join(directoryPath, file);
+        const content = fs.readFileSync(filePath, 'utf-8');
+        let jsonData = JSON.parse(content);
+
+        if (jsonData.hasOwnProperty(fileName)) {
+          jsonData = jsonData[fileName];
+        }
+
+        if (fileName === serviceName) {
+          // Modification du service spécifié
+          if (jsonData && jsonData.timelines) {
+            jsonData.timelines = jsonData.timelines.filter(timeline => timeline.sujet === subjectName);
+          }
+        }
+
+        services[fileName] = jsonData;
+      }
+    }
+
+    res.status(200).json(services);
+  } catch (error) {
+    res.status(500).json({ error: `Erreur lors de la lecture du répertoire : ${error.message}` });
+  }
+};
+
 exports.getAllServiceName = (req, res, next) => {
 
     fs.readdir(directoryPath, (err, files) => {
@@ -68,7 +106,7 @@ exports.getAllServiceName = (req, res, next) => {
         .filter(file => path.extname(file).toLowerCase() === '.json')
         .map(file => path.basename(file, '.json')); 
   
-      res.status(200).json({ files: fileNames });
+      res.status(200).json(fileNames);
     });
 }
 

@@ -7,4 +7,7 @@ export const API = {
     ALL_SERVICE: 'services/allservice',
     ONE_SERVICE: 'services/service',
     LIST_SERVICE: 'services/servicesname',
+    TIMELINES_SUBJECT_FILTERED: 'subject/filteredsubject',
+    SERVICE_FILTERED: 'services/servicefiltered',
+
 };

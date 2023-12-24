@@ -33,8 +33,8 @@ export class PlanningComponent implements OnInit, AfterViewInit {
       let compteur = 1;
       for (let i = 0; i < keys.length; i++) {
         this.groups.add({id: i, content: keys[i]});
-        for (let j = 0; j < data[keys[i]].data.length; j++) {
-          this.data.add({id: compteur, content: data[keys[i]].data[j].titre, start: data[keys[i]].data[j].dateStart, end: data[keys[i]].data[j].dateEnd, group: i});
+        for (let j = 0; j < data[keys[i]].timelines.length; j++) {
+          this.data.add({id: compteur, content: data[keys[i]].timelines[j].titre, start: data[keys[i]].timelines[j].dateStart, end: data[keys[i]].timelines[j].dateEnd, group: i});
           compteur++;
         }
       } 
