@@ -23,7 +23,11 @@ export class ServiceService {
     return this.http.get<{ [key: string]: Service }>(`${this.apiUrl}/${API.ONE_SERVICE}/${serviceName}`);
   }
 
-  getAllServiceName() {
+  getServicefiltered(service: string, sujet: string) {
+    return this.http.get<{ [key: string]: Service }>(`${this.apiUrl}/${API.SERVICE_FILTERED}?service=${service}&sujet=${sujet}`);
+  }
+
+  getAllServiceName(): Observable<string[]> {
     return this.http.get<string[]>(`${this.apiUrl}/${API.LIST_SERVICE}`);
   }
 

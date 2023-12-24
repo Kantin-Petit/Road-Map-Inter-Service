@@ -1,64 +1,43 @@
+<div *ngFor="let serviceName of servicesName">
+  <label>
+    <input type="checkbox" [value]="serviceName" [(ngModel)]="checkedServices[serviceName]"/>
+    {{ serviceName }}
+  </label>
+</div>
 <div class="timeline_wrapper">
-  <section *ngFor="let service of services | async | keyvalue" class="timeline">
-   <div class="info">
-     <img width="50" height="50" src="https://assets.codepen.io/210284/face.svg" alt=""/>
-     <h2>{{service.key | uppercase }}</h2>
-     <p>{{ service.value.description }}</p>
-   </div>
-   <ol>
-     <li *ngFor="let data of service.value.data; let i = index" 
-     [class.card_selected]="sidebarVisible && selectedItemIndex === i">
-       <div (click)="toggleSidebar(i, data.titre, data.texte)">
-        <time>{{ data.titre }}</time>
-        <ng-container *ngIf="data.texte && isSingleText(data.texte)">
-            <p *ngFor="let texte of data.texte">- {{ texte }}</p>
-        </ng-container>
-        <p *ngIf="data.texte && !isSingleText(data.texte)">{{ data.texte }}</p>
-       </div>
-     </li>
-   </ol>
-   <p-sidebar [(visible)]="sidebarVisible" position="right">
-     <h3>{{sidebarData.title}}</h3>
-     <ng-container *ngIf="sidebarData.text && isSingleText(sidebarData.text)">
+  <!-- <pre>
+    {{ servicesFiltered | json }}
+  </pre> -->
+  <ng-container *ngFor="let service of servicesFiltered | keyvalue">
+  <section  *ngIf="checkedServices[selectedForService(service)]" class="timeline">
+    <div class="info">
+      <img width="50" height="50" src="https://assets.codepen.io/210284/face.svg" alt=""/>
+      <h2>{{service.key | uppercase }}</h2>
+      <p>{{ service.value.description }}</p>
+        <select *ngIf="service.value.sujets" [ngModel]="selectedOptions[selectedForService(service)]" (ngModelChange)="onSelectOption(service.key, $event)">
+          <option value="all">Tout</option>
+          <option *ngFor="let sujet of service.value.sujets" [value]="sujet">{{ sujet }}</option>
+        </select>
+    </div>
+    <ol>
+      <li *ngFor="let timeline of service.value.timelines; let i = index" 
+        [class.card_selected]="sidebarVisible && selectedItemIndex === i">
+        <div (click)="toggleSidebar(i, timeline.titre, timeline.texte)">
+          <time>{{ timeline.titre }}</time>
+          <ng-container *ngIf="timeline.texte && isSingleText(timeline.texte)">
+            <p *ngFor="let texte of timeline.texte">- {{ texte }}</p>
+          </ng-container>
+          <p *ngIf="timeline.texte && !isSingleText(timeline.texte)">{{ timeline.texte }}</p>
+        </div>
+      </li>
+    </ol>
+    <p-sidebar [(visible)]="sidebarVisible" position="right">
+      <h3>{{sidebarData.title}}</h3>
+      <ng-container *ngIf="sidebarData.text && isSingleText(sidebarData.text)">
         <p *ngFor="let texte of sidebarData.text">- {{ texte }}</p>
-     </ng-container>
-     <p *ngIf="sidebarData.text && !isSingleText(sidebarData.text)">{{ sidebarData.text }}</p>
-   </p-sidebar>
- </section>
+      </ng-container>
+      <p *ngIf="sidebarData.text && !isSingleText(sidebarData.text)">{{ sidebarData.text }}</p>
+    </p-sidebar>
+  </section>
+  </ng-container>
 </div>
-
-
-
-<!-- <div class="timeline_wrapper">
-  <section *ngFor="let item of service | async | keyvalue" class="timeline">
-   <div class="info">
-     <img width="50" height="50" src="https://assets.codepen.io/210284/face.svg" alt=""/>
-     <h2>{{item.key | uppercase }}</h2>
-     <p>{{ item.value.description }}</p>
-   </div>
-   <ol>
-     <li *ngFor="let data of item.value.data; let i = index" 
-     [class.card_selected]="sidebarVisible && selectedItemIndex === i">
-       <div (click)="toggleSidebar(i, data.titre, data.texte)">
-        <time>{{ data.titre }}</time>
-        <ng-container *ngIf="data.texte && isSingleText(data.texte)">
-            <p *ngFor="let texte of data.texte">- {{ texte }}</p>
-        </ng-container>
-        <p *ngIf="data.texte && !isSingleText(data.texte)">{{ data.texte }}</p>
-       </div>
-     </li>
-   </ol>
-   <p-sidebar [(visible)]="sidebarVisible" position="right">
-     <h3>{{sidebarData.title}}</h3>
-     <ng-container *ngIf="sidebarData.text && isSingleText(sidebarData.text)">
-        <p *ngFor="let texte of sidebarData.text">- {{ texte }}</p>
-     </ng-container>
-     <p *ngIf="sidebarData.text && !isSingleText(sidebarData.text)">{{ sidebarData.text }}</p>
-   </p-sidebar>
- </section>
-</div>
-
-<select>
-  <option value="">Sélectionnez un service</option>
-  <option *ngFor="let name of serviceName" [value]="name">{{ name | uppercase }}</option>
-</select> -->
