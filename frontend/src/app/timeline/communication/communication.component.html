@@ -1,20 +1,29 @@
 <div *ngFor="let serviceName of servicesName">
   <label>
-    <input type="checkbox" [value]="serviceName" [(ngModel)]="checkedServices[serviceName]"/>
+    <input type="checkbox" [value]="serviceName" [(ngModel)]="checkedServices[serviceName]" (ngModelChange)="onCheckboxChange()"/>
     {{ serviceName }}
   </label>
 </div>
+
+<h2>Tout les sujets</h2>
+
+<div *ngFor="let subject of subjects | keyvalue">
+  <label>
+    <input type="checkbox" [value]="subject.key" />
+    {{ subject.key }}
+  </label>
+</div>
+
 <div class="timeline_wrapper">
-  <!-- <pre>
-    {{ servicesFiltered | json }}
-  </pre> -->
+
+  
   <ng-container *ngFor="let service of servicesFiltered | keyvalue">
-  <section  *ngIf="checkedServices[selectedForService(service)]" class="timeline">
+  <section  *ngIf="checkedServices[selectedForService(service)] || showAllServices" class="timeline">
     <div class="info">
       <img width="50" height="50" src="https://assets.codepen.io/210284/face.svg" alt=""/>
       <h2>{{service.key | uppercase }}</h2>
       <p>{{ service.value.description }}</p>
-        <select *ngIf="service.value.sujets" [ngModel]="selectedOptions[selectedForService(service)]" (ngModelChange)="onSelectOption(service.key, $event)">
+        <select *ngIf="service.value.sujets" [ngModel]="selectedSubjects[selectedForService(service)]" (ngModelChange)="onSelectSubjects(service.key, $event)">
           <option value="all">Tout</option>
           <option *ngFor="let sujet of service.value.sujets" [value]="sujet">{{ sujet }}</option>
         </select>

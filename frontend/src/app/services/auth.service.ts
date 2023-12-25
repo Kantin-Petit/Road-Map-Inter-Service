@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { UserRegistration } from '../interfaces/user-registration';
-import { UserLogin } from '../interfaces/user-login';
+import { UserLogin, UserRegistration } from '../interfaces/auth';
 import { environment } from 'src/environments/environment';
 import { API } from 'src//app/routes/api';
 

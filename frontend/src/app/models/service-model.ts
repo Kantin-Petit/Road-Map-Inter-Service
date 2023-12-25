@@ -1,5 +1,5 @@
 export class Timeline {
-    id: number = 0;
+    id!: number;
     titre!: string; 
     texte!: string;
     image!: string;
@@ -9,7 +9,7 @@ export class Timeline {
 }
 
 export class Service {
-    id: number = 0;
+    id!: number;
     photo!: string;
     description!: string;
     sujets!: string[];

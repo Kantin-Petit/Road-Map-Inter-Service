@@ -4,7 +4,7 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { UserService } from '../services/user.service';
 import { Table } from 'primeng/table';
 import { ServiceService } from '../services/service.service'
-import { ServiceList } from '../models/serviceList-model';
+import { Subject } from '../models/subject-model';
 import { Observable } from 'rxjs';
 
 
@@ -27,7 +27,7 @@ export class AdminComponent implements OnInit {
     submitted: boolean = false;
     statuses!: any[];
     Delete! : string;
-    service!: ServiceList[];
+    service!: Subject[];
 
     constructor(
       private userService: UserService, 

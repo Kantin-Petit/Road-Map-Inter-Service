@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ServiceService } from 'src/app/services/service.service';
-import { SubjectService } from 'src/app/services/subject.service';
-import { Service } from 'src/app/models/service-model';
+import { ServiceService } from '../../services/service.service';
+import { SubjectService } from '../../services/subject.service';
+import { Service } from '../../models/service-model';
+import { Subject } from '../../models/subject-model';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -12,33 +13,55 @@ import { map } from 'rxjs/operators';
 })
 export class CommunicationComponent implements OnInit {
 
-  constructor(private serviceService: ServiceService) { }
+  constructor(
+    private serviceService: ServiceService,
+    private subjectService: SubjectService) { }
 
   services: { [key: string]: Service } = {};
   servicesFiltered: { [key: string]: Service } = {};
-  selectedOptions: { [key: string]: string } = {};
+  subjects: { [key: string]: Subject } = {};
 
   servicesName: string[] = [];
+  showAllServices!: boolean;
+
   checkedServices: { [key: string]: boolean } = {};
+  selectedSubjects: { [key: string]: string } = {};
 
   sidebarVisible: boolean = false;
   sidebarData: { title: string, text: string } = { title: '', text: '' };
   selectedItemIndex!: number | null;
   
   ngOnInit() {
-    this.serviceService.getAllServiceName().subscribe(name => {
-      this.servicesName = name;
-      this.servicesName.forEach(service => {
-        this.checkedServices[service] = true;
-        this.selectedOptions[service] = 'all';
-      });
-    })
+    this.setServices();
+    this.setSubjects();
+    this.isAllServicesAreChecked();
+  }
+
+  setServices() {
     this.serviceService.getAllService().subscribe(service => {
       this.services = service;
       Object.keys(service).forEach(key => {
         this.servicesFiltered[key] = JSON.parse(JSON.stringify(service[key]));
+        this.checkedServices[key] = false;
+        this.selectedSubjects[key] = 'all';
+        this.servicesName.push(key);
       });
     });
+  }
+
+  setSubjects() {
+    this.subjectService.getAllsubject().subscribe(sujets => {
+      this.subjects = sujets;
+    });
+  }
+
+  isAllServicesAreChecked() {
+    const allFalse = Object.values(this.checkedServices).every(value => value === false);
+    allFalse ? this.showAllServices = true : this.showAllServices = false;
+  }
+
+  onCheckboxChange() {
+    this.isAllServicesAreChecked()
   }
 
   toggleSidebar(index: number, titre: string, texte: string): void {
@@ -57,19 +80,19 @@ export class CommunicationComponent implements OnInit {
     return service.key;
   }
 
-  onSelectOption(service: string, option: string) {
+  onSelectSubjects(service: string, sujet: string) {
     if (!this.services[service]) return;
 
     const originalData = JSON.parse(JSON.stringify(this.services[service]));
   
-    if (option === 'all') {
+    if (sujet === 'all') {
       this.servicesFiltered[service] = originalData;
     } else {
-      const filteredTimelines = originalData.timelines.filter((timeline: { sujet: string }) => timeline.sujet === option);
+      const filteredTimelines = originalData.timelines.filter((timeline: { sujet: string }) => timeline.sujet === sujet);
       this.servicesFiltered[service] = { ...originalData, timelines: filteredTimelines };
     }
   
-    this.selectedOptions[service] = option;
+    this.selectedSubjects[service] = sujet;
   }
 
   isSingleText(texte: string): boolean {

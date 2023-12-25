@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AuthService } from '../services/auth.service';
+import { AuthService } from '../../services/auth.service';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { UserRegistration } from '../interfaces/user-registration';
-import { passwordMatchValidator } from '../shared/password-match.directive';
+import { UserRegistration } from '../../interfaces/auth';
+import { passwordMatchValidator } from '../../shared/password-match.directive';
 
 @Component({
   selector: 'app-user-registration',
