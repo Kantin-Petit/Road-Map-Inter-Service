@@ -1,3 +1,8 @@
+export interface UserLogin {
+    email: string;
+    password: string;
+}
+
 export enum UserRole {
     ADMIN = 'admin',
     ADMIN_SERVICE = 'admin_service',

@@ -1,10 +1,9 @@
 // const bcrypt = require('bcrypt');
 const path = require('path');
 const fs = require('fs');
-const Service = require('../models/Service');
-const directoryPath = path.join(__dirname, '../data'); 
+const directoryPath = path.join(__dirname, '../data/services'); 
 
-exports.allService = async (req, res, next) => {
+exports.getAllservices = async (req, res, next) => {
 
   let fileContents = {};
 
@@ -18,10 +17,6 @@ exports.allService = async (req, res, next) => {
         const content = fs.readFileSync(filePath, 'utf-8');
         let jsonData = JSON.parse(content);
 
-        if (jsonData.hasOwnProperty(fileName)) {
-          jsonData = jsonData[fileName];
-        }
-
         fileContents[fileName] = jsonData;
       }
     }
@@ -33,35 +28,39 @@ exports.allService = async (req, res, next) => {
 
 };
 
+exports.getOneservice = (req, res, next) => {
 
-
-exports.service = (req, res, next) => {
-
-    const { fileName } = req.params;
-  
-    if (!fs.existsSync(directoryPath)) {
-      return res.status(404).send('Le dossier spécifié n\'existe pas.');
-    }
-  
-    const filePath = path.join(directoryPath, `${fileName}.json`);
-  
-    if (!fs.existsSync(filePath)) {
-      return res.status(404).send('Le fichier JSON spécifié n\'existe pas.');
-    }
+    const serviceName = req.params.name
+    const { sujet } = req.query;
+    
+    const filePath = path.join(directoryPath, `${serviceName}.json`);
   
     fs.readFile(filePath, 'utf8', (err, data) => {
       if (err) {
-        return res.status(500).send('Erreur lors de la lecture du fichier JSON.');
+        return res.status(500).send(`Erreur lors de la lecture du fichier JSON.' ${filePath}`);
       }
-      res.status(200).json(JSON.parse(data));
+      try {
+
+        const serviceData = JSON.parse(data);
+        let filteredTimelines;
+
+        if(sujet === 'all') {
+          filteredTimelines = serviceData;
+        }else {
+          filteredTimelines = serviceData.timelines.filter(timeline => timeline.sujet === sujet);
+        }
+    
+        res.status(200).json(filteredTimelines);
+      } catch (error) {
+        res.status(500).json({ message: 'Erreur lors du traitement des données JSON' });
+      }
     });
   
 };
 
-exports.servicesFiltered = (req, res, next) => {
+exports.getFilteredServices = (req, res, next) => {
 
-  const serviceName = req.params.serviceName;
-  const subjectName = req.params.subjectName;
+  const { service, sujet } = req.query;
 
   try {
     const files = fs.readdirSync(directoryPath);
@@ -74,14 +73,9 @@ exports.servicesFiltered = (req, res, next) => {
         const content = fs.readFileSync(filePath, 'utf-8');
         let jsonData = JSON.parse(content);
 
-        if (jsonData.hasOwnProperty(fileName)) {
-          jsonData = jsonData[fileName];
-        }
-
-        if (fileName === serviceName) {
-          // Modification du service spécifié
+        if (fileName === service) {
           if (jsonData && jsonData.timelines) {
-            jsonData.timelines = jsonData.timelines.filter(timeline => timeline.sujet === subjectName);
+            jsonData.timelines = jsonData.timelines.filter(timeline => timeline.sujet === sujet);
           }
         }
 
@@ -94,42 +88,3 @@ exports.servicesFiltered = (req, res, next) => {
     res.status(500).json({ error: `Erreur lors de la lecture du répertoire : ${error.message}` });
   }
 };
-
-exports.getAllServiceName = (req, res, next) => {
-
-    fs.readdir(directoryPath, (err, files) => {
-      if (err) {
-        return res.status(500).json({ error: 'Erreur lors de la lecture du répertoire' });
-      }
-  
-      const fileNames = files
-        .filter(file => path.extname(file).toLowerCase() === '.json')
-        .map(file => path.basename(file, '.json')); 
-  
-      res.status(200).json(fileNames);
-    });
-}
-
-// exports.service = (req, res, next) => {
-//     User.findOne({where: {id: req.params.id}, attributes: {exclude: ['password']}})
-//     .then(user => res.send(user))
-//     .catch(error => res.status(500).json({ error }));
-// };
-
-// exports.addService = (req, res, next) => {
-//     User.findOne({where: {id: req.params.id}, attributes: {exclude: ['password']}})
-//     .then(user => res.send(user))
-//     .catch(error => res.status(500).json({ error }));
-// };
-
-// exports.modifyService = (req, res, next) => {
-//     User.findOne({where: {id: req.params.id}, attributes: {exclude: ['password']}})
-//     .then(user => res.send(user))
-//     .catch(error => res.status(500).json({ error }));
-// };
-
-// exports.deleteService = (req, res, next) => {
-//     User.findOne({where: {id: req.params.id}, attributes: {exclude: ['password']}})
-//     .then(user => res.send(user))
-//     .catch(error => res.status(500).json({ error }));
-// };

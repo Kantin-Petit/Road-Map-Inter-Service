@@ -15,8 +15,8 @@ import { HomeComponent } from './home/home.component';
 import { PlanningComponent } from './timeline/planning/planning.component';
 // import { CommunicationComponent } from './timeline/communication/communication.component';
 import { HeaderComponent } from './header/header.component';
-import { UserRegistrationComponent } from './user-registration/user-registration.component';
-import { UserLoginComponent } from './user-login/user-login.component';
+import { UserRegistrationComponent } from './authentication/user-registration/user-registration.component';
+import { UserLoginComponent } from './authentication/user-login/user-login.component';
 
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';

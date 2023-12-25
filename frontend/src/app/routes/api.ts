@@ -2,12 +2,10 @@ export const API = {
     REGISTER: 'auth/signup',
     SIGNIN: 'auth/signin',
     SIGNOUT: 'auth/signout',
-    TOKEN: 'token',
-    USER: 'user',
-    ALL_SERVICE: 'services/allservice',
-    ONE_SERVICE: 'services/service',
-    LIST_SERVICE: 'services/servicesname',
-    TIMELINES_SUBJECT_FILTERED: 'subject/filteredsubject',
-    SERVICE_FILTERED: 'services/servicefiltered',
-
+    TOKEN: 'auth/token',
+    USER: 'user/',
+    SERVICE: 'service/',
+    SERVICE_FILTERED: 'service/filter/',
+    SUBJECT: 'subject/',
+    SUBJECT_FILTERED: 'subject/filter/',
 };

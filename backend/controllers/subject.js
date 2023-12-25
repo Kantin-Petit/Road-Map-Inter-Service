@@ -1,43 +1,36 @@
 // const bcrypt = require('bcrypt');
-const Subject = require('../models/Subject');
 const func = require('../function');
 const path = require('path');
 const fs = require('fs');
-const directoryPath = path.join(__dirname, '../data'); 
+const directoryPath = path.join(__dirname, '../data/subjects'); 
 
-exports.allSubjects = (req, res, next) => {
-    Subject.findAll()
-    .then(users => res.send(users))
-    .catch(() => res.status(500).json({ message: 'Une erreur s\'est produite lors de la récupération des sujets.' }));
+exports.getAllSubjects = (req, res, next) => {
+  
+  let fileContents = {};
+
+  try {
+    const files = fs.readdirSync(directoryPath);
+
+    for (const file of files) {
+      if (file.endsWith('.json')) {
+        const fileName = file.replace('.json', '');
+        const filePath = path.join(directoryPath, file);
+        const content = fs.readFileSync(filePath, 'utf-8');
+        let jsonData = JSON.parse(content);
+
+        fileContents[fileName] = jsonData;
+      }
+    }
+
+    res.status(200).json(fileContents);
+  } catch (error) {
+    res.status(500).json({ error: `Erreur lors de la lecture du répertoire : ${error.message}` });
+  }
 };
 
-exports.filteredSubjects = (req, res, next) => {
+exports.getFilteredSubjects = (req, res, next) => {
 
     const { service, sujet } = req.query;
     const filePath = path.join(directoryPath, `${service}.json`);
 
-    fs.readFile(filePath, 'utf8', (err, data) => {
-
-      if (err) {
-        res.status(500).json({ message: 'Erreur lors de la lecture du fichier JSON' });
-        return;
-      }
-  
-      try {
-
-        const serviceData = JSON.parse(data);
-      
-        if (!serviceData[service]) {
-          res.status(404).json({ message: `Le service "${service}" n'a pas été trouvé` });
-          return;
-        }
-    
-        const timelines = serviceData[service].timelines;
-        const filteredTimelines = timelines.filter(timeline => timeline.sujet === sujet);
-    
-        res.status(200).json(filteredTimelines);
-      } catch (error) {
-        res.status(500).json({ message: 'Erreur lors du traitement des données JSON' });
-      }
-    });
 };
