@@ -37,7 +37,7 @@ exports.getOneservice = (req, res, next) => {
   
     fs.readFile(filePath, 'utf8', (err, data) => {
       if (err) {
-        return res.status(500).send(`Erreur lors de la lecture du fichier JSON.' ${filePath}`);
+        return res.status(500).send('Erreur lors de la lecture du fichier JSON.');
       }
       try {
 
@@ -47,7 +47,8 @@ exports.getOneservice = (req, res, next) => {
         if(sujet === 'all') {
           filteredTimelines = serviceData;
         }else {
-          filteredTimelines = serviceData.timelines.filter(timeline => timeline.sujet === sujet);
+          const sujetsArray = sujet.split(','); 
+          filteredTimelines = serviceData.timelines.filter(timeline => sujetsArray.includes(timeline.sujet));
         }
     
         res.status(200).json(filteredTimelines);
@@ -63,28 +64,36 @@ exports.getFilteredServices = (req, res, next) => {
   const { service, sujet } = req.query;
 
   try {
-    const files = fs.readdirSync(directoryPath);
-    let services = {};
+    const servicesArray = service.split(','); 
+    const filteredServices = {};
 
-    for (const file of files) {
-      if (file.endsWith('.json')) {
-        const fileName = file.replace('.json', '');
-        const filePath = path.join(directoryPath, file);
+    for (const serviceItem of servicesArray) {
+      const filePath = path.join(directoryPath, `${serviceItem}.json`);
+
+      if (fs.existsSync(filePath)) {
         const content = fs.readFileSync(filePath, 'utf-8');
-        let jsonData = JSON.parse(content);
+        const jsonData = JSON.parse(content);
 
-        if (fileName === service) {
-          if (jsonData && jsonData.timelines) {
-            jsonData.timelines = jsonData.timelines.filter(timeline => timeline.sujet === sujet);
+        if (jsonData && jsonData.timelines) {
+          let filteredTimelines = jsonData.timelines;
+
+          if (sujet && sujet !== 'all') {
+            const sujetsArray = sujet.split(','); 
+            filteredTimelines = filteredTimelines.filter(timeline => sujetsArray.includes(timeline.sujet));
           }
-        }
 
-        services[fileName] = jsonData;
+          jsonData.timelines = filteredTimelines;
+          filteredServices[serviceItem] = jsonData;
+        } else {
+          filteredServices[serviceItem] = { error: 'Données non trouvées pour le service spécifié' };
+        }
+      } else {
+        filteredServices[serviceItem] = { error: 'Service non trouvé' };
       }
     }
 
-    res.status(200).json(services);
+    res.status(200).json(filteredServices);
   } catch (error) {
-    res.status(500).json({ error: `Erreur lors de la lecture du répertoire : ${error.message}` });
+    res.status(500).json({ error: `Erreur lors de la lecture du fichier JSON : ${error.message}` });
   }
 };

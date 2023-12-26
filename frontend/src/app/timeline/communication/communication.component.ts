@@ -21,20 +21,24 @@ export class CommunicationComponent implements OnInit {
   servicesFiltered: { [key: string]: Service } = {};
   subjects: { [key: string]: Subject } = {};
 
-  servicesName: string[] = [];
   showAllServices!: boolean;
 
   checkedServices: { [key: string]: boolean } = {};
-  selectedSubjects: { [key: string]: string } = {};
+  checkedSubjects: { [key: string]: { [innerKey: string]: boolean } } = {};
 
   sidebarVisible: boolean = false;
   sidebarData: { title: string, text: string } = { title: '', text: '' };
-  selectedItemIndex!: number | null;
+  selectedItemIndex!: string | null;
   
   ngOnInit() {
     this.setServices();
     this.setSubjects();
-    this.isAllServicesAreChecked();
+    this.isAllChecked();
+  }
+
+  getColorForSubject(subjectName: string): string {
+    const foundSubject = this.subjects[subjectName];
+    return foundSubject ? foundSubject.color : '#000000';
   }
 
   setServices() {
@@ -42,9 +46,6 @@ export class CommunicationComponent implements OnInit {
       this.services = service;
       Object.keys(service).forEach(key => {
         this.servicesFiltered[key] = JSON.parse(JSON.stringify(service[key]));
-        this.checkedServices[key] = false;
-        this.selectedSubjects[key] = 'all';
-        this.servicesName.push(key);
       });
     });
   }
@@ -55,18 +56,15 @@ export class CommunicationComponent implements OnInit {
     });
   }
 
-  isAllServicesAreChecked() {
+  isAllChecked() {
     const allFalse = Object.values(this.checkedServices).every(value => value === false);
     allFalse ? this.showAllServices = true : this.showAllServices = false;
   }
 
-  onCheckboxChange() {
-    this.isAllServicesAreChecked()
-  }
-
-  toggleSidebar(index: number, titre: string, texte: string): void {
-    if (!this.sidebarVisible || this.selectedItemIndex !== index) {
-      this.selectedItemIndex = index;
+  toggleSidebar(index: number, service: string, titre: string, texte: string): void {
+    if (!this.sidebarVisible || this.selectedItemIndex !== service[index]) {
+      this.selectedItemIndex = service[index];
+      console.log(typeof(service[index]))
       this.sidebarData = { title: titre, text: texte };
       this.sidebarVisible = true;
     } else {
@@ -80,19 +78,41 @@ export class CommunicationComponent implements OnInit {
     return service.key;
   }
 
-  onSelectSubjects(service: string, sujet: string) {
-    if (!this.services[service]) return;
+  isChecked(serviceKey: string, sujet: string): boolean {
+    if (!this.checkedSubjects[serviceKey]) return false;
+    return !!this.checkedSubjects[serviceKey][sujet];
+  }
+
+  onSelectSubjects(service: string, isChecked: boolean, sujet: string) {
+
+    if (!this.checkedSubjects[service]) this.checkedSubjects[service] = {};
+    this.checkedSubjects[service][sujet] = isChecked;
 
     const originalData = JSON.parse(JSON.stringify(this.services[service]));
+    const sujetsArray = this.getInnerKeyNames(service);
   
-    if (sujet === 'all') {
+    if (sujetsArray.length === 0) {
       this.servicesFiltered[service] = originalData;
     } else {
-      const filteredTimelines = originalData.timelines.filter((timeline: { sujet: string }) => timeline.sujet === sujet);
+      const filteredTimelines = originalData.timelines.filter((timeline: { sujet: string }) => sujetsArray.includes(timeline.sujet));
       this.servicesFiltered[service] = { ...originalData, timelines: filteredTimelines };
     }
   
-    this.selectedSubjects[service] = sujet;
+  }
+
+  getInnerKeyNames(keyName: string): string[] {
+
+    let innerKeyValues: string[] = [];
+
+    if (this.checkedSubjects[keyName]) {
+
+      const innerKeys = Object.keys(this.checkedSubjects[keyName]);
+      innerKeys.forEach(innerKey => {
+        if(this.checkedSubjects[keyName][innerKey] === true) innerKeyValues.push(innerKey);
+      });
+    }
+  
+    return innerKeyValues;
   }
 
   isSingleText(texte: string): boolean {

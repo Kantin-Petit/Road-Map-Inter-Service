@@ -2,7 +2,7 @@
   "id": 1,
   "photo": "chemin/vers/photo1.jpg",
   "description": "Description du service 1",
-  "sujets": ["cloud", "courier", "security"],
+  "sujets": ["cloud", "courrier", "security"],
   "timelines": [
     {
       "id": 1,
