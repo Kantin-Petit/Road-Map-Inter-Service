@@ -19,9 +19,5 @@ export class SubjectService {
   getAllsubject(): Observable<{ [key: string]: Subject }> {
     return this.http.get<{ [key: string]: Subject }>(`${this.apiUrl}/${API.SUBJECT}`);
   }
-
-  getFilteredSubjects(service: string, sujet: string,): object {
-    return this.http.get<object[]>(`${this.apiUrl}/${API.SUBJECT_FILTERED}?service=${service}&sujet=${sujet}`)
-  }
   
 }

@@ -27,10 +27,3 @@ exports.getAllSubjects = (req, res, next) => {
     res.status(500).json({ error: `Erreur lors de la lecture du répertoire : ${error.message}` });
   }
 };
-
-exports.getFilteredSubjects = (req, res, next) => {
-
-    const { service, sujet } = req.query;
-    const filePath = path.join(directoryPath, `${service}.json`);
-
-};

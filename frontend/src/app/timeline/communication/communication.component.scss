@@ -96,8 +96,8 @@ $timeline-gradient: linear-gradient(270deg, var(--timeline-gradient));
           width: 340px;
         }
 
-        &.card_selected > div {
-          background-color: #e5f33d;
+        .card_selected {
+          filter: brightness(0.5);
         }
 
         &:not(:first-child) {
