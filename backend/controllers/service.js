@@ -30,70 +30,77 @@ exports.getAllservices = async (req, res, next) => {
 
 exports.getOneservice = (req, res, next) => {
 
-    const serviceName = req.params.name
-    const { sujet } = req.query;
-    
-    const filePath = path.join(directoryPath, `${serviceName}.json`);
+  const serviceName = req.params.name;
+  const { sujet } = req.query;
+  const filePath = path.join(directoryPath, `${serviceName}.json`);
   
-    fs.readFile(filePath, 'utf8', (err, data) => {
-      if (err) {
-        return res.status(500).send('Erreur lors de la lecture du fichier JSON.');
-      }
-      try {
+  fs.readFile(filePath, 'utf8', (err, data) => {
+    if (err) {
+      return res.status(500).send('Erreur lors de la lecture du fichier JSON.');
+    }
+    try {
+      const serviceData = JSON.parse(data);
+      let filteredService = { ...serviceData };
 
-        const serviceData = JSON.parse(data);
-        let filteredTimelines;
-
-        if(sujet === 'all') {
-          filteredTimelines = serviceData;
-        }else {
-          const sujetsArray = sujet.split(','); 
-          filteredTimelines = serviceData.timelines.filter(timeline => sujetsArray.includes(timeline.sujet));
-        }
-    
-        res.status(200).json(filteredTimelines);
-      } catch (error) {
-        res.status(500).json({ message: 'Erreur lors du traitement des données JSON' });
+      console.log(sujet)
+  
+      if (sujet !== '') {
+        const sujetsArray = sujet.split(',');
+        filteredService.timelines = serviceData.timelines.filter(timeline => sujetsArray.includes(timeline.sujet));
       }
-    });
+  
+      const serviceObject = {
+        [serviceName]: filteredService 
+      };
+  
+      res.status(200).json(serviceObject); 
+    } catch (error) {
+      res.status(500).json({ message: 'Erreur lors du traitement des données JSON' });
+    }
+  })
   
 };
 
 exports.getFilteredServices = (req, res, next) => {
 
-  const { service, sujet } = req.query;
+  const filteredServices = {};
 
   try {
-    const servicesArray = service.split(','); 
-    const filteredServices = {};
+    const { services, sujets } = req.body;
 
-    for (const serviceItem of servicesArray) {
-      const filePath = path.join(directoryPath, `${serviceItem}.json`);
+    for (const serviceItem of Object.keys(services)) {
 
-      if (fs.existsSync(filePath)) {
-        const content = fs.readFileSync(filePath, 'utf-8');
-        const jsonData = JSON.parse(content);
+      const isServiceActive = services[serviceItem]; 
 
-        if (jsonData && jsonData.timelines) {
-          let filteredTimelines = jsonData.timelines;
+      if (isServiceActive) {
+        const filePath = path.join(directoryPath, `${serviceItem}.json`);
 
-          if (sujet && sujet !== 'all') {
-            const sujetsArray = sujet.split(','); 
-            filteredTimelines = filteredTimelines.filter(timeline => sujetsArray.includes(timeline.sujet));
-          }
+        if (fs.existsSync(filePath)) {
+          const content = fs.readFileSync(filePath, 'utf-8');
+          const jsonData = JSON.parse(content);
 
-          jsonData.timelines = filteredTimelines;
-          filteredServices[serviceItem] = jsonData;
-        } else {
-          filteredServices[serviceItem] = { error: 'Données non trouvées pour le service spécifié' };
-        }
-      } else {
-        filteredServices[serviceItem] = { error: 'Service non trouvé' };
-      }
+          if (jsonData && jsonData.timelines) {
+            let filteredTimelines = jsonData.timelines;
+
+            if (sujets && sujets[serviceItem]) {
+              const serviceSubjects = sujets[serviceItem];
+
+              filteredTimelines = filteredTimelines.filter(timeline => {
+                const subjectKeys = Object.keys(serviceSubjects);
+                return subjectKeys.includes(timeline.sujet) && serviceSubjects[timeline.sujet];
+              });
+            }
+
+            jsonData.timelines = filteredTimelines;
+            filteredServices[serviceItem] = jsonData;
+          } 
+        } 
+      } 
     }
 
     res.status(200).json(filteredServices);
   } catch (error) {
     res.status(500).json({ error: `Erreur lors de la lecture du fichier JSON : ${error.message}` });
   }
+
 };

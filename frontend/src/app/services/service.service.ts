@@ -18,12 +18,12 @@ export class ServiceService {
     return this.http.get<{ [key: string]: Service }>(`${this.apiUrl}/${API.SERVICE}`);
   }
 
-  getService(serviceName: string, sujet: string[]) {
+  getService(serviceName: string, sujet: string[]): Observable<{ [key: string]: Service }> {
     return this.http.get<{ [key: string]: Service }>(`${this.apiUrl}/${API.SERVICE}/${serviceName}?sujet=${sujet}`);
   }
 
-  getServicefiltered(service: string, sujet: string) {
-    return this.http.get<{ [key: string]: Service }>(`${this.apiUrl}/${API.SERVICE_FILTERED}?service=${service}&sujet=${sujet}`);
+  getfilteredService(data: any): Observable<{ [key: string]: Service }> {
+    return this.http.post<any>(`${this.apiUrl}/${API.SERVICE_FILTERED}`, data);
   }
 
 }

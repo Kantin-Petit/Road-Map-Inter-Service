@@ -3,8 +3,6 @@ import { ServiceService } from '../../services/service.service';
 import { SubjectService } from '../../services/subject.service';
 import { Service } from '../../models/service-model';
 import { Subject } from '../../models/subject-model';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-communication',
@@ -18,12 +16,11 @@ export class CommunicationComponent implements OnInit {
     private subjectService: SubjectService) { }
 
   services: { [key: string]: Service } = {};
-  servicesFiltered: { [key: string]: Service } = {};
+  servicesFilter: { [key: string]: Service } = {};
   subjects: { [key: string]: Subject } = {};
 
-  showAllServices!: boolean;
-
   checkedServices: { [key: string]: boolean } = {};
+  checkedServicesInit : { [key: string]: boolean } = {};
   checkedSubjects: { [key: string]: { [innerKey: string]: boolean } } = {};
 
   sidebarVisible: boolean = false;
@@ -33,7 +30,6 @@ export class CommunicationComponent implements OnInit {
   ngOnInit() {
     this.setServices();
     this.setSubjects();
-    this.isAllChecked();
   }
 
   getColorForSubject(subjectName: string): string {
@@ -44,9 +40,8 @@ export class CommunicationComponent implements OnInit {
   setServices() {
     this.serviceService.getAllService().subscribe(service => {
       this.services = service;
-      Object.keys(service).forEach(key => {
-        this.servicesFiltered[key] = JSON.parse(JSON.stringify(service[key]));
-      });
+      this.servicesFilter = {...service};
+      Object.keys(this.servicesFilter).forEach(key => this.checkedServicesInit[key] = true);
     });
   }
 
@@ -57,14 +52,25 @@ export class CommunicationComponent implements OnInit {
   }
 
   isAllChecked() {
+
+    let activeService;
     const allFalse = Object.values(this.checkedServices).every(value => value === false);
-    allFalse ? this.showAllServices = true : this.showAllServices = false;
+    allFalse ? activeService = this.checkedServicesInit : activeService = this.checkedServices;
+
+    const allCheckbox = {
+      services: activeService,
+      sujets: this.checkedSubjects,
+    };
+
+    this.serviceService.getfilteredService(allCheckbox).subscribe(updatedServices => {
+      this.services = {...updatedServices}
+    });
+
   }
 
   toggleSidebar(index: number, service: string, titre: string, texte: string): void {
     if (!this.sidebarVisible || this.selectedItemIndex !== service[index]) {
       this.selectedItemIndex = service[index];
-      console.log(typeof(service[index]))
       this.sidebarData = { title: titre, text: texte };
       this.sidebarVisible = true;
     } else {
@@ -83,36 +89,30 @@ export class CommunicationComponent implements OnInit {
     return !!this.checkedSubjects[serviceKey][sujet];
   }
 
+  getActiveSubjects(key: string): string[] {
+    const trueInnerKeys: string[] = [];
+  
+    if (this.checkedSubjects.hasOwnProperty(key)) {
+      const innerKeys = this.checkedSubjects[key];
+      for (const innerKey in innerKeys) {
+        if (innerKeys.hasOwnProperty(innerKey) && innerKeys[innerKey] === true) { trueInnerKeys.push(innerKey);}
+      }
+    }
+  
+    return trueInnerKeys;
+  }
+
   onSelectSubjects(service: string, isChecked: boolean, sujet: string) {
 
     if (!this.checkedSubjects[service]) this.checkedSubjects[service] = {};
     this.checkedSubjects[service][sujet] = isChecked;
 
-    const originalData = JSON.parse(JSON.stringify(this.services[service]));
-    const sujetsArray = this.getInnerKeyNames(service);
-  
-    if (sujetsArray.length === 0) {
-      this.servicesFiltered[service] = originalData;
-    } else {
-      const filteredTimelines = originalData.timelines.filter((timeline: { sujet: string }) => sujetsArray.includes(timeline.sujet));
-      this.servicesFiltered[service] = { ...originalData, timelines: filteredTimelines };
-    }
-  
-  }
-
-  getInnerKeyNames(keyName: string): string[] {
-
-    let innerKeyValues: string[] = [];
-
-    if (this.checkedSubjects[keyName]) {
-
-      const innerKeys = Object.keys(this.checkedSubjects[keyName]);
-      innerKeys.forEach(innerKey => {
-        if(this.checkedSubjects[keyName][innerKey] === true) innerKeyValues.push(innerKey);
-      });
-    }
-  
-    return innerKeyValues;
+    const sujets = this.getActiveSubjects(service);
+    this.serviceService.getService(service, sujets).subscribe(updatedService => {
+      if (this.services[service]) {
+        this.services[service].timelines = [...updatedService[service].timelines];
+      }
+    });
   }
 
   isSingleText(texte: string): boolean {
