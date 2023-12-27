@@ -91,6 +91,8 @@ exports.getFilteredServices = (req, res, next) => {
               });
             }
 
+            if(!filteredTimelines || !filteredTimelines.length) filteredTimelines = jsonData.timelines;
+
             jsonData.timelines = filteredTimelines;
             filteredServices[serviceItem] = jsonData;
           } 
