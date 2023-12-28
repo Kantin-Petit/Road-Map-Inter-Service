@@ -5,8 +5,6 @@ import { API } from '../routes/api';
 import { Observable, map } from 'rxjs';
 import { Subject } from '../models/subject-model';
 
-
-
 @Injectable({
   providedIn: 'root'
 })
