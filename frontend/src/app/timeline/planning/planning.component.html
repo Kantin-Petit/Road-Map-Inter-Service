@@ -16,4 +16,10 @@
   
 <div #timeline id="timeline"></div>
 
-
+<p-sidebar [(visible)]="sidebarVisible" position="right">
+  <h3>{{sidebarData.title}}</h3>
+  <ng-container *ngIf="sidebarData.text && isSingleText(sidebarData.text)">
+    <p *ngFor="let texte of sidebarData.text">- {{ texte }}</p>
+  </ng-container>
+  <p *ngIf="sidebarData.text && !isSingleText(sidebarData.text)">{{ sidebarData.text }}</p>
+</p-sidebar>

@@ -83,3 +83,12 @@ a {
       padding-right: 25px;
     }
   }
+
+  .custom_item {
+    color: rgb(20, 0, 98) !important;
+
+    &.active {
+      filter: brightness(0.5);
+    }
+    cursor: pointer;
+}
