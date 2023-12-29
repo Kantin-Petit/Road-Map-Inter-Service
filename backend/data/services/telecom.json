@@ -7,7 +7,7 @@
     {
       "id": 1,
       "titre": "Titre telecom 1",
-      "texte": ["Ceci est le contenu  1", "Lorem ipsum dolor sit  2"],
+      "texte": ["Ceci est le contenu  telecom 1"],
       "image": "http://placehold.it/350x150",
       "sujet" :"cloud",
       "dateStart": "2023-03-15",
@@ -16,7 +16,7 @@
     {
       "id": 2,
       "titre": "Titre telecom 2",
-      "texte": "Ceci est le contenu telecom 1. Lorem ipsum dolor sit amet",
+      "texte": ["Ceci est le contenu  telecom 2", "Lorem ipsum dolor sit  2"],
       "image": "http://placehold.it/350x150",
       "sujet" :"chat",
       "dateStart": "2023-07-10",
@@ -25,7 +25,7 @@
     {
       "id": 3,
       "titre": "Titre telecom 3",
-      "texte": "Ceci est le contenu telecom 1. Lorem ipsum dolor sit amet",
+      "texte": ["Ceci est le contenu  telecom 3", "Lorem ipsum dolor sit  2"],
       "image": "http://placehold.it/350x150",
       "sujet" :"cloud",
       "dateStart": "2023-11-05",
@@ -34,7 +34,7 @@
     {
       "id": 4,
       "titre": "Titre telecom 4",
-      "texte": "Ceci est le contenu telecom 1. Lorem ipsum dolor sit amet",
+      "texte": ["Ceci est le contenu  telecom 4", "Lorem ipsum dolor sit  2"],
       "image": "http://placehold.it/350x150",
       "sujet" :"security",
       "dateStart": "2023-08-10",
@@ -43,7 +43,7 @@
     {
       "id": 5,
       "titre": "Titre telecom 5",
-      "texte": "Ceci est le contenu telecom 1. Lorem ipsum dolor sit amet",
+      "texte": ["Ceci est le contenu  telecom 5", "Lorem ipsum dolor sit  2"],
       "image": "http://placehold.it/350x150",
       "sujet" :"chat",
       "dateStart": "2023-09-10",

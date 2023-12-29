@@ -1,18 +1,18 @@
-<div *ngFor="let service of servicesFilter | keyvalue">
+<ng-container *ngFor="let service of servicesFilter | keyvalue">
 
-  <div>
-    <input type="checkbox" [(ngModel)]="checkedServices[selectedForService(service)]" (ngModelChange)="isAllChecked()"/>
-    <label>{{ service.key }}</label>
+  <div class="service_name">
+    <input name="input_{{service.key}}" id="input_{{service.key}}" type="checkbox" [(ngModel)]="checkedServices[selectedForService(service)]" (ngModelChange)="isAllChecked()"/>
+    <label for="input_{{service.key}}">{{ service.key }}</label>
   </div>
 
-  <div *ngIf="service.value.sujets">
+  <div class="subject_name" *ngIf="service.value.sujets">
     <div *ngFor="let sujet of service.value.sujets">
-      <input type="checkbox" [ngModel]="isChecked(service.key, sujet)" (ngModelChange)="onSelectSubjects(service.key, $event, sujet)"> 
-      <label>{{ sujet }}</label>
+      <input name="input_{{service.key}}_{{sujet}}" id="input_{{service.key}}_{{sujet}}" type="checkbox" [ngModel]="isChecked(service.key, sujet)" (ngModelChange)="onSelectSubjects(service.key, $event, sujet)"> 
+      <label for="input_{{service.key}}_{{sujet}}">{{ sujet }}</label>
     </div>
   </div>
 
-</div>
+</ng-container>
 
 <div class="timeline_wrapper">
 
@@ -25,22 +25,16 @@
     </div>
     <ol>
       <li *ngFor="let timeline of service.value.timelines; let i = index">
-        <div  [class.card_selected]="sidebarVisible && selectedItemIndex === service.key[i]" (click)="toggleSidebar(i, service.key, timeline.titre, timeline.texte)" [style.background-color]="getColorForSubject(timeline.sujet)">
-          <time>{{ timeline.titre }}</time>
-          <ng-container *ngIf="timeline.texte && isSingleText(timeline.texte)">
-            <p *ngFor="let texte of timeline.texte">- {{ texte }}</p>
-          </ng-container>
-          <p *ngIf="timeline.texte && !isSingleText(timeline.texte)">{{ timeline.texte }}</p>
+        <div  [class.card_selected]="sidebarVisible && selectedItemIndex === service.key[i]" (click)="toggleSidebar(i, service.key, timeline)" [style.background-color]="getColorForSubject(timeline.sujet)">
+          <app-sidebar *ngIf="timeline" [sidebarData]="timeline"></app-sidebar>
         </div>
       </li>
     </ol>
-    <p-sidebar [(visible)]="sidebarVisible" position="right">
-      <h3>{{sidebarData.title}}</h3>
-      <ng-container *ngIf="sidebarData.text && isSingleText(sidebarData.text)">
-        <p *ngFor="let texte of sidebarData.text">- {{ texte }}</p>
-      </ng-container>
-      <p *ngIf="sidebarData.text && !isSingleText(sidebarData.text)">{{ sidebarData.text }}</p>
-    </p-sidebar>
   </section>
   </ng-container>
+
+  <p-sidebar [(visible)]="sidebarVisible" position="right">
+    <app-sidebar *ngIf="sidebarData" [sidebarData]="sidebarData"></app-sidebar>
+  </p-sidebar>
+
 </div>

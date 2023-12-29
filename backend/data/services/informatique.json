@@ -16,7 +16,7 @@
     {
       "id": 2,
       "titre": "Titre informatique 2",
-      "texte": "Ceci est le contenu informatique 1. Lorem ipsum dolor sit amet",
+      "texte": ["Ceci est le contenu  2"],
       "image": "http://placehold.it/350x150",
       "sujet" :"cloud",
       "dateStart": "2023-07-10",
@@ -25,7 +25,7 @@
     {
       "id": 3,
       "titre": "Titre informatique 3",
-      "texte": "Ceci est le contenu informatique 1. Lorem ipsum dolor sit amet",
+      "texte": ["Ceci est le contenu  3", "Lorem ipsum dolor sit  2"],
       "image": "http://placehold.it/350x150",
       "sujet" :"cloud",
       "dateStart": "2023-11-05",
@@ -34,7 +34,7 @@
     {
       "id": 4,
       "titre": "Titre informatique 4",
-      "texte": "Ceci est le contenu informatique 1. Lorem ipsum dolor sit amet",
+      "texte": ["Ceci est le contenu  4", "Lorem ipsum dolor sit  2"],
       "image": "http://placehold.it/350x150",
       "sujet" :"lettre",
       "dateStart": "2023-08-10",
@@ -43,7 +43,7 @@
     {
       "id": 5,
       "titre": "Titre informatique 5",
-      "texte": "Ceci est le contenu informatique 1. Lorem ipsum dolor sit amet",
+      "texte": ["Ceci est le contenu  5", "Lorem ipsum dolor sit  2"],
       "image": "http://placehold.it/350x150",
       "sujet" :"cloud",
       "dateStart": "2023-09-10",
