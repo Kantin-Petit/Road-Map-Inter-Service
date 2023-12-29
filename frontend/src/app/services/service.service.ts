@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
-import { Service } from '../models/service-model';
+import { ServiceModel } from '../models/service-model';
 import { API } from '../routes/api';
 import { Observable, map } from 'rxjs';
 
@@ -14,15 +14,15 @@ export class ServiceService {
 
   private apiUrl = environment.apiUrl;
 
-  getAllService(): Observable<{ [key: string]: Service }> {
-    return this.http.get<{ [key: string]: Service }>(`${this.apiUrl}/${API.SERVICE}`);
+  getAllService(): Observable<{ [key: string]: ServiceModel }> {
+    return this.http.get<{ [key: string]: ServiceModel }>(`${this.apiUrl}/${API.SERVICE}`);
   }
 
-  getService(serviceName: string, sujet: string[]): Observable<{ [key: string]: Service }> {
-    return this.http.get<{ [key: string]: Service }>(`${this.apiUrl}/${API.SERVICE}/${serviceName}?sujet=${sujet}`);
+  getService(serviceName: string, sujet: string[]): Observable<{ [key: string]: ServiceModel }> {
+    return this.http.get<{ [key: string]: ServiceModel }>(`${this.apiUrl}/${API.SERVICE}/${serviceName}?sujet=${sujet}`);
   }
 
-  getfilteredService(data: any): Observable<{ [key: string]: Service }> {
+  getfilteredService(data: any): Observable<{ [key: string]: ServiceModel }> {
     return this.http.post<any>(`${this.apiUrl}/${API.SERVICE_FILTERED}`, data);
   }
 

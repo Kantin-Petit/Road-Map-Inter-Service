@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ServiceService } from '../../services/service.service';
 import { SubjectService } from '../../services/subject.service';
-import { Service } from '../../models/service-model';
+import { ServiceModel, TimelineModel } from '../../models/service-model';
 import { Subject } from '../../models/subject-model';
 
 @Component({
@@ -15,8 +15,8 @@ export class CommunicationComponent implements OnInit {
     private serviceService: ServiceService,
     private subjectService: SubjectService) { }
 
-  services: { [key: string]: Service } = {};
-  servicesFilter: { [key: string]: Service } = {};
+  services: { [key: string]: ServiceModel } = {};
+  servicesFilter: { [key: string]: ServiceModel } = {};
   subjects: { [key: string]: Subject } = {};
 
   checkedServices: { [key: string]: boolean } = {};
@@ -24,7 +24,7 @@ export class CommunicationComponent implements OnInit {
   checkedSubjects: { [key: string]: { [innerKey: string]: boolean } } = {};
 
   sidebarVisible: boolean = false;
-  sidebarData: { title: string, text: string } = { title: '', text: '' };
+  sidebarData!: TimelineModel;
   selectedItemIndex!: string | null;
   
   ngOnInit() {
@@ -68,15 +68,15 @@ export class CommunicationComponent implements OnInit {
 
   }
 
-  toggleSidebar(index: number, service: string, titre: string, texte: string): void {
+  toggleSidebar(index: number, service: string, timelineData: TimelineModel): void {
     if (!this.sidebarVisible || this.selectedItemIndex !== service[index]) {
       this.selectedItemIndex = service[index];
-      this.sidebarData = { title: titre, text: texte };
+      this.sidebarData = timelineData;
       this.sidebarVisible = true;
     } else {
       this.selectedItemIndex = null;
-      this.sidebarData = { title: '', text: '' };
       this.sidebarVisible = false;
+      this.sidebarData = new TimelineModel();
     }
   }
 
@@ -113,10 +113,6 @@ export class CommunicationComponent implements OnInit {
         this.services[service].timelines = [...updatedService[service].timelines];
       }
     });
-  }
-
-  isSingleText(texte: string): boolean {
-    return Array.isArray(texte);
   }
 
 }

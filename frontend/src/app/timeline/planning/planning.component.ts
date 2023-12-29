@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, HostListener  } from '@angular/core';
-import { Service } from 'src/app/models/service-model';
+import { ServiceModel, TimelineModel } from 'src/app/models/service-model';
 import { Subject } from '../../models/subject-model';
 import { ServiceService } from 'src/app/services/service.service';
 import { SubjectService } from '../../services/subject.service';
@@ -18,8 +18,8 @@ export class PlanningComponent implements OnInit, AfterViewInit {
   data: any;
   groups: any;
 
-  services: { [key: string]: Service } = {};
-  servicesFilter: { [key: string]: Service } = {};
+  services: { [key: string]: ServiceModel } = {};
+  servicesFilter: { [key: string]: ServiceModel } = {};
   subjects: { [key: string]: Subject } = {};
 
   checkedServices: { [key: string]: boolean } = {};
@@ -27,7 +27,7 @@ export class PlanningComponent implements OnInit, AfterViewInit {
   checkedSubjects: { [key: string]: { [innerKey: string]: boolean } } = {};
 
   sidebarVisible: boolean = false;
-  sidebarData: { title: string, text: string } = { title: '', text: '' };
+  sidebarData!: TimelineModel;
   selectTimeline!: string;
 
   @ViewChild('timeline', {static: false}) timelineContainer!: ElementRef;
@@ -57,23 +57,37 @@ export class PlanningComponent implements OnInit, AfterViewInit {
 
   addDataIntoDom() {
     const servicesKeys = Object.keys(this.services);
-    let compteur = 1;
-    for (let serviceIndex = 0; serviceIndex < servicesKeys.length; serviceIndex++) {
-      this.groups.add({id: serviceIndex, content: servicesKeys[serviceIndex],  className: "custom_group",});
-      for (let timelineIndex = 0; timelineIndex < this.services[servicesKeys[serviceIndex]].timelines.length; timelineIndex++) {
-        const Timeline = this.services[servicesKeys[serviceIndex]].timelines[timelineIndex];
+  
+    servicesKeys.forEach((serviceKey, serviceIndex) => {
+      const timelines = this.services[serviceKey].timelines;
+  
+      this.groups.add({
+        id: serviceIndex,
+        content: serviceKey,
+        className: "custom_group",
+      });
+  
+      timelines.forEach((timeline, timelineIndex) => {
+        const {
+          dateStart,
+          dateEnd,
+          sujet
+        } = timeline;
+  
+        const timelineId = `service${serviceIndex}_timeline${timelineIndex}`;
+        const itemClassName = `custom_item ${sujet} ${timelineId}`;
+  
         this.data.add({
-          id: `service${serviceIndex}_timeline${timelineIndex}`, 
-          content: Timeline,
-          start: Timeline.dateStart,
-          end: Timeline.dateEnd,
-          className: `custom_item ${Timeline.sujet} service${serviceIndex}_timeline${timelineIndex}`,
-          group: serviceIndex
+          id: timelineId,
+          content: timeline,
+          start: dateStart,
+          end: dateEnd,
+          className: itemClassName,
+          group: serviceIndex,
         });
-        compteur++;
-      }
-    } 
-  }
+      });
+    });
+  }  
 
   setSubjects() {
     this.subjectService.getAllsubject().subscribe(sujets => {
@@ -170,16 +184,15 @@ export class PlanningComponent implements OnInit, AfterViewInit {
 
   toggleSidebar(elt: any): void {
 
-    this.sidebarData = { title: '', text: '' };
+    this.sidebarData = new TimelineModel();
     this.selectTimeline = '';
-    const data = elt.data.content;
 
     if (!this.sidebarVisible) {
-      this.sidebarData = { title: data.titre, text: data.texte };
+      this.sidebarData = elt.data.content;
       this.sidebarVisible = true;
       this.selectTimeline = elt.id
       this.toogleActive()
-    } 
+    }
   }
 
   @HostListener('document:click', ['$event'])
@@ -195,10 +208,6 @@ export class PlanningComponent implements OnInit, AfterViewInit {
   getColorForSubject(subjectName: string): string {
     const foundSubject = this.subjects[subjectName];
     return foundSubject ? foundSubject.color : '#000000';
-  }
-
-  isSingleText(texte: string): boolean {
-    return Array.isArray(texte);
   }
 
   getOptions() {

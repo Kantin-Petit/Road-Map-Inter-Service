@@ -42,16 +42,12 @@ exports.getOneservice = (req, res, next) => {
       const serviceData = JSON.parse(data);
       let filteredService = { ...serviceData };
 
-      console.log(sujet)
-  
       if (sujet !== '') {
         const sujetsArray = sujet.split(',');
         filteredService.timelines = serviceData.timelines.filter(timeline => sujetsArray.includes(timeline.sujet));
       }
   
-      const serviceObject = {
-        [serviceName]: filteredService 
-      };
+      const serviceObject = { [serviceName]: filteredService };
   
       res.status(200).json(serviceObject); 
     } catch (error) {

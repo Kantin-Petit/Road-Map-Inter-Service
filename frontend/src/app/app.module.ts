@@ -33,6 +33,7 @@ import { SidebarModule } from 'primeng/sidebar';
 import { CommunicationComponent } from './timeline/communication/communication.component';
 import { FileUploadModule } from 'primeng/fileupload';
 import { MatListModule } from '@angular/material/list';
+import { SidebarComponent } from './sidebar/sidebar.component';
 // import { JsonEditorComponent } from './json-editor/json-editor.component';
 
 
@@ -48,6 +49,7 @@ registerLocaleData(localeFr);
     UserRegistrationComponent,
     UserLoginComponent,
     CommunicationComponent,
+    SidebarComponent,
     // JsonEditorComponent,
   ],
   imports: [
