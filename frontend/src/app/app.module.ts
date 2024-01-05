@@ -11,9 +11,8 @@ import { FormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ErrorComponent } from './_utils/error/error.component';
-import { HomeComponent } from './home/home.component';
+import { HomeComponent } from './pages/home/home.component';
 import { PlanningComponent } from './timeline/planning/planning.component';
-// import { CommunicationComponent } from './timeline/communication/communication.component';
 import { HeaderComponent } from './header/header.component';
 import { UserRegistrationComponent } from './authentication/user-registration/user-registration.component';
 import { UserLoginComponent } from './authentication/user-login/user-login.component';
@@ -26,7 +25,6 @@ import { ButtonModule } from 'primeng/button';
 import { ToolbarModule } from 'primeng/toolbar';
 import { MessageModule } from 'primeng/message';
 import { InputTextModule } from 'primeng/inputtext';
-import { TimelineModule } from 'primeng/timeline';
 import { CardModule } from 'primeng/card';
 import { SplitterModule } from 'primeng/splitter';
 import { SidebarModule } from 'primeng/sidebar';
@@ -34,7 +32,8 @@ import { CommunicationComponent } from './timeline/communication/communication.c
 import { FileUploadModule } from 'primeng/fileupload';
 import { MatListModule } from '@angular/material/list';
 import { SidebarComponent } from './sidebar/sidebar.component';
-// import { JsonEditorComponent } from './json-editor/json-editor.component';
+import { JsonEditorComponent } from './json-editor/json-editor.component';
+import { ConnexionComponent } from './pages/connexion/connexion.component';
 
 
 registerLocaleData(localeFr);
@@ -50,7 +49,8 @@ registerLocaleData(localeFr);
     UserLoginComponent,
     CommunicationComponent,
     SidebarComponent,
-    // JsonEditorComponent,
+    JsonEditorComponent,
+    ConnexionComponent,
   ],
   imports: [
     BrowserModule,
@@ -59,7 +59,6 @@ registerLocaleData(localeFr);
     HttpClientModule,
     SplitterModule,
     ReactiveFormsModule,
-    TimelineModule,
     CardModule,
     TableModule,
     ToastModule,

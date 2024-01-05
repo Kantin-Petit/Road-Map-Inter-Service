@@ -28,6 +28,27 @@ exports.getAllservices = async (req, res, next) => {
 
 };
 
+exports.getAllservicesName = async (req, res, next) => {
+
+  try {
+
+    const folderPath = path.resolve(directoryPath);
+    const files = fs.readdirSync(folderPath);
+
+    console.log(files)
+
+    const jsonFileNames = files
+      .filter(file => file.endsWith('.json'))
+      .map(file => path.parse(file).name);
+
+    return res.status(200).json(jsonFileNames);
+  } catch (err) {
+    console.error('Erreur lors de la lecture du dossier :', err);
+    return res.status(500).json({ error: `Erreur lors de la lecture du répertoire : ${err.message}` });
+  }
+
+};
+
 exports.getOneservice = (req, res, next) => {
 
   const serviceName = req.params.name;

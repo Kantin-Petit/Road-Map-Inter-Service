@@ -1,17 +1,13 @@
-<form [formGroup]="jsonForm" (ngSubmit)="onSubmit()">
-    <label for="photo">Chemin de la photo :</label>
-    <input type="text" formControlName="photo"><br><br>
-  
-    <label for="description">Description du service :</label>
-    <input type="text" formControlName="description"><br><br>
-  
-    <!-- Ajoutez d'autres champs pour chaque élément de "data" -->
-    <label for="dataTitle">Titre du service 1 :</label>
-    <input type="text" formControlName="dataTitle"><br><br>
-  
-    <label for="dataText">Texte du service 1 :</label>
-    <input type="text" formControlName="dataText"><br><br>
-  
-    <button type="submit">Modifier</button>
-  </form>
-  
+<div>
+  <label for="selectOption">Choisir un service :</label>
+  <select name="selectOption" id="selectOption" [(ngModel)]="selectedOption">
+    <option *ngFor="let option of options" [ngValue]="option">{{ option }}</option>
+  </select>
+</div>
+
+<div>
+  <label for="selectOption">Choisir une timeline :</label>
+  <select name="selectOption" id="selectOption" [(ngModel)]="selectedOption">
+    <option *ngFor="let option of options" [ngValue]="option">{{ option }}</option>
+  </select>
+</div>

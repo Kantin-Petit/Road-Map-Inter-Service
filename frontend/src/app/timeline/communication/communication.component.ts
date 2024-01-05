@@ -26,10 +26,14 @@ export class CommunicationComponent implements OnInit {
   sidebarVisible: boolean = false;
   sidebarData!: TimelineModel;
   selectedItemIndex!: string | null;
+
+  isCollapsed: boolean = false;
   
   ngOnInit() {
+    const elH = document.querySelectorAll(".timeline li > div");
     this.setServices();
     this.setSubjects();
+    this.setEqualHeights(elH);
   }
 
   getColorForSubject(subjectName: string): string {
@@ -41,7 +45,10 @@ export class CommunicationComponent implements OnInit {
     this.serviceService.getAllService().subscribe(service => {
       this.services = service;
       this.servicesFilter = {...service};
-      Object.keys(this.servicesFilter).forEach(key => this.checkedServicesInit[key] = true);
+      Object.keys(this.servicesFilter).forEach(key => {
+        this.checkedServicesInit[key] = true
+        this.checkedSubjects[key] = {};
+      });
     });
   }
 
@@ -84,11 +91,6 @@ export class CommunicationComponent implements OnInit {
     return service.key;
   }
 
-  isChecked(serviceKey: string, sujet: string): boolean {
-    if (!this.checkedSubjects[serviceKey]) return false;
-    return !!this.checkedSubjects[serviceKey][sujet];
-  }
-
   getActiveSubjects(key: string): string[] {
     const trueInnerKeys: string[] = [];
   
@@ -109,10 +111,35 @@ export class CommunicationComponent implements OnInit {
 
     const sujets = this.getActiveSubjects(service);
     this.serviceService.getService(service, sujets).subscribe(updatedService => {
-      if (this.services[service]) {
-        this.services[service].timelines = [...updatedService[service].timelines];
-      }
+      if (this.services[service]) this.services[service].timelines = [...updatedService[service].timelines];
     });
+  }
+
+  setEqualHeights(el :any) {
+    let counter = 0;
+    for (let i = 0; i < el.length; i++) {
+      const singleHeight = el[i].offsetHeight;
+  
+      if (counter < singleHeight) {
+        counter = singleHeight;
+      }
+    }
+  
+    for (let i = 0; i < el.length; i++) {
+      el[i].style.height = `${counter}px`;
+    }
+  }
+
+
+  toggleSidebarMenu() {
+    this.isCollapsed = !this.isCollapsed;
+  }
+
+
+  isOpen: { [key: string]: boolean } = {};
+
+  toggleSubMenu(serviceKey: string) {
+    this.isOpen[serviceKey] = !this.isOpen[serviceKey];
   }
 
 }

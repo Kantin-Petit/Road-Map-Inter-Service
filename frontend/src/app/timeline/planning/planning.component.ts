@@ -51,7 +51,10 @@ export class PlanningComponent implements OnInit, AfterViewInit {
       this.services = service;
       this.servicesFilter = {...service};
       this.addDataIntoDom()
-      Object.keys(this.servicesFilter).forEach(key => this.checkedServicesInit[key] = true);
+      Object.keys(this.servicesFilter).forEach(key => {
+        this.checkedServicesInit[key] = true
+        this.checkedSubjects[key] = {};
+      });
     });
   }
 
@@ -137,11 +140,6 @@ export class PlanningComponent implements OnInit, AfterViewInit {
 
   selectedForService(service :any): string {
     return service.key;
-  }
-
-  isChecked(serviceKey: string, sujet: string): boolean {
-    if (!this.checkedSubjects[serviceKey]) return false;
-    return !!this.checkedSubjects[serviceKey][sujet];
   }
 
   getActiveSubjects(key: string): string[] {
