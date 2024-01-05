@@ -6,5 +6,6 @@ export const API = {
     USER: 'user',
     SERVICE: 'service',
     SERVICE_FILTERED: 'service/filter',
+    SERVICE_LIST: 'service/list',
     SUBJECT: 'subject',
 };
