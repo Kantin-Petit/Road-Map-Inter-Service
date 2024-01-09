@@ -54,7 +54,6 @@
                     <td>{{ utilisateur.email }}</td>
                     <td>{{ utilisateur.role }}</td>
                     <td>{{ utilisateur.Service ? utilisateur.Service.name : '' }}</td>
-                <td>
                     <td>
                         <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editUser(utilisateur)"></button>
                         <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="deleteUser(utilisateur)"></button>
@@ -66,18 +65,63 @@
             </ng-template>
         </p-table>
     </div>
-    <p-dialog [(visible)]="utilisateurDialog" [style]="{ width: '450px' }" header="Info Utilisateur" [modal]="true" styleClass="p-fluid">
+    <p-dialog [(visible)]="utilisateurDialog" (onHide)="onDialogHide()" [style]="{ width: '450px' }" header="Utilisateur" [modal]="true" styleClass="p-fluid">
         <ng-template pTemplate="content">
-            <div class="field flex flex-column">
-                <label for="last_name">Nom</label>
-                <input  class="h-2rem" type="text" pInputText id="last_name" [(ngModel)]="utilisateur.last_name" required autofocus />
-                <small class="p-error" *ngIf="submitted && !utilisateur.last_name">Le Nom est requis.</small>
-            </div>
-            <div class="field flex flex-column">
-                <label for="first_name">Prénom</label>
-                <input class="h-2rem" type="text" pInputText id="first_name" [(ngModel)]="utilisateur.first_name" required autofocus />
-                <small class="p-error" *ngIf="submitted && !utilisateur.first_name">Le Prénom est requis.</small>
-            </div>
+            <p-accordion [activeIndex]="0">
+                <p-accordionTab header="Information">
+                    <div class="field flex flex-column">
+                        <label for="last_name">Nom</label>
+                        <input  class="h-2rem" type="text" pInputText id="last_name" [(ngModel)]="utilisateur.last_name" required autofocus />
+                        <small class="p-error" *ngIf="submitted && !utilisateur.last_name">Le Nom est requis.</small>
+                    </div>
+                    <div class="field flex flex-column">
+                        <label for="first_name">Prénom</label>
+                        <input class="h-2rem" type="text" pInputText id="first_name" [(ngModel)]="utilisateur.first_name" required autofocus />
+                        <small class="p-error" *ngIf="submitted && !utilisateur.first_name">Le Prénom est requis.</small>
+                    </div>
+                    <div class="field flex flex-column">
+                        <label for="first_name">E-mail</label>
+                        <input class="h-2rem" type="email" pInputText id="email" [(ngModel)]="utilisateur.email" required autofocus />
+                        <small class="p-error" *ngIf="submitted && !utilisateur.email">L'E-mail est requis.</small>
+                    </div>
+                </p-accordionTab>
+                <p-accordionTab header="Mot de Passe">
+                    <div class="field flex flex-column">
+                        <label for="password">Nouveau Mot de Passe</label>
+                        <input class="h-2rem" type="password" pInputText id="password" [(ngModel)]="utilisateur.password" required autofocus />
+                        <small class="p-error" *ngIf="submitted && !utilisateur.password">Le nouveau mot de passe.</small>
+                    </div>
+                    <div class="field flex flex-column">
+                        <label for="first_name">Confirmer le nouveau Mot de Passe</label>
+                        <input class="h-2rem" type="password" pInputText id="confirmpassword" autofocus />
+                        <small class="p-error" *ngIf="submitted && !utilisateur.password">Confirmer le nouveau mot de passe.</small>
+                    </div>
+                </p-accordionTab>
+                <p-accordionTab header="Option admin">
+                    <div class="field flex flex-column">
+                        <label for="first_name">Role</label>
+                        <input class="h-2rem" type="text" pInputText id="role" [(ngModel)]="utilisateur.role" required autofocus />
+                        <small class="p-error" *ngIf="submitted && !utilisateur.role">Le role est requis.</small>
+                    </div>
+                    <div class="field flex flex-column">
+                        <label for="first_name">Service</label>
+                        <input class="h-2rem" type="text" pInputText id="service" [(ngModel)]="utilisateur.serviceId" required autofocus />
+                        <small class="p-error" *ngIf="submitted && !utilisateur.serviceId">Le service est requis.</small>
+                    </div>
+                </p-accordionTab>
+                <!-- <p-accordionTab *ngIf="createUser" header="Option admin 2">
+                    <div class="field flex flex-column">
+                        <label for="first_name">Role</label>
+                        <input class="h-2rem" type="text" pInputText id="role" [(ngModel)]="utilisateur.role" required autofocus />
+                        <small class="p-error" *ngIf="submitted && !utilisateur.role">Le role est requis.</small>
+                    </div>
+                    <div class="field flex flex-column">
+                        <label for="first_name">Service</label>
+                        <input class="h-2rem" type="text" pInputText id="service" [(ngModel)]="utilisateur.serviceId" required autofocus />
+                        <small class="p-error" *ngIf="submitted && !utilisateur.serviceId">Le service est requis.</small>
+                    </div>
+                </p-accordionTab> -->
+            </p-accordion>
         
         </ng-template>
     
