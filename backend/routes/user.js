@@ -8,8 +8,9 @@ const auth = require('../middleware/auth')
 router.get('/:id', userCtrl.getOneUser);
 // router.get('/',auth, userCtrl.getAllUsers);
 router.get('/', userCtrl.getAllUsers);
-router.put('/active/:id',auth, userCtrl.makeAdmin); 
-router.put('/:id',auth, userCtrl.modifyUser);
+router.put('/active/:id', auth, userCtrl.makeAdmin); 
+// router.put('/:id',auth, userCtrl.modifyUser);
+router.put('/:id', userCtrl.modifyUser);
 // router.delete('/:id',auth, userCtrl.deleteUser);
 router.delete('/:id', userCtrl.deleteUser);
 
