@@ -1,3 +1,28 @@
-<div #timeline id="timeline"></div>
 
+<div class="planning">
 
+  <div *ngFor="let service of servicesFilter | keyvalue">
+
+    <div>
+      <input type="checkbox" [(ngModel)]="checkedServices[selectedForService(service)]" (ngModelChange)="isAllChecked()"/>
+      <label>{{ service.key }}</label>
+    </div>
+  
+    <div *ngIf="service.value.sujets">
+      <div *ngFor="let sujet of service.value.sujets">
+        <input type="checkbox" [(ngModel)]="checkedSubjects[selectedForService(service)][sujet]" (ngModelChange)="onSelectSubjects(service.key, $event, sujet)"> 
+        <label>{{ sujet }}</label>
+      </div>
+    </div>
+  
+</div>
+
+<div class="container">
+  <div #timeline id="timeline"></div>
+</div>
+  
+</div>
+
+<p-sidebar [(visible)]="sidebarVisible" position="right">
+  <app-sidebar *ngIf="sidebarData" [sidebarData]="sidebarData"></app-sidebar>
+</p-sidebar>

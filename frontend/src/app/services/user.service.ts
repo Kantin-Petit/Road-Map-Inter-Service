@@ -30,6 +30,9 @@ export class UserService {
     return this.http.delete<User[]>(`${this.apiUrl}/${API.USER}/${userId}`);
   }
 
+  modifyUser(userId: number, user: User): Observable<User[]> {
+    return this.http.put<User[]>(`${this.apiUrl}/${API.USER}/${userId}`, user);
+  }
 
   ////////////////////////////////////////////
 

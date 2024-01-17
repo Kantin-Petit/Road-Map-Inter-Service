@@ -13,7 +13,7 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { FormsModule } from '@angular/forms';
 import { TagModule } from 'primeng/tag';
 import { DropdownModule } from 'primeng/dropdown';
-
+import { AccordionModule } from 'primeng/accordion';
 
 @NgModule({
   declarations: [
@@ -27,6 +27,7 @@ import { DropdownModule } from 'primeng/dropdown';
     ToastModule,
     ToolbarModule,
     RatingModule,
+    AccordionModule,
     DialogModule,
     ConfirmDialogModule,
     FormsModule,
