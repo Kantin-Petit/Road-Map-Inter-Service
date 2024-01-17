@@ -1,43 +1,29 @@
-body {
-  margin: 0;
-}
+@import '../../styles.scss';
 
 header {
   width: 100%;
   display: flex;
   justify-content: space-between;
+  background-color: color(primary-color);
+  padding: 30px 0;
+  position:sticky;
+  z-index: 999;
 
-  a {
-    text-decoration: none;
-    color: #000;
-    padding: 25px 30px;
-
-    &.active,
-    &:hover {
-      background-color: #003da515;
-      border-radius: 4px;
-      transition: all 0.3s ease-in-out;
-    }
-  }
-
-  nav {
-    
+  ul {
     display: flex;
-    max-width: 30%;
-    margin: auto 0;
+    justify-content: space-between;
 
-    ul {
-      display: flex;
-      list-style: none;
+    a {
+      color: white;
+      transition: all 0.3s ease-in-out;
+      padding: 8px 12px;
+      border-radius: 5px;
+  
+      &:hover {
+        background-color: color(secondary-color);
+      }
+  
     }
-
-    p {
-      margin: auto;
-      min-width: 15mm;
-      font-size: 20px;
-      color: #003da5;
-    }
-
   }
 
 }

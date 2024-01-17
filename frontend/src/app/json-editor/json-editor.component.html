@@ -1,0 +1,13 @@
+<div>
+  <label for="selectOption">Choisir un service :</label>
+  <select name="selectOption" id="selectOption" [(ngModel)]="selectedOption">
+    <option *ngFor="let option of options" [ngValue]="option">{{ option }}</option>
+  </select>
+</div>
+
+<div>
+  <label for="selectOption">Choisir une timeline :</label>
+  <select name="selectOption" id="selectOption" [(ngModel)]="selectedOption">
+    <option *ngFor="let option of options" [ngValue]="option">{{ option }}</option>
+  </select>
+</div>

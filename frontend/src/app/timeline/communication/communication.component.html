@@ -1,51 +1,57 @@
-<mat-list>
-    <mat-list-item *ngFor="let service of services | async | keyvalue">
-        <div class="timeline-container">
-            <div class="timeline-header container">
-                <div class="container">
-                    <h2>{{ service.key | uppercase }}</h2>
-                    <p>{{ service.value.description }}</p>
-                </div>
-            </div>
-            <p-timeline class="custom-timeline" [value]="service.value.data" layout="horizontal" align="top">
-                <ng-template pTemplate="marker" let-data>
-                    <div class="custom-marker"></div>
-                </ng-template>
-                <ng-template pTemplate="content" let-data>
-                    <p-sidebar [(visible)]="sidebarVisible" styleClass="w-100rem" position="right">
-                        <ng-template pTemplate="header">
-                            <h1>{{ data.titre }}</h1>
-                        </ng-template>
-                        <ng-template pTemplate="content">
-                            <div class="custom-card-content">
-                                <img src="{{ data.image }}" alt="Image" class="custom-card-image" />
-                                <p>{{ data.texte }}</p>
-                            </div>
-                        </ng-template>
-                        <ng-template pTemplate="footer">
-                            <p>Debut: {{ data.dateStart }}</p>
-                            <p>Fin: {{ data.dateEnd }}</p>
-                        </ng-template>
-                    </p-sidebar>
-        
-                    <p-button type="button" [link]="true" (click)="sidebarVisible = true" (click)="openSidebar(data.titre, data.texte)">
-                        <p-card class="custom-card container">
-                            <ng-template pTemplate="header">
-                                <div class="custom-card-header">
-                                    {{ data.titre }}
-                                </div>
-                            </ng-template>
-                            <ng-template pTemplate="content">
-                                <p class="custom-card-content">
-                                    {{ data.texte }}
-                                </p>
-                            </ng-template>
-                        </p-card>
-                    </p-button>
-                </ng-template>
-            </p-timeline>
-        </div>
-    </mat-list-item>
-</mat-list>
+<div class="communication">
 
-<app-horizontal></app-horizontal>
+  <div class="side_menu" [ngClass]="{ 'collapsed': isCollapsed }">
+
+    <ul class="menu">
+      <li class="menu-item" *ngFor="let service of servicesFilter | keyvalue">
+        <div class="input_wrapper">
+          <input name="input_{{service.key}}" id="input_{{service.key}}" type="checkbox" [(ngModel)]="checkedServices[selectedForService(service)]" (ngModelChange)="isAllChecked()"/>
+          <label (click)="toggleSubMenu(service.key)">{{ service.key }}</label>
+        </div>
+        <ul class="sub-menu" [class.active]="isOpen[selectedForService(service)]" *ngIf="service.value.sujets">
+          <li class="sub-menu_item" *ngFor="let sujet of service.value.sujets">
+            <div class="input_wrapper">
+              <input name="input_{{service.key}}_{{sujet}}" id="input_{{service.key}}_{{sujet}}" type="checkbox" [(ngModel)]="checkedSubjects[selectedForService(service)][sujet]" (ngModelChange)="onSelectSubjects(service.key, $event, sujet)"> 
+              <label for="input_{{service.key}}_{{sujet}}">{{ sujet }}</label>
+            </div>
+          </li>
+        </ul>
+      </li>
+    </ul>
+    
+
+    <div class="toggle-sidebar" (click)="toggleSidebarMenu()">
+        <i *ngIf="!isCollapsed" class="fas fa-chevron-left arrow-icon"></i>
+        <i *ngIf="isCollapsed" class="fas fa-chevron-right arrow-icon"></i>
+    </div>
+  
+  </div>
+
+
+  <div class="timeline_wrapper container" [ngClass]="{ 'collapsed': isCollapsed }">
+  
+    <ng-container *ngFor="let service of services | keyvalue">
+    <section class="timeline">
+      <div class="info">
+        <img width="50" height="50" src="https://assets.codepen.io/210284/face.svg" alt=""/>
+        <h2>{{service.key | uppercase }}</h2>
+        <p>{{ service.value.description }}</p>
+      </div>
+      <ol>
+        <li *ngFor="let timeline of service.value.timelines; let i = index">
+          <div  [class.card_selected]="sidebarVisible && selectedItemIndex === service.key[i]" (click)="toggleSidebar(i, service.key, timeline)" [style.background-color]="getColorForSubject(timeline.sujet)">
+            <app-sidebar *ngIf="timeline" [sidebarData]="timeline"></app-sidebar>
+          </div>
+        </li>
+      </ol>
+    </section>
+    </ng-container>
+  
+  </div>
+
+</div>
+
+<p-sidebar [(visible)]="sidebarVisible" position="right">
+  <app-sidebar *ngIf="sidebarData" [sidebarData]="sidebarData"></app-sidebar>
+</p-sidebar>
+

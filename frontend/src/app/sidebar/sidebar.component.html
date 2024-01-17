@@ -1,0 +1,7 @@
+<h2>{{sidebarData.titre}}</h2>
+<ng-container *ngIf="sidebarData.texte && sidebarData.texte.length == 1">
+  <p>{{ sidebarData.texte }}</p>
+</ng-container>
+<ng-container *ngIf="sidebarData.texte && sidebarData.texte.length >= 2">
+  <p *ngFor="let texte of sidebarData.texte">- {{ texte }}</p>
+</ng-container>

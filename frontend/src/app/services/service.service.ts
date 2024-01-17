@@ -1,10 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
-import { ServiceList } from '../models/serviceList-model';
-import { Service } from '../models/service-model';
+import { ServiceModel } from '../models/service-model';
 import { API } from '../routes/api';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -15,11 +14,20 @@ export class ServiceService {
 
   private apiUrl = environment.apiUrl;
 
-  getAllService(): Observable<{ [key: string]: Service }> {
-    return this.http.get<{ [key: string]: Service }>(`${this.apiUrl}/${API.ALL_SERVICE}`);
+  getAllService(): Observable<{ [key: string]: ServiceModel }> {
+    return this.http.get<{ [key: string]: ServiceModel }>(`${this.apiUrl}/${API.SERVICE}`);
   }
 
-  getService(serviceId: number) {
-    return this.http.get<Service[]>(`${this.apiUrl}/${API.ONE_SERVICE}/${serviceId}`);
+  getListService(): Observable<string[]> {
+    return this.http.get<string[]>(`${this.apiUrl}/${API.SERVICE_LIST}`);
   }
+
+  getService(serviceName: string, sujet: string[]): Observable<{ [key: string]: ServiceModel }> {
+    return this.http.get<{ [key: string]: ServiceModel }>(`${this.apiUrl}/${API.SERVICE}/${serviceName}?sujet=${sujet}`);
+  }
+
+  getfilteredService(data: any): Observable<{ [key: string]: ServiceModel }> {
+    return this.http.post<any>(`${this.apiUrl}/${API.SERVICE_FILTERED}`, data);
+  }
+
 }

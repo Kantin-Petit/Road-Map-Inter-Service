@@ -1,14 +1,17 @@
-export class DataService {
+export class TimelineModel {
+    id!: number;
     titre!: string; 
-    texte!: string;
+    texte!: string[];
     image!: string;
+    sujet!: string;
     dateStart!: Date;
     dateEnd!: Date;
-    color!: string;
 }
 
-export class Service {
+export class ServiceModel {
+    id!: number;
     photo!: string;
     description!: string;
-    data!: DataService[];
+    sujets!: string[];
+    timelines!: TimelineModel[]; 
 }
