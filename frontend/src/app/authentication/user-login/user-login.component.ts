@@ -37,8 +37,7 @@ export class UserLoginComponent {
     if (this.loginForm.valid) {
 
       const formData: UserLogin = this.loginForm.value;
-      this.authService.login(formData).subscribe(
-        (response) => {
+      this.authService.login(formData).subscribe(response => {
           console.log(response); 
           // this.router.navigate(['/admin']);
         },
