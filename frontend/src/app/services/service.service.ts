@@ -18,11 +18,11 @@ export class ServiceService {
     return this.http.get<{ [key: string]: ServiceModel }>(`${this.apiUrl}/${API.SERVICE}`);
   }
 
-  getListService(): Observable<string[]> {
-    return this.http.get<string[]>(`${this.apiUrl}/${API.SERVICE_LIST}`);
+  getListService(): Observable<{ [key: string]: { name: string } }> {
+    return this.http.get<{ [key: string]: { name: string } }>(`${this.apiUrl}/${API.SERVICE_LIST}`);
   }
 
-  getService(serviceName: string, sujet: string[]): Observable<{ [key: string]: ServiceModel }> {
+  getService(serviceName: string, sujet: string[] | null): Observable<{ [key: string]: ServiceModel }> {
     return this.http.get<{ [key: string]: ServiceModel }>(`${this.apiUrl}/${API.SERVICE}/${serviceName}?sujet=${sujet}`);
   }
 

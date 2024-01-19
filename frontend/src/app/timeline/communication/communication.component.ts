@@ -28,6 +28,8 @@ export class CommunicationComponent implements OnInit {
   selectedItemIndex!: string | null;
 
   isCollapsed: boolean = false;
+  isOpen: { [key: string]: boolean } = {};
+
   
   ngOnInit() {
     const elH = document.querySelectorAll(".timeline li > div");
@@ -35,6 +37,7 @@ export class CommunicationComponent implements OnInit {
     this.setSubjects();
     this.setEqualHeights(elH);
   }
+
 
   getColorForSubject(subjectName: string): string {
     const foundSubject = this.subjects[subjectName];
@@ -134,9 +137,6 @@ export class CommunicationComponent implements OnInit {
   toggleSidebarMenu() {
     this.isCollapsed = !this.isCollapsed;
   }
-
-
-  isOpen: { [key: string]: boolean } = {};
 
   toggleSubMenu(serviceKey: string) {
     this.isOpen[serviceKey] = !this.isOpen[serviceKey];

@@ -1,0 +1,137 @@
+<app-sidemenu></app-sidemenu>
+
+<div class="admin container">
+    <p-toast></p-toast>
+
+    <div class="card">
+        <p-toolbar styleClass="mb-4 gap-2">
+            <ng-template pTemplate="left">
+                <button pButton pRipple label="Nouveau" icon="pi pi-plus mr-2" class="p-button-success mr-2" (click)="openNew()"></button>
+                <button pButton pRipple [label]="Delete" icon="pi pi-trash" class="p-button-danger" (click)="deleteSelectedUsers()" [disabled]="!selectedUsers || !selectedUsers.length"></button>
+            </ng-template>
+        </p-toolbar>
+    
+        <p-table
+            #dt
+            [value]="utilisateurs"
+            [rows]="10"
+            [paginator]="true"
+            [globalFilterFields]="['last_name', 'first_name']"
+            [tableStyle]="{ 'min-width': '75rem' }"
+            [(selection)]="selectedUsers"
+            [rowHover]="true"
+            dataKey="id"
+            currentPageReportTemplate="Utilisateur de {first} à {last}"
+            [showCurrentPageReport]="true"
+        >
+            <ng-template pTemplate="caption">
+                <div class=" search_bar flex align-items-center justify-content-between">
+                    <h5 class="m-0">Utilisateurs</h5>
+                    <span class="p-input-icon-left">
+                        <i class="pi pi-search"></i>
+                        <input class="p-inputtext p-component p-element" pInputText type="text" (input)="filterGlobal($event)" placeholder="Recherce" />
+                    </span>
+                </div>
+            </ng-template>
+            <ng-template pTemplate="header">
+                <tr>
+                    <th style="width: 4rem">
+                        <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                    </th>
+                    <th pSortableColumn="last_name" style="min-width:15rem">Nom <p-sortIcon field="last_name"></p-sortIcon></th>
+                    <th pSortableColumn="first_name" style="min-width:15rem">Prénom <p-sortIcon field="first_name"></p-sortIcon></th>
+                    <th pSortableColumn="email" style="min-width:15rem">E-mail <p-sortIcon field="email"></p-sortIcon></th>
+                    <th pSortableColumn="role">Role <p-sortIcon field="role"></p-sortIcon></th>
+                    <th pSortableColumn="service" style="min-width:10rem">Service <p-sortIcon field="service"></p-sortIcon></th>
+                    <th></th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-utilisateur>
+                <tr>
+                    <td>
+                        <p-tableCheckbox [value]="utilisateur"></p-tableCheckbox>
+                    </td>
+                    <td>{{ utilisateur.last_name }}</td>
+                    <td>{{ utilisateur.first_name }}</td>
+                    <td>{{ utilisateur.email }}</td>
+                    <td>{{ utilisateur.role }}</td>
+                    <td>{{ utilisateur.Service ? utilisateur.Service.name : '' }}</td>
+                    <td>
+                        <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editUser(utilisateur)"></button>
+                        <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="deleteUser(utilisateur)"></button>
+                    </td>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="summary">
+                <div class="flex align-items-center justify-content-between">Au total, il y a {{ utilisateurs ? utilisateurs.length : 0 }} utilisateurs.</div>
+            </ng-template>
+        </p-table>
+    </div>
+    <p-dialog [(visible)]="utilisateurDialog" (onHide)="onDialogHide()" [style]="{ width: '450px' }" header="Utilisateur" [modal]="true" styleClass="p-fluid">
+        <ng-template pTemplate="content">
+            <p-accordion [activeIndex]="0">
+                <p-accordionTab header="Information">
+                    <div class="field flex flex-column">
+                        <label for="last_name">Nom</label>
+                        <input  class="h-2rem" type="text" pInputText id="last_name" [(ngModel)]="utilisateur.last_name" required autofocus />
+                        <small class="p-error" *ngIf="submitted && !utilisateur.last_name">Le Nom est requis.</small>
+                    </div>
+                    <div class="field flex flex-column">
+                        <label for="first_name">Prénom</label>
+                        <input class="h-2rem" type="text" pInputText id="first_name" [(ngModel)]="utilisateur.first_name" required autofocus />
+                        <small class="p-error" *ngIf="submitted && !utilisateur.first_name">Le Prénom est requis.</small>
+                    </div>
+                    <div class="field flex flex-column">
+                        <label for="first_name">E-mail</label>
+                        <input class="h-2rem" type="email" pInputText id="email" [(ngModel)]="utilisateur.email" required autofocus />
+                        <small class="p-error" *ngIf="submitted && !utilisateur.email">L'E-mail est requis.</small>
+                    </div>
+                </p-accordionTab>
+                <p-accordionTab header="Mot de Passe">
+                    <div class="field flex flex-column">
+                        <label for="password">Nouveau Mot de Passe</label>
+                        <input class="h-2rem" type="password" pInputText id="password" [(ngModel)]="utilisateur.password" required autofocus />
+                        <small class="p-error" *ngIf="submitted && !utilisateur.password">Le nouveau mot de passe.</small>
+                    </div>
+                    <div class="field flex flex-column">
+                        <label for="first_name">Confirmer le nouveau Mot de Passe</label>
+                        <input class="h-2rem" type="password" pInputText id="confirmpassword" autofocus />
+                        <small class="p-error" *ngIf="submitted && !utilisateur.password">Confirmer le nouveau mot de passe.</small>
+                    </div>
+                </p-accordionTab>
+                <p-accordionTab header="Option admin">
+                    <div class="field flex flex-column">
+                        <label for="first_name">Role</label>
+                        <input class="h-2rem" type="text" pInputText id="role" [(ngModel)]="utilisateur.role" required autofocus />
+                        <small class="p-error" *ngIf="submitted && !utilisateur.role">Le role est requis.</small>
+                    </div>
+                    <div class="field flex flex-column">
+                        <label for="first_name">Service</label>
+                        <input class="h-2rem" type="text" pInputText id="service" [(ngModel)]="utilisateur.serviceId" required autofocus />
+                        <small class="p-error" *ngIf="submitted && !utilisateur.serviceId">Le service est requis.</small>
+                    </div>
+                </p-accordionTab>
+                <!-- <p-accordionTab *ngIf="createUser" header="Option admin 2">
+                    <div class="field flex flex-column">
+                        <label for="first_name">Role</label>
+                        <input class="h-2rem" type="text" pInputText id="role" [(ngModel)]="utilisateur.role" required autofocus />
+                        <small class="p-error" *ngIf="submitted && !utilisateur.role">Le role est requis.</small>
+                    </div>
+                    <div class="field flex flex-column">
+                        <label for="first_name">Service</label>
+                        <input class="h-2rem" type="text" pInputText id="service" [(ngModel)]="utilisateur.serviceId" required autofocus />
+                        <small class="p-error" *ngIf="submitted && !utilisateur.serviceId">Le service est requis.</small>
+                    </div>
+                </p-accordionTab> -->
+            </p-accordion>
+        
+        </ng-template>
+    
+        <ng-template pTemplate="footer">
+            <button pButton pRipple label="Annuler" icon="pi pi-times mr-2" class="p-button-text" (click)="hideDialog()"></button>
+            <button pButton pRipple label="Enregistrer" icon="pi pi-check mr-2" class="p-button-text" (click)="saveUser()"></button>
+        </ng-template>
+    </p-dialog>
+    
+    <p-confirmDialog  locale="fr" [style]="{ width: '450px' }" header="Confirmation" acceptLabel="Oui" rejectLabel="Non"></p-confirmDialog>
+</div>

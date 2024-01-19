@@ -2,10 +2,10 @@
 const func = require('../function');
 const path = require('path');
 const fs = require('fs');
-const directoryPath = path.join(__dirname, '../data/subjects'); 
+const directoryPath = path.join(__dirname, '../data/thematics');
 
 exports.getAllSubjects = (req, res, next) => {
-  
+
   let fileContents = {};
 
   try {

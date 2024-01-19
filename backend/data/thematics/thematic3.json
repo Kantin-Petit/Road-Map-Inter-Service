@@ -1,5 +1,6 @@
 {
     "id": 3,
+    "name": "Courrier",
     "description": "Description du courrier",
     "color": "#3366FF"
 }

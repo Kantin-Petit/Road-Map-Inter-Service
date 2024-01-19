@@ -32,9 +32,9 @@ import { CommunicationComponent } from './timeline/communication/communication.c
 import { FileUploadModule } from 'primeng/fileupload';
 import { MatListModule } from '@angular/material/list';
 import { SidebarComponent } from './sidebar/sidebar.component';
-import { JsonEditorComponent } from './json-editor/json-editor.component';
 import { ConnexionComponent } from './pages/connexion/connexion.component';
-
+import { DialogModule } from 'primeng/dialog';
+import { AccordionModule } from 'primeng/accordion';
 
 registerLocaleData(localeFr);
 
@@ -49,7 +49,6 @@ registerLocaleData(localeFr);
     UserLoginComponent,
     CommunicationComponent,
     SidebarComponent,
-    JsonEditorComponent,
     ConnexionComponent,
   ],
   imports: [
@@ -57,7 +56,9 @@ registerLocaleData(localeFr);
     AppRoutingModule,
     MatListModule,
     HttpClientModule,
+    AccordionModule,
     SplitterModule,
+    DialogModule,
     ReactiveFormsModule,
     CardModule,
     TableModule,
@@ -65,7 +66,7 @@ registerLocaleData(localeFr);
     BrowserAnimationsModule,
     ButtonModule,
     CommonModule,
-    FormsModule, 
+    FormsModule,
     ToolbarModule,
     ConfirmDialogModule,
     InputTextModule,
@@ -75,7 +76,7 @@ registerLocaleData(localeFr);
   ],
   providers: [
     [{ provide: LOCALE_ID, useValue: 'fr' }],
-    MessageService, 
+    MessageService,
     ConfirmationService
   ],
   bootstrap: [AppComponent]
