@@ -66,7 +66,7 @@ export class PlanningComponent implements OnInit, AfterViewInit {
   
       this.groups.add({
         id: serviceIndex,
-        content: serviceKey,
+        content: this.services[serviceKey].name,
         className: "custom_group",
       });
   

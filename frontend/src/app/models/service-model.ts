@@ -10,6 +10,7 @@ export class TimelineModel {
 
 export class ServiceModel {
     id!: number;
+    name!: string;
     photo!: string;
     description!: string;
     sujets!: string[];
