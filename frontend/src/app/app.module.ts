@@ -35,6 +35,7 @@ import { SidebarComponent } from './sidebar/sidebar.component';
 import { ConnexionComponent } from './pages/connexion/connexion.component';
 import { DialogModule } from 'primeng/dialog';
 import { AccordionModule } from 'primeng/accordion';
+import { FilterComponent } from './filter/filter.component';
 
 registerLocaleData(localeFr);
 
@@ -50,6 +51,7 @@ registerLocaleData(localeFr);
     CommunicationComponent,
     SidebarComponent,
     ConnexionComponent,
+    FilterComponent,
   ],
   imports: [
     BrowserModule,

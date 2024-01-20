@@ -1,0 +1,25 @@
+ <div class="side_menu" [ngClass]="{ 'collapsed': filterService.isCollapsed }">
+
+    <ul class="menu">
+      <li class="menu-item" *ngFor="let service of filterService.servicesFilter | keyvalue">
+        <div class="input_wrapper">
+          <input name="input_{{service.key}}" id="input_{{service.key}}" type="checkbox" [(ngModel)]="filterService.checkedServices[selectedForService(service)]" (ngModelChange)="isAllChecked()"/>
+          <label (click)="toggleSubMenu(service.key)">{{ service.value.name }}</label>
+        </div>
+        <ul class="sub-menu" [class.active]="filterService.isOpen[selectedForService(service)]" *ngIf="service.value.sujets">
+          <li class="sub-menu_item" *ngFor="let sujet of service.value.sujets">
+            <div class="input_wrapper">
+              <input name="input_{{service.key}}_{{sujet}}" id="input_{{service.key}}_{{sujet}}" type="checkbox" [(ngModel)]="filterService.checkedSubjects[selectedForService(service)][sujet]" (ngModelChange)="onSelectSubjects(service.key, $event, sujet)"> 
+              <label *ngIf="filterService.subjects[sujet]" for="input_{{service.key}}_{{sujet}}"> {{filterService.subjects[sujet].name}}</label>
+            </div>
+          </li>
+        </ul>
+      </li>
+    </ul>
+
+    <div class="toggle-sidebar" (click)="toggleSidebarMenu()">
+        <i *ngIf="!filterService.isCollapsed" class="fas fa-chevron-left arrow-icon"></i>
+        <i *ngIf="filterService.isCollapsed" class="fas fa-chevron-right arrow-icon"></i>
+    </div>
+  
+  </div>
