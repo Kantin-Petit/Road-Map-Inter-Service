@@ -1,35 +1,8 @@
 <div class="communication">
 
-  <div class="side_menu" [ngClass]="{ 'collapsed': isCollapsed }">
-
-    <ul class="menu">
-      <li class="menu-item" *ngFor="let service of servicesFilter | keyvalue">
-        <div class="input_wrapper">
-          <input name="input_{{service.key}}" id="input_{{service.key}}" type="checkbox" [(ngModel)]="checkedServices[selectedForService(service)]" (ngModelChange)="isAllChecked()"/>
-          <label (click)="toggleSubMenu(service.key)">{{ service.value.name }}</label>
-        </div>
-        <ul class="sub-menu" [class.active]="isOpen[selectedForService(service)]" *ngIf="service.value.sujets">
-          <li class="sub-menu_item" *ngFor="let sujet of service.value.sujets">
-            <div class="input_wrapper">
-              <input name="input_{{service.key}}_{{sujet}}" id="input_{{service.key}}_{{sujet}}" type="checkbox" [(ngModel)]="checkedSubjects[selectedForService(service)][sujet]" (ngModelChange)="onSelectSubjects(service.key, $event, sujet)"> 
-              <label *ngIf="subjects[sujet]" for="input_{{service.key}}_{{sujet}}"> {{subjects[sujet].name}}</label>
-            </div>
-          </li>
-        </ul>
-      </li>
-    </ul>
-
-    <div class="toggle-sidebar" (click)="toggleSidebarMenu()">
-        <i *ngIf="!isCollapsed" class="fas fa-chevron-left arrow-icon"></i>
-        <i *ngIf="isCollapsed" class="fas fa-chevron-right arrow-icon"></i>
-    </div>
+  <div class="timeline_wrapper container" [ngClass]="{ 'collapsed': filterService.isCollapsed }">
   
-  </div>
-
-
-  <div class="timeline_wrapper container" [ngClass]="{ 'collapsed': isCollapsed }">
-  
-    <ng-container *ngFor="let service of services | keyvalue">
+    <ng-container *ngFor="let service of filterService.services | keyvalue">
     <section class="timeline">
       <div class="info">
         <img width="50" height="50" src="https://assets.codepen.io/210284/face.svg" alt=""/>
@@ -38,7 +11,7 @@
       </div>
       <ol>
         <li *ngFor="let timeline of service.value.timelines; let i = index">
-          <div  [class.card_selected]="sidebarVisible && selectedItemIndex === service.key[i]" (click)="toggleSidebar(i, service.key, timeline)" [style.background-color]="getColorForSubject(timeline.sujet)">
+          <div  [class.card_selected]="filterService.sidebarVisible && filterService.selectedItemIndex === service.key[i]" (click)="toggleSidebar(i, service.key, timeline)" [style.background-color]="getColorForSubject(timeline.sujet)">
             <app-sidebar *ngIf="timeline" [sidebarData]="timeline"></app-sidebar>
           </div>
         </li>
@@ -50,7 +23,7 @@
 
 </div>
 
-<p-sidebar [(visible)]="sidebarVisible" position="right">
-  <app-sidebar *ngIf="sidebarData" [sidebarData]="sidebarData"></app-sidebar>
+<p-sidebar [(visible)]="filterService.sidebarVisible" position="right">
+  <app-sidebar *ngIf="filterService.sidebarData" [sidebarData]="filterService.sidebarData"></app-sidebar>
 </p-sidebar>
 
