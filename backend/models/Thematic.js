@@ -1,7 +1,7 @@
 const { Sequelize, DataTypes } = require('sequelize');
 const connection = require('../connection');
 
-const Service = connection.define('Service', {
+const Thematic = connection.define('Thematic', {
     id: {
         type: DataTypes.INTEGER(11),
         primaryKey: true,
@@ -9,7 +9,7 @@ const Service = connection.define('Service', {
         allowNull: false
     },
     name: {
-        type: DataTypes.STRING(50),
+        type: DataTypes.STRING(75),
         allowNull: false,
         unique: true,
     },
@@ -18,7 +18,7 @@ const Service = connection.define('Service', {
         allowNull: false,
         unique: true,
     },
-}, { timestamps: false, deletedAt: true, paranoid: true } );
+}, { timestamps: false, deletedAt: true, paranoid: true });
 
 
-module.exports = Service
+module.exports = Thematic

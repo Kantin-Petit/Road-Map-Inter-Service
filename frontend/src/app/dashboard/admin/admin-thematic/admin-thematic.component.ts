@@ -1,11 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { User } from '../../../models/user-model';
 import { ConfirmationService, MessageService } from 'primeng/api';
-import { UserService } from '../../../services/user.service';
 import { Table } from 'primeng/table';
 import { ServiceService } from '../../../services/service.service'
 import { Thematic } from '../../../models/thematic-model';
-import { UserRegistration, UserRole } from '../../../interfaces/auth';
 import { AuthService } from '../../../services/auth.service';
 import { ThematicService } from '../../../services/thematic.service';
 import { of, map } from 'rxjs';
@@ -21,23 +18,19 @@ export class AdminThematicComponent implements OnInit {
 
   @ViewChild('dt') dt!: Table;
 
-  utilisateurs!: User[];
-  utilisateur!: User;
-  utilisateurDialog: boolean = false;
-  selectedUsers!: User[] | null;
+  thematics!: Thematic[];
+  thematic!: Thematic
+  thematicDialog: boolean = false;
+  selectedThematics!: Thematic[] | null;
   submitted: boolean = false;
   Delete!: string;
   service!: Thematic[];
-  createUser: boolean = false
-  thematics!: any[];
-  thematic!: any
+  createThematic: boolean = false
+ 
 
   constructor(
-    private userService: UserService,
-    private ServiceService: ServiceService,
     private thematicService: ThematicService,
     private messageService: MessageService,
-    private authService: AuthService,
     private confirmationService: ConfirmationService) { }
 
   ngOnInit() {
@@ -52,51 +45,50 @@ export class AdminThematicComponent implements OnInit {
   }
 
   openNew() {
-    this.createUser = true;
-    this.utilisateur = new User();
+    this.createThematic = true;
+    this.thematic = new Thematic();
     this.submitted = false;
-    this.utilisateurDialog = true;
+    this.thematicDialog = true;
   }
 
   onDialogHide() {
-    if (!this.utilisateurDialog) this.createUser = false;
+    if (!this.thematicDialog) this.createThematic = false;
   }
 
-  deleteSelectedUsers() {
+  deleteSelectedThematics() {
     this.confirmationService.confirm({
       message: 'Êtes-vous sûr de vouloir supprimer les produits sélectionnés ?',
       header: 'Confirmation',
       icon: 'pi pi-exclamation-triangle m-2',
       accept: () => {
-        if (!this.selectedUsers) return
-        this.selectedUsers.forEach(user => {
-          this.userService.deleteUser(user['id']).subscribe();
+        if (!this.selectedThematics) return
+        this.selectedThematics.forEach(thematic => {
+          this.thematicService.deletethematic(thematic['id']).subscribe();
         });
 
-        this.utilisateurs = this.utilisateurs.filter((val) => !this.selectedUsers?.includes(val));
-        this.selectedUsers = null;
-        this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Utilisateur Supprimer', life: 3000 });
+        this.thematics = this.thematics.filter((val) => !this.selectedThematics?.includes(val));
+        this.selectedThematics = null;
+        this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Thematique Supprimer', life: 3000 });
 
       }
     });
   }
 
-  editUser(utilisateur: User) {
-    this.utilisateur = { ...utilisateur };
-    this.utilisateurDialog = true;
+  editThematic(thematic: Thematic) {
+    this.thematic = { ...thematic };
+    this.thematicDialog = true;
   }
 
-  deleteUser(utilisateur: User) {
-    console.log(utilisateur['id'])
+  deleteThematic(thematic: Thematic) {
     this.confirmationService.confirm({
-      message: 'Êtes-vous sûr de vouloir supprimer ' + utilisateur.last_name + '?',
+      message: 'Êtes-vous sûr de vouloir supprimer ' + thematic.name + '?',
       header: 'Confirmation',
       icon: 'pi pi-exclamation-triangle m-2',
       accept: () => {
-        this.userService.deleteUser(utilisateur['id']).subscribe(() => {
-          this.utilisateurs = this.utilisateurs.filter((val) => val.id !== utilisateur.id);
-          this.utilisateur = new User();
-          this.messageService.add({ severity: 'success', summary: 'Réussite', detail: 'Utilisateur supprimé', life: 3000 });
+        this.thematicService.deletethematic(thematic['id']).subscribe(() => {
+          this.thematics = this.thematics.filter((val) => val.id !== thematic['id']);
+          this.thematic = new Thematic();
+          this.messageService.add({ severity: 'success', summary: 'Réussite', detail: 'Thématique supprimé', life: 3000 });
         },
         );
       }
@@ -104,55 +96,51 @@ export class AdminThematicComponent implements OnInit {
   }
 
   hideDialog() {
-    this.utilisateurDialog = false;
-    this.createUser = false;
+    this.thematicDialog = false;
+    this.createThematic = false;
     this.submitted = false;
   }
 
 
-  saveUser() {
+  saveThematic() {
     this.submitted = true;
 
-    if (this.utilisateur.last_name?.trim()) {
+    if (this.thematic.name?.trim()) {
 
-      if (this.utilisateur.id) {
-        this.utilisateurs[this.findIndexById(String(this.utilisateur.id))] = this.utilisateur;
-        this.userService.modifyUser(this.utilisateur.id, this.utilisateur).subscribe(() => {
-          this.messageService.add({ severity: 'success', summary: 'Réussite', detail: 'Utilisateur Modifier', life: 3000 });
-        });
-
+      if (this.thematic.id) {
+          this.thematics[this.findIndexById(String(this.thematic.id))] = this.thematic;
+          this.thematicService.updatethematic(this.thematic.id, this.thematic).subscribe(() => {
+            this.messageService.add({ severity: 'success', summary: 'Réussite', detail: 'Thématique Modifier', life: 3000 });
+          });
       } else {
 
-        const formData: UserRegistration = {
-          firstName: this.utilisateur.first_name,
-          lastName: this.utilisateur.last_name,
-          email: this.utilisateur.email,
-          password: this.utilisateur.password,
-          service: this.utilisateur.serviceId,
-          role: UserRole.ADMIN
+        const formData: Thematic = {
+          id: 0,
+          name: this.thematic.name,
+          description: this.thematic.description,
+          color: this.thematic.color,
         };
 
-        this.utilisateurs.push(this.utilisateur);
-        this.messageService.add({ severity: 'success', summary: 'Réussite', detail: 'Utilisateur Créer', life: 3000 });
-        this.authService.register(formData).subscribe(response => {
+        this.thematics.push(this.thematic);
+        this.messageService.add({ severity: 'success', summary: 'Réussite', detail: 'Thématique Créer', life: 3000 });
+        this.thematicService.createthematic(formData).subscribe(response => {
           console.log(response);
-        }
-        );
+        });
 
       }
 
-      this.utilisateurs = [...this.utilisateurs];
-      this.utilisateurDialog = false;
-      this.createUser = false;
-      this.utilisateur = new User();
+      this.thematics = [...this.thematics];
+      this.thematicDialog = false;
+      this.createThematic = false;
+      this.thematic = new Thematic();
     }
   }
 
   findIndexById(id: string): number {
     let index = -1;
     const numericId = Number(id);
-    for (let i = 0; i < this.utilisateurs.length; i++) {
-      if (this.utilisateurs[i].id === numericId) {
+    for (let i = 0; i < this.thematics.length; i++) {
+      if (this.thematics[i].id === numericId) {
         index = i;
         break;
       }

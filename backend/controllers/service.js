@@ -53,8 +53,6 @@ exports.getAllservicesName = async (req, res, next) => {
   }
 };
 
-
-
 exports.getOneservice = (req, res, next) => {
 
   const serviceName = req.params.name;

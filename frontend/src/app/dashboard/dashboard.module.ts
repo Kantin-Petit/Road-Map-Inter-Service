@@ -17,7 +17,7 @@ import { AdminServiceComponent } from './admin/admin-service/admin-service.compo
 import { AdminUserComponent } from './admin/admin-user/admin-user.component';
 import { AdminThematicComponent } from './admin/admin-thematic/admin-thematic.component';
 import { DashboardComponent } from './dashboard.component';
-
+import { ColorPickerModule } from 'primeng/colorpicker';
 
 @NgModule({
   declarations: [
@@ -33,6 +33,7 @@ import { DashboardComponent } from './dashboard.component';
     AccordionModule,
     TableModule,
     ToastModule,
+    ColorPickerModule,
     ToolbarModule,
     RatingModule,
     AccordionModule,
