@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ServiceService } from '../services/service.service';
 import { SubjectService } from '../services/subject.service';
 import { TimelineModel } from '../models/service-model';
 import { FilterService } from '../services/filter.service';
+import { Subscription } from 'rxjs';
+import { Router, NavigationStart } from '@angular/router';
 
 @Component({
   selector: 'app-filter',
@@ -11,10 +13,20 @@ import { FilterService } from '../services/filter.service';
 })
 export class FilterComponent implements OnInit {
 
+  private subscription: Subscription;
+
   constructor(
     public serviceService: ServiceService,
     public subjectService: SubjectService,
-    public filterService: FilterService) { }
+    public filterService: FilterService,
+    private router: Router) { 
+    
+    this.subscription = router.events.subscribe((event) => {
+      if (event instanceof NavigationStart) {
+        filterService.resetVariables();
+      }
+    });
+    }
 
 
   ngOnInit() {
@@ -22,6 +34,10 @@ export class FilterComponent implements OnInit {
     this.setServices();
     this.setSubjects();
     this.setEqualHeights(elH);
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 
   getColorForSubject(subjectName: string): string {

@@ -37,4 +37,9 @@ export class FilterService  {
     this.filterChangeSubject.next();
   }
 
+  resetVariables() {
+    this.checkedServices = {};
+    this.checkedSubjects = {};
+  }
+
 }
