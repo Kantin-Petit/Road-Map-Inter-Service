@@ -11,9 +11,9 @@ export class CommunicationComponent {
 
   constructor(public filterService: FilterService) { }
 
-  getColorForSubject(thematicName: string): string {
-    const foundSubject = this.filterService.thematics[thematicName];
-    return foundSubject ? foundSubject.color : '#000000';
+  getColorForThematic(thematicName: string): string {
+    const foundThematic = this.filterService.thematics[thematicName];
+    return foundThematic ? foundThematic.color : '#000000';
   }
 
   toggleSidebar(index: number, service: string, timelineData: TimelineModel): void {

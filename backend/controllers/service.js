@@ -106,11 +106,11 @@ exports.getFilteredServices = (req, res, next) => {
             let filteredTimelines = jsonData.timelines;
 
             if (thematics && thematics[serviceItem]) {
-              const serviceSubjects = thematics[serviceItem];
+              const serviceThematics = thematics[serviceItem];
 
               filteredTimelines = filteredTimelines.filter(timeline => {
-                const thematicKeys = Object.keys(serviceSubjects);
-                return thematicKeys.includes(timeline.thematic) && serviceSubjects[timeline.thematic];
+                const thematicKeys = Object.keys(serviceThematics);
+                return thematicKeys.includes(timeline.thematic) && serviceThematics[timeline.thematic];
               });
             }
 

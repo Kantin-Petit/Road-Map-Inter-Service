@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 
 import { ThematicService } from './thematic.service';
 
-describe('SubjectService', () => {
+describe('ThematicService', () => {
   let service: ThematicService;
 
   beforeEach(() => {

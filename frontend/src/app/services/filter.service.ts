@@ -14,7 +14,7 @@ export class FilterService {
 
   checkedServices: { [key: string]: boolean } = {};
   checkedServicesInit: { [key: string]: boolean } = {};
-  checkedSubjects: { [key: string]: { [innerKey: string]: boolean } } = {};
+  checkedThematics: { [key: string]: { [innerKey: string]: boolean } } = {};
 
   sidebarVisible: boolean = false;
   sidebarData!: TimelineModel;
@@ -26,20 +26,20 @@ export class FilterService {
 
   isFullLoad: boolean = false;
 
-  private filterChangeSubject: Subject<void> = new Subject<void>();
+  private filterChangeThematic: Subject<void> = new Subject<void>();
 
   getFilterChangeObservable(): Observable<void> {
-    return this.filterChangeSubject.asObservable();
+    return this.filterChangeThematic.asObservable();
   }
 
   setServicesFilter(status: boolean): void {
     this.isFullLoad = status;
-    this.filterChangeSubject.next();
+    this.filterChangeThematic.next();
   }
 
   resetVariables() {
     this.checkedServices = {};
-    this.checkedSubjects = {};
+    this.checkedThematics = {};
   }
 
 }
