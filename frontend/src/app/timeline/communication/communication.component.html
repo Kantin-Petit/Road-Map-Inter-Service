@@ -11,7 +11,7 @@
       </div>
       <ol>
         <li *ngFor="let timeline of service.value.timelines; let i = index">
-          <div  [class.card_selected]="filterService.sidebarVisible && filterService.selectedItemIndex === service.key[i]" (click)="toggleSidebar(i, service.key, timeline)" [style.background-color]="getColorForSubject(timeline.sujet)">
+          <div  [class.card_selected]="filterService.sidebarVisible && filterService.selectedItemIndex === service.key[i]" (click)="toggleSidebar(i, service.key, timeline)" [style.background-color]="getColorForSubject(timeline.thematic)">
             <app-sidebar *ngIf="timeline" [sidebarData]="timeline"></app-sidebar>
           </div>
         </li>

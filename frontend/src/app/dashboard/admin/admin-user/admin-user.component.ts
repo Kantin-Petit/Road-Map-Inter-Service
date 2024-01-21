@@ -4,7 +4,7 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { UserService } from '../../../services/user.service';
 import { Table } from 'primeng/table';
 import { ServiceService } from '../../../services/service.service'
-import { Subject } from '../../../models/subject-model';
+import { Thematic } from '../../../models/thematic-model';
 import { Observable } from 'rxjs';
 import { UserRegistration, UserRole } from '../../../interfaces/auth';
 import { AuthService } from '../../../services/auth.service';
@@ -26,7 +26,7 @@ export class AdminUserComponent implements OnInit {
   selectedUsers!: User[] | null;
   submitted: boolean = false;
   Delete!: string;
-  service!: Subject[];
+  service!: Thematic[];
   createUser: boolean = false
 
   constructor(

@@ -3,19 +3,19 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { API } from '../routes/api';
 import { Observable, map } from 'rxjs';
-import { Subject } from '../models/subject-model';
+import { Thematic } from '../models/thematic-model';
 
 @Injectable({
   providedIn: 'root'
 })
-export class SubjectService {
+export class ThematicService {
 
   constructor(private http: HttpClient) { }
 
   private apiUrl = environment.apiUrl;
 
-  getAllsubject(): Observable<{ [key: string]: Subject }> {
-    return this.http.get<{ [key: string]: Subject }>(`${this.apiUrl}/${API.SUBJECT}`);
+  getAllthematic(): Observable<{ [key: string]: Thematic }> {
+    return this.http.get<{ [key: string]: Thematic }>(`${this.apiUrl}/${API.SUBJECT}`);
   }
-  
+
 }

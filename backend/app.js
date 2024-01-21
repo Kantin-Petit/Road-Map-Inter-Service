@@ -31,11 +31,11 @@ app.use(cookieParser());
 const authRoutes = require('./routes/auth');
 const userRoutes = require('./routes/user');
 const serviceRoutes = require('./routes/service');
-const subjectRoutes = require('./routes/subject');
+const thematicRoutes = require('./routes/thematic');
 
 app.use('/api/auth', authRoutes);
 app.use('/api/user', userRoutes);
 app.use('/api/service', serviceRoutes);
-app.use('/api/subject', subjectRoutes);
+app.use('/api/thematic', thematicRoutes);
 
 module.exports = app;

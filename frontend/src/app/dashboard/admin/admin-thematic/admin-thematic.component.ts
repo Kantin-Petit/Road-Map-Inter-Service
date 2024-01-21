@@ -4,10 +4,10 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { UserService } from '../../../services/user.service';
 import { Table } from 'primeng/table';
 import { ServiceService } from '../../../services/service.service'
-import { Subject } from '../../../models/subject-model';
+import { Thematic } from '../../../models/thematic-model';
 import { UserRegistration, UserRole } from '../../../interfaces/auth';
 import { AuthService } from '../../../services/auth.service';
-import { SubjectService } from '../../../services/subject.service';
+import { ThematicService } from '../../../services/thematic.service';
 import { of, map } from 'rxjs';
 
 @Component({
@@ -16,7 +16,7 @@ import { of, map } from 'rxjs';
   styleUrls: ['./admin-thematic.component.scss'],
   providers: [MessageService, ConfirmationService]
 })
-export class AdminThematicComponent implements OnInit{
+export class AdminThematicComponent implements OnInit {
 
 
   @ViewChild('dt') dt!: Table;
@@ -27,20 +27,21 @@ export class AdminThematicComponent implements OnInit{
   selectedUsers!: User[] | null;
   submitted: boolean = false;
   Delete!: string;
-  service!: Subject[];
+  service!: Thematic[];
   createUser: boolean = false
   thematics!: any[];
+  thematic!: any
 
   constructor(
     private userService: UserService,
     private ServiceService: ServiceService,
-    private SubjectService: SubjectService,
+    private thematicService: ThematicService,
     private messageService: MessageService,
     private authService: AuthService,
     private confirmationService: ConfirmationService) { }
 
   ngOnInit() {
-    this.SubjectService.getAllsubject().subscribe(response => {
+    this.thematicService.getAllthematic().subscribe(response => {
       this.thematics = Object.entries(response).map(([key, value]) => ({ key, ...value }));
     });
   }

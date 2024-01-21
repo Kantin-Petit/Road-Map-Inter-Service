@@ -35,42 +35,42 @@ export class PlanningComponent implements OnInit, AfterViewInit {
 
   addDataIntoDom() {
 
-      const servicesKeys = Object.keys(this.filterService.services);
-      servicesKeys.forEach((serviceKey, serviceIndex) => {
-        const timelines = this.filterService.services[serviceKey].timelines;
+    const servicesKeys = Object.keys(this.filterService.services);
+    servicesKeys.forEach((serviceKey, serviceIndex) => {
+      const timelines = this.filterService.services[serviceKey].timelines;
 
-        this.groups.add({
-          id: serviceIndex,
-          content: this.filterService.services[serviceKey].name,
-          className: "custom_group",
-        });
+      this.groups.add({
+        id: serviceIndex,
+        content: this.filterService.services[serviceKey].name,
+        className: "custom_group",
+      });
 
-        timelines.forEach((timeline, timelineIndex) => {
-          const {
-            dateStart,
-            dateEnd,
-            sujet
-          } = timeline;
+      timelines.forEach((timeline, timelineIndex) => {
+        const {
+          dateStart,
+          dateEnd,
+          thematic
+        } = timeline;
 
-          const timelineId = `service${serviceIndex}_timeline${timelineIndex}`;
-          const itemClassName = `custom_item ${sujet} ${timelineId}`;
+        const timelineId = `service${serviceIndex}_timeline${timelineIndex}`;
+        const itemClassName = `custom_item ${thematic} ${timelineId}`;
 
-          this.data.add({
-            id: timelineId,
-            content: timeline,
-            start: dateStart,
-            end: dateEnd,
-            className: itemClassName,
-            group: serviceIndex,
-          });
+        this.data.add({
+          id: timelineId,
+          content: timeline,
+          start: dateStart,
+          end: dateEnd,
+          className: itemClassName,
+          group: serviceIndex,
         });
       });
+    });
 
   }
 
   setSubjects() {
 
-    const classes: string[] = Object.keys(this.filterService.subjects);
+    const classes: string[] = Object.keys(this.filterService.thematics);
     let cssStyles = '';
 
     classes.forEach((className) => {
@@ -122,9 +122,9 @@ export class PlanningComponent implements OnInit, AfterViewInit {
     const isInputElement = clickedElement.tagName.toLowerCase() === 'input';
     const isCheckbox = isInputElement && (clickedElement as HTMLInputElement).type.toLowerCase() === 'checkbox';
     if (isCheckbox) {
-        this.updateTimeline()
+      this.updateTimeline()
     };
-    if(this.filterService.selectTimeline && !this.filterService.sidebarVisible) document.querySelector(`.${this.filterService.selectTimeline}`)?.classList.remove("active");
+    if (this.filterService.selectTimeline && !this.filterService.sidebarVisible) document.querySelector(`.${this.filterService.selectTimeline}`)?.classList.remove("active");
   }
 
   toogleActive() {
@@ -132,8 +132,8 @@ export class PlanningComponent implements OnInit, AfterViewInit {
     if (timeline) timeline.classList.add("active");
   }
 
-  getColorForSubject(subjectName: string): string {
-    const foundSubject = this.filterService.subjects[subjectName];
+  getColorForSubject(thematicName: string): string {
+    const foundSubject = this.filterService.thematics[thematicName];
     return foundSubject ? foundSubject.color : '#000000';
   }
 
