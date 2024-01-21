@@ -4,7 +4,7 @@ const path = require('path');
 const fs = require('fs');
 const directoryPath = path.join(__dirname, '../data/thematics');
 
-exports.getAllSubjects = (req, res, next) => {
+exports.getAllThematics = (req, res, next) => {
 
   let fileContents = {};
 

@@ -32,7 +32,7 @@ export class FilterComponent implements OnInit {
   ngOnInit() {
     const elH = document.querySelectorAll(".timeline li > div");
     this.setServices();
-    this.setSubjects();
+    this.setThematics();
     this.setEqualHeights(elH);
   }
 
@@ -40,9 +40,9 @@ export class FilterComponent implements OnInit {
     this.subscription.unsubscribe();
   }
 
-  getColorForSubject(thematicName: string): string {
-    const foundSubject = this.filterService.thematics[thematicName];
-    return foundSubject ? foundSubject.color : '#000000';
+  getColorForThematic(thematicName: string): string {
+    const foundThematic = this.filterService.thematics[thematicName];
+    return foundThematic ? foundThematic.color : '#000000';
   }
 
   setServices() {
@@ -51,13 +51,13 @@ export class FilterComponent implements OnInit {
       this.filterService.servicesFilter = { ...service };
       Object.keys(this.filterService.servicesFilter).forEach(key => {
         this.filterService.checkedServicesInit[key] = true;
-        this.filterService.checkedSubjects[key] = {};
+        this.filterService.checkedThematics[key] = {};
       });
       this.filterService.setServicesFilter(true);
     });
   }
 
-  setSubjects() {
+  setThematics() {
     this.thematicService.getAllthematic().subscribe(thematics => {
       this.filterService.thematics = { ...thematics };
       this.filterService.setServicesFilter(true);
@@ -72,7 +72,7 @@ export class FilterComponent implements OnInit {
 
     const allCheckbox = {
       services: activeService,
-      thematics: this.filterService.checkedSubjects,
+      thematics: this.filterService.checkedThematics,
     };
 
     this.serviceService.getfilteredService(allCheckbox).subscribe(updatedServices => {
@@ -98,11 +98,11 @@ export class FilterComponent implements OnInit {
     return service.key;
   }
 
-  getActiveSubjects(key: string): string[] {
+  getActiveThematics(key: string): string[] {
     const trueInnerKeys: string[] = [];
 
-    if (this.filterService.checkedSubjects.hasOwnProperty(key)) {
-      const innerKeys = this.filterService.checkedSubjects[key];
+    if (this.filterService.checkedThematics.hasOwnProperty(key)) {
+      const innerKeys = this.filterService.checkedThematics[key];
       for (const innerKey in innerKeys) {
         if (innerKeys.hasOwnProperty(innerKey) && innerKeys[innerKey] === true) { trueInnerKeys.push(innerKey); }
       }
@@ -111,12 +111,12 @@ export class FilterComponent implements OnInit {
     return trueInnerKeys;
   }
 
-  onSelectSubjects(service: string, isChecked: boolean, thematic: string) {
+  onSelectThematics(service: string, isChecked: boolean, thematic: string) {
 
-    if (!this.filterService.checkedSubjects[service]) this.filterService.checkedSubjects[service] = {};
-    this.filterService.checkedSubjects[service][thematic] = isChecked;
+    if (!this.filterService.checkedThematics[service]) this.filterService.checkedThematics[service] = {};
+    this.filterService.checkedThematics[service][thematic] = isChecked;
 
-    const thematics = this.getActiveSubjects(service);
+    const thematics = this.getActiveThematics(service);
     this.serviceService.getService(service, thematics).subscribe(updatedService => {
       if (this.filterService.services[service]) this.filterService.services[service].timelines = [...updatedService[service].timelines];
       this.filterService.setServicesFilter(true);

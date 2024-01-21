@@ -9,7 +9,7 @@
         <ul class="sub-menu" [class.active]="filterService.isOpen[selectedForService(service)]" *ngIf="service.value.thematics">
           <li class="sub-menu_item" *ngFor="let thematic of service.value.thematics">
             <div class="input_wrapper">
-              <input name="input_{{service.key}}_{{thematic}}" id="input_{{service.key}}_{{thematic}}" type="checkbox" [(ngModel)]="filterService.checkedSubjects[selectedForService(service)][thematic]" (ngModelChange)="onSelectSubjects(service.key, $event, thematic)"> 
+              <input name="input_{{service.key}}_{{thematic}}" id="input_{{service.key}}_{{thematic}}" type="checkbox" [(ngModel)]="filterService.checkedThematics[selectedForService(service)][thematic]" (ngModelChange)="onSelectThematics(service.key, $event, thematic)"> 
               <label *ngIf="filterService.thematics[thematic]" for="input_{{service.key}}_{{thematic}}"> {{filterService.thematics[thematic].name}}</label>
             </div>
           </li>

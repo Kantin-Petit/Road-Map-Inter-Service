@@ -25,11 +25,11 @@ export class PlanningComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     this.addDataIntoDom()
-    this.setSubjects();
+    this.setThematics();
     this.getOptions();
     this.filterService.getFilterChangeObservable().subscribe(() => {
       this.updateTimeline();
-      this.setSubjects();
+      this.setThematics();
     });
   }
 
@@ -68,13 +68,13 @@ export class PlanningComponent implements OnInit, AfterViewInit {
 
   }
 
-  setSubjects() {
+  setThematics() {
 
     const classes: string[] = Object.keys(this.filterService.thematics);
     let cssStyles = '';
 
     classes.forEach((className) => {
-      var color = this.getColorForSubject(className);
+      var color = this.getColorForThematic(className);
       cssStyles += `.${className} { background-color: ${color}; }\n`;
     });
 
@@ -132,9 +132,9 @@ export class PlanningComponent implements OnInit, AfterViewInit {
     if (timeline) timeline.classList.add("active");
   }
 
-  getColorForSubject(thematicName: string): string {
-    const foundSubject = this.filterService.thematics[thematicName];
-    return foundSubject ? foundSubject.color : '#000000';
+  getColorForThematic(thematicName: string): string {
+    const foundThematic = this.filterService.thematics[thematicName];
+    return foundThematic ? foundThematic.color : '#000000';
   }
 
   getOptions() {
