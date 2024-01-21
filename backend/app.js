@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 const connection = require('./connection');
-const func  = require('./function');
+const func = require('./function');
 const cookieParser = require('cookie-parser');
 const path = require('path');
 const cors = require('cors');
@@ -12,6 +12,7 @@ connection;
 
 const User = require('./models/User');
 const Service = require('./models/Service');
+const Thematic = require('./models/Thematic');
 
 func.belongsTo(User, Service, 'serviceId')
 
@@ -22,7 +23,7 @@ app.use((req, res, next) => {
     next();
 });
 
-app.use(cors({origin: 'http://localhost:4200', credentials: true }))
+app.use(cors({ origin: 'http://localhost:4200', credentials: true }))
 app.use(express.json());
 app.use('/images', express.static(path.join(__dirname, 'images')));
 app.use(cookieParser());
