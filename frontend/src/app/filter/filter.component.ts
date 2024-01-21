@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ServiceService } from '../services/service.service';
-import { SubjectService } from '../services/subject.service';
+import { ThematicService } from '../services/thematic.service';
 import { TimelineModel } from '../models/service-model';
 import { FilterService } from '../services/filter.service';
 import { Subscription } from 'rxjs';
@@ -17,16 +17,16 @@ export class FilterComponent implements OnInit {
 
   constructor(
     public serviceService: ServiceService,
-    public subjectService: SubjectService,
+    public thematicService: ThematicService,
     public filterService: FilterService,
-    private router: Router) { 
-    
+    private router: Router) {
+
     this.subscription = router.events.subscribe((event) => {
       if (event instanceof NavigationStart) {
         filterService.resetVariables();
       }
     });
-    }
+  }
 
 
   ngOnInit() {
@@ -40,8 +40,8 @@ export class FilterComponent implements OnInit {
     this.subscription.unsubscribe();
   }
 
-  getColorForSubject(subjectName: string): string {
-    const foundSubject = this.filterService.subjects[subjectName];
+  getColorForSubject(thematicName: string): string {
+    const foundSubject = this.filterService.thematics[thematicName];
     return foundSubject ? foundSubject.color : '#000000';
   }
 
@@ -58,8 +58,8 @@ export class FilterComponent implements OnInit {
   }
 
   setSubjects() {
-    this.subjectService.getAllsubject().subscribe(sujets => {
-      this.filterService.subjects = { ...sujets };
+    this.thematicService.getAllthematic().subscribe(thematics => {
+      this.filterService.thematics = { ...thematics };
       this.filterService.setServicesFilter(true);
     });
   }
@@ -72,7 +72,7 @@ export class FilterComponent implements OnInit {
 
     const allCheckbox = {
       services: activeService,
-      sujets: this.filterService.checkedSubjects,
+      thematics: this.filterService.checkedSubjects,
     };
 
     this.serviceService.getfilteredService(allCheckbox).subscribe(updatedServices => {
@@ -111,13 +111,13 @@ export class FilterComponent implements OnInit {
     return trueInnerKeys;
   }
 
-  onSelectSubjects(service: string, isChecked: boolean, sujet: string) {
+  onSelectSubjects(service: string, isChecked: boolean, thematic: string) {
 
     if (!this.filterService.checkedSubjects[service]) this.filterService.checkedSubjects[service] = {};
-    this.filterService.checkedSubjects[service][sujet] = isChecked;
+    this.filterService.checkedSubjects[service][thematic] = isChecked;
 
-    const sujets = this.getActiveSubjects(service);
-    this.serviceService.getService(service, sujets).subscribe(updatedService => {
+    const thematics = this.getActiveSubjects(service);
+    this.serviceService.getService(service, thematics).subscribe(updatedService => {
       if (this.filterService.services[service]) this.filterService.services[service].timelines = [...updatedService[service].timelines];
       this.filterService.setServicesFilter(true);
 

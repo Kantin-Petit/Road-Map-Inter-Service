@@ -58,7 +58,7 @@ exports.getAllservicesName = async (req, res, next) => {
 exports.getOneservice = (req, res, next) => {
 
   const serviceName = req.params.name;
-  const { sujet } = req.query;
+  const { thematic } = req.query;
   const filePath = path.join(directoryPath, `${serviceName}.json`);
 
   fs.readFile(filePath, 'utf8', (err, data) => {
@@ -69,9 +69,9 @@ exports.getOneservice = (req, res, next) => {
       const serviceData = JSON.parse(data);
       let filteredService = { ...serviceData };
 
-      if (sujet !== '' && sujet != 'null') {
-        const sujetsArray = sujet.split(',');
-        filteredService.timelines = serviceData.timelines.filter(timeline => sujetsArray.includes(timeline.sujet));
+      if (thematic !== '' && thematic != 'null') {
+        const thematicsArray = thematic.split(',');
+        filteredService.timelines = serviceData.timelines.filter(timeline => thematicsArray.includes(timeline.thematic));
       }
 
       const serviceObject = { [serviceName]: filteredService };
@@ -89,7 +89,7 @@ exports.getFilteredServices = (req, res, next) => {
   const filteredServices = {};
 
   try {
-    const { services, sujets } = req.body;
+    const { services, thematics } = req.body;
 
     for (const serviceItem of Object.keys(services)) {
 
@@ -105,12 +105,12 @@ exports.getFilteredServices = (req, res, next) => {
           if (jsonData && jsonData.timelines) {
             let filteredTimelines = jsonData.timelines;
 
-            if (sujets && sujets[serviceItem]) {
-              const serviceSubjects = sujets[serviceItem];
+            if (thematics && thematics[serviceItem]) {
+              const serviceSubjects = thematics[serviceItem];
 
               filteredTimelines = filteredTimelines.filter(timeline => {
-                const subjectKeys = Object.keys(serviceSubjects);
-                return subjectKeys.includes(timeline.sujet) && serviceSubjects[timeline.sujet];
+                const thematicKeys = Object.keys(serviceSubjects);
+                return thematicKeys.includes(timeline.thematic) && serviceSubjects[timeline.thematic];
               });
             }
 

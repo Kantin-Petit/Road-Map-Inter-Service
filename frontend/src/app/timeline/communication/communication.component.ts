@@ -11,8 +11,8 @@ export class CommunicationComponent {
 
   constructor(public filterService: FilterService) { }
 
-  getColorForSubject(subjectName: string): string {
-    const foundSubject = this.filterService.subjects[subjectName];
+  getColorForSubject(thematicName: string): string {
+    const foundSubject = this.filterService.thematics[thematicName];
     return foundSubject ? foundSubject.color : '#000000';
   }
 

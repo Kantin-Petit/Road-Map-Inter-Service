@@ -22,8 +22,8 @@ export class ServiceService {
     return this.http.get<{ [key: string]: { name: string } }>(`${this.apiUrl}/${API.SERVICE_LIST}`);
   }
 
-  getService(serviceName: string, sujet: string[] | null): Observable<{ [key: string]: ServiceModel }> {
-    return this.http.get<{ [key: string]: ServiceModel }>(`${this.apiUrl}/${API.SERVICE}/${serviceName}?sujet=${sujet}`);
+  getService(serviceName: string, thematic: string[] | null): Observable<{ [key: string]: ServiceModel }> {
+    return this.http.get<{ [key: string]: ServiceModel }>(`${this.apiUrl}/${API.SERVICE}/${serviceName}?thematic=${thematic}`);
   }
 
   getfilteredService(data: any): Observable<{ [key: string]: ServiceModel }> {

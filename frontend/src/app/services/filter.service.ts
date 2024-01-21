@@ -1,16 +1,16 @@
 import { Injectable } from '@angular/core';
 import { ServiceModel, TimelineModel } from '../models/service-model';
-import { Subject } from '../models/subject-model';
-import { Subject as Sub, Observable } from 'rxjs';
+import { Thematic } from '../models/thematic-model';
+import { Subject, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
-export class FilterService  {
+export class FilterService {
 
   services: { [key: string]: ServiceModel } = {};
   servicesFilter: { [key: string]: ServiceModel } = {};
-  subjects: { [key: string]: Subject } = {};
+  thematics: { [key: string]: Thematic } = {};
 
   checkedServices: { [key: string]: boolean } = {};
   checkedServicesInit: { [key: string]: boolean } = {};
@@ -26,7 +26,7 @@ export class FilterService  {
 
   isFullLoad: boolean = false;
 
-  private filterChangeSubject: Sub<void> = new Sub<void>();
+  private filterChangeSubject: Subject<void> = new Subject<void>();
 
   getFilterChangeObservable(): Observable<void> {
     return this.filterChangeSubject.asObservable();
