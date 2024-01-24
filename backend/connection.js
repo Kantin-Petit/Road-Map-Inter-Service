@@ -1,4 +1,4 @@
-const {Sequelize} = require('sequelize');
+const { Sequelize } = require('sequelize');
 
 require('dotenv').config()
 
@@ -9,16 +9,16 @@ const DB_HOST = process.env.DB_HOST;
 const ENV = process.env.ENV;
 
 const sequelize = new Sequelize(`${DB_NAME}`, `${DB_USER}`, `${DB_PASSWORD}`, {
-    host: `${DB_HOST}`,
-    port: 3306,
-    dialect: 'mysql',
+  host: `${DB_HOST}`,
+  port: 3306,
+  dialect: 'mysql',
 });
 
-sequelize.sync(err => {})
+sequelize.sync(err => { })
 
 sequelize.authenticate()
-  .then(() => {})
-  .catch(err => {});
+  .then(() => { })
+  .catch(err => { });
 
 module.exports = sequelize
 global.sequelize = sequelize

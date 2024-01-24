@@ -1,24 +1,22 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { User } from '../models/user-model';
+import { User } from '../../../models/user-model';
 import { ConfirmationService, MessageService } from 'primeng/api';
-import { UserService } from '../services/user.service';
+import { UserService } from '../../../services/user.service';
 import { Table } from 'primeng/table';
-import { ServiceService } from '../services/service.service'
-import { Subject } from '../models/subject-model';
+import { ServiceService } from '../../../services/service.service'
+import { Thematic } from '../../../models/thematic-model';
 import { Observable } from 'rxjs';
-import { UserRegistration, UserRole } from '../interfaces/auth';
-import { AuthService } from '../services/auth.service';
-
+import { UserRegistration, UserRole } from '../../../interfaces/auth';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
-  selector: 'app-admin',
-  templateUrl: './admin.component.html',
-  styleUrls: ['./admin.component.scss'],
+  selector: 'app-admin-user',
+  templateUrl: './admin-user.component.html',
+  styleUrls: ['./admin-user.component.scss'],
   providers: [MessageService, ConfirmationService]
-
 })
 
-export class AdminComponent implements OnInit {
+export class AdminUserComponent implements OnInit {
 
   @ViewChild('dt') dt!: Table;
 
@@ -27,9 +25,8 @@ export class AdminComponent implements OnInit {
   utilisateurDialog: boolean = false;
   selectedUsers!: User[] | null;
   submitted: boolean = false;
-  statuses!: any[];
   Delete!: string;
-  service!: Subject[];
+  service!: Thematic[];
   createUser: boolean = false
 
   constructor(
@@ -43,12 +40,6 @@ export class AdminComponent implements OnInit {
     this.userService.getAllUser().subscribe(users => {
       this.utilisateurs = users;
     });
-
-    this.statuses = [
-      { label: 'INSTOCK', value: 'instock' },
-      { label: 'LOWSTOCK', value: 'lowstock' },
-      { label: 'OUTOFSTOCK', value: 'outofstock' }
-    ];
   }
 
   filterGlobal(event: Event) {
@@ -125,7 +116,7 @@ export class AdminComponent implements OnInit {
         this.userService.modifyUser(this.utilisateur.id, this.utilisateur).subscribe(() => {
           this.messageService.add({ severity: 'success', summary: 'Réussite', detail: 'Utilisateur Modifier', life: 3000 });
         });
-      
+
       } else {
 
         const formData: UserRegistration = {
@@ -167,5 +158,3 @@ export class AdminComponent implements OnInit {
   }
 
 }
-
-
