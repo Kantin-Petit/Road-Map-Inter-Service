@@ -14,6 +14,7 @@ import { Router, NavigationStart } from '@angular/router';
 export class FilterComponent implements OnInit {
 
   private subscription: Subscription;
+  selectedThematic: string = 'Default';
 
   constructor(
     public serviceService: ServiceService,
@@ -43,6 +44,26 @@ export class FilterComponent implements OnInit {
   getColorForThematic(thematicName: string): string {
     const foundThematic = this.filterService.thematics[thematicName];
     return foundThematic ? foundThematic.color : '#000000';
+  }
+
+  setThematicFilter(thematic: string) {
+    
+    if (!(thematic === "Default")) {
+      for(let service in this.filterService.servicesFilter) {
+        for(let thematic in this.filterService.checkedThematics[service]) {
+          this.onSelectThematics(service, false, thematic)
+        }
+        const ser = this.filterService.checkedThematics[service][thematic];
+        this.onSelectThematics(service, true, thematic)
+      }
+    }
+    else {
+      for(let service in this.filterService.servicesFilter) {
+        for(let thematic in this.filterService.checkedThematics[service]) {
+          this.onSelectThematics(service, false, thematic)
+        }
+      }
+    }
   }
 
   setServices() {
