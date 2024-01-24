@@ -1,6 +1,14 @@
- <div class="side_menu" [ngClass]="{ 'collapsed': filterService.isCollapsed }">
-
+<aside>
+  <div id="side_menu" class="side_menu" [ngClass]="{ 'collapsed': filterService.isCollapsed }">
     <ul class="menu">
+      <li class="menu-item">
+        <div class="input_wrapper">
+          <select [(ngModel)]="selectedThematic" (ngModelChange)="setThematicFilter($event)">
+            <option value="Default">Thematiques</option>
+            <option *ngFor="let thematic of filterService.thematics | keyvalue" [value]="thematic.key">{{ thematic.value.name }}</option>
+          </select>
+        </div>
+      </li>
       <li class="menu-item" *ngFor="let service of filterService.servicesFilter | keyvalue">
         <div class="input_wrapper">
           <input name="input_{{service.key}}" id="input_{{service.key}}" type="checkbox" [(ngModel)]="filterService.checkedServices[selectedForService(service)]" (ngModelChange)="isAllChecked()"/>
@@ -10,7 +18,21 @@
           <li class="sub-menu_item" *ngFor="let thematic of service.value.thematics">
             <div class="input_wrapper">
               <input name="input_{{service.key}}_{{thematic}}" id="input_{{service.key}}_{{thematic}}" type="checkbox" [(ngModel)]="filterService.checkedThematics[selectedForService(service)][thematic]" (ngModelChange)="onSelectThematics(service.key, $event, thematic)"> 
-              <label *ngIf="filterService.thematics[thematic]" for="input_{{service.key}}_{{thematic}}"> {{filterService.thematics[thematic].name}}</label>
+              <label *ngIf="filterService.thematics[thematic]" for="input_{{service.key}}_{{thematic}}" [style.color]="getColorForThematic(thematic)"> {{filterService.thematics[thematic].name}}</label>
+            </div>
+          </li>
+        </ul>
+      </li>
+      <li class="menu-item" *ngFor="let service of filterService.servicesFilter | keyvalue">
+        <div class="input_wrapper">
+          <input name="input_{{service.key}}" id="input_{{service.key}}" type="checkbox" [(ngModel)]="filterService.checkedServices[selectedForService(service)]" (ngModelChange)="isAllChecked()"/>
+          <label (click)="toggleSubMenu(service.key)">{{ service.value.name }}</label>
+        </div>
+        <ul class="sub-menu" [class.active]="filterService.isOpen[selectedForService(service)]" *ngIf="service.value.thematics">
+          <li class="sub-menu_item" *ngFor="let thematic of service.value.thematics">
+            <div class="input_wrapper">
+              <input name="input_{{service.key}}_{{thematic}}" id="input_{{service.key}}_{{thematic}}" type="checkbox" [(ngModel)]="filterService.checkedThematics[selectedForService(service)][thematic]" (ngModelChange)="onSelectThematics(service.key, $event, thematic)"> 
+              <label *ngIf="filterService.thematics[thematic]" for="input_{{service.key}}_{{thematic}}" [style.color]="getColorForThematic(thematic)"> {{filterService.thematics[thematic].name}}</label>
             </div>
           </li>
         </ul>
@@ -18,8 +40,8 @@
     </ul>
 
     <div class="toggle-sidebar" (click)="toggleSidebarMenu()">
-        <i *ngIf="!filterService.isCollapsed" class="fas fa-chevron-left arrow-icon"></i>
-        <i *ngIf="filterService.isCollapsed" class="fas fa-chevron-right arrow-icon"></i>
+        <i class="fas fa-chevron-right arrow-icon"></i>
     </div>
   
   </div>
+</aside>
