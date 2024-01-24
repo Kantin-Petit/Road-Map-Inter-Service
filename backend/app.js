@@ -13,8 +13,14 @@ connection;
 const User = require('./models/User');
 const Service = require('./models/Service');
 const Thematic = require('./models/Thematic');
+const Timeline = require('./models/Timeline');
+const ThematicTimeline = require('./models/ThematicTimeline');
 
-func.belongsTo(User, Service, 'serviceId')
+func.belongsTo(User, Service, 'serviceId');
+func.belongsTo(Timeline, Service, 'serviceId');
+
+func.belongsToMany(Timeline, Thematic, ThematicTimeline, 'timeline_id');
+func.belongsToMany(Thematic, Timeline, ThematicTimeline, 'thematic_id');
 
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
