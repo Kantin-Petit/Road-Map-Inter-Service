@@ -46,20 +46,19 @@ export class FilterComponent implements OnInit {
     return foundThematic ? foundThematic.color : '#000000';
   }
 
-  setThematicFilter(thematic: string) {
+  setThematicFilter(value: string) {
     
-    if (!(thematic === "Default")) {
+    if (!(value === "Default")) {
       for(let service in this.filterService.servicesFilter) {
-        for(let thematic in this.filterService.checkedThematics[service]) {
+        for(let thematic in this.filterService.thematics) {
           this.onSelectThematics(service, false, thematic)
         }
-        const ser = this.filterService.checkedThematics[service][thematic];
-        this.onSelectThematics(service, true, thematic)
+        this.onSelectThematics(service, true, value)
       }
     }
     else {
       for(let service in this.filterService.servicesFilter) {
-        for(let thematic in this.filterService.checkedThematics[service]) {
+        for(let thematic in this.filterService.thematics) {
           this.onSelectThematics(service, false, thematic)
         }
       }
