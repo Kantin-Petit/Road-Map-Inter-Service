@@ -12,7 +12,7 @@ export class AuthService {
 
   private apiUrl = environment.apiUrl;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   register(userData: UserRegistration): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/${API.REGISTER}`, userData);
@@ -22,4 +22,11 @@ export class AuthService {
     return this.http.post(`${this.apiUrl}/${API.SIGNIN}`, userData, { withCredentials: true });
   }
 
+  savedToken(token: string): void {
+    localStorage.setItem('token', token);
+  }
+
+  isLogged(): boolean {
+    return !!localStorage.getItem('token');
+  }
 }
