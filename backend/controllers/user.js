@@ -58,7 +58,7 @@ exports.makeAdmin = (req, res, next) => {
     User.findOne({where: {id: req.params.id}})
     .then(user => {
 
-      console.log(user)
+      console.log('Make admin', user)
     })
     .catch(error => res.status(500).json({ error }));
 };

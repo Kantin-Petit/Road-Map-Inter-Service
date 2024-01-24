@@ -2,14 +2,16 @@
 
     <section class="choice">
         <ul>
-            <li><a (click)="showTimeLine('planning')">Planning</a></li>
             <li><a (click)="showTimeLine('communication')">communication</a></li>
+            <li><a (click)="showTimeLine('planning')">Planning</a></li>
         </ul>
     </section>
-    
+
+    <app-filter></app-filter>
+
     <section class="timeline">
-        <app-planning *ngIf="displayPlanning"></app-planning>
         <app-communication *ngIf="displayCommunication"></app-communication>
+        <app-planning *ngIf="displayPlanning && this.filterService.isFullLoad"></app-planning>
     </section>
 
 </main>
