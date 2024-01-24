@@ -1,0 +1,19 @@
+@import '../../../styles.scss';
+
+#sidemenu{
+    @include flex(row, wrap, space-evenly, flex-start);
+    width: 100%;
+    margin: 40px 0;
+    a{
+        color: color(primary-color);
+        transition: all 0.3s ease-in-out;
+        padding: 8px 12px;
+        border-radius: 5px;
+        cursor: pointer;
+
+        &:hover {
+            background-color: color(primary-color);
+            color: white;
+        }
+    }
+}

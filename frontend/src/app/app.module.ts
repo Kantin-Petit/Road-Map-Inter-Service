@@ -10,11 +10,9 @@ import { FormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { ErrorComponent } from './_utils/error/error.component';
 import { HomeComponent } from './pages/home/home.component';
 import { PlanningComponent } from './timeline/planning/planning.component';
 import { HeaderComponent } from './header/header.component';
-import { UserRegistrationComponent } from './authentication/user-registration/user-registration.component';
 import { UserLoginComponent } from './authentication/user-login/user-login.component';
 
 import { ConfirmationService, MessageService } from 'primeng/api';
@@ -42,11 +40,9 @@ registerLocaleData(localeFr);
 @NgModule({
   declarations: [
     AppComponent,
-    ErrorComponent,
     HomeComponent,
     PlanningComponent,
     HeaderComponent,
-    UserRegistrationComponent,
     UserLoginComponent,
     CommunicationComponent,
     SidebarComponent,
