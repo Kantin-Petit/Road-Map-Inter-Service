@@ -29,7 +29,10 @@ const Timeline = connection.define('Timeline', {
         type: DataTypes.DATE(),
         allowNull: false,
     },
+    service_id: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+    }
 }, { timestamps: false, deletedAt: true, paranoid: true });
-
 
 module.exports = Timeline;

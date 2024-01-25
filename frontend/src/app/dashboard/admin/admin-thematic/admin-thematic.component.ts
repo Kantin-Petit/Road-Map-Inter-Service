@@ -35,7 +35,7 @@ export class AdminThematicComponent implements OnInit {
 
   ngOnInit() {
     this.thematicService.getAllthematic().subscribe(response => {
-      this.thematics = Object.entries(response).map(([key, value]) => ({ key, ...value }));
+      this.thematics = response;
     });
   }
 
@@ -115,11 +115,13 @@ export class AdminThematicComponent implements OnInit {
       } else {
 
         const formData: Thematic = {
-          id: 0,
+          id: this.thematic.id,
           name: this.thematic.name,
           description: this.thematic.description,
           color: this.thematic.color,
         };
+
+        console.log(formData)
 
         this.thematics.push(this.thematic);
         this.messageService.add({ severity: 'success', summary: 'Réussite', detail: 'Thématique Créer', life: 3000 });

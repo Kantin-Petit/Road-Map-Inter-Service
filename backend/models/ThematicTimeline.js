@@ -7,7 +7,24 @@ const ThematicTimeline = connection.define('ThematicTimeline', {
         primaryKey: true,
         autoIncrement: true,
     },
-}, { timestamps: false, deletedAt: true, paranoid: true });
-
+    timeline_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        unique: 'compositeIndex',
+        references: {
+            model: 'Timeline',
+            key: 'id'
+        }
+    },
+    thematic_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+         unique: 'compositeIndex',
+        references: {
+            model: 'Thematic',
+            key: 'id'
+        }
+    }
+}, { timestamps: false });
 
 module.exports = ThematicTimeline;
