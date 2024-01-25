@@ -35,6 +35,6 @@ exports.belongsTo = (tab1, tab2, key) => {
    return tab1.belongsTo(tab2, { foreignKey: key });
 }
 
-exports.belongsToMany = (tab1, tab2, tab3, key1, key2) => {
-   return tab1.belongsToMany(tab2, { through: tab3, foreignKey: key1, otherKey: key2 });
+exports.belongsToMany = (tab1, tab2, association, key) => {
+   return tab1.belongsToMany(tab2, { through: association, foreignKey: key });
 }

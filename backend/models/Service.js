@@ -23,5 +23,4 @@ const Service = connection.define('Service', {
     },
 }, { timestamps: false, deletedAt: true, paranoid: true });
 
-
 module.exports = Service

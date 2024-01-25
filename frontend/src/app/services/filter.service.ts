@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { ServiceModel, TimelineModel } from '../models/service-model';
+import { ServiceModel } from '../models/service-model';
+import { TimelineModel, TimelineModelWithService } from '../models/timeline-model';
 import { Thematic } from '../models/thematic-model';
 import { Subject, Observable } from 'rxjs';
 
@@ -8,13 +9,13 @@ import { Subject, Observable } from 'rxjs';
 })
 export class FilterService {
 
-  services: { [key: string]: ServiceModel } = {};
-  servicesFilter: { [key: string]: ServiceModel } = {};
-  thematics: { [key: string]: Thematic } = {};
+  services!: TimelineModelWithService[];
+  servicesFilter!: TimelineModelWithService[];
+  thematics!: Thematic[];
 
-  checkedServices: { [key: string]: boolean } = {};
-  checkedServicesInit: { [key: string]: boolean } = {};
-  checkedThematics: { [key: string]: { [innerKey: string]: boolean } } = {};
+  checkedServices: number[] = [];
+  checkedServicesInit: number[] = [];
+  checkedThematics: number[] = [];
 
   sidebarVisible: boolean = false;
   sidebarData!: TimelineModel;
@@ -38,8 +39,12 @@ export class FilterService {
   }
 
   resetVariables() {
-    this.checkedServices = {};
-    this.checkedThematics = {};
+    this.checkedServices = [];
+    this.checkedThematics = [];
+  }
+
+  getServiceId(value: number): number {
+    return value;
   }
 
 }

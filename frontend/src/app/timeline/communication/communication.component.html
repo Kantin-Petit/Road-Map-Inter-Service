@@ -2,16 +2,16 @@
 
   <div class="timeline_wrapper container" [ngClass]="{ 'collapsed': filterService.isCollapsed }">
   
-    <ng-container *ngFor="let service of filterService.services | keyvalue">
+    <ng-container *ngFor="let service of filterService.services">
     <section class="timeline">
       <div class="info">
         <img width="50" height="50" src="https://assets.codepen.io/210284/face.svg" alt=""/>
-        <h2>{{service.value.name | uppercase }}</h2>
-        <p>{{ service.value.description }}</p>
+        <h2>{{service.name | uppercase }}</h2>
+        <p>{{ service.description }}</p>
       </div>
       <ol>
-        <li *ngFor="let timeline of service.value.timelines; let i = index">
-          <div  [class.card_selected]="filterService.sidebarVisible && filterService.selectedItemIndex === service.key[i]" (click)="toggleSidebar(i, service.key, timeline)" [style.background-color]="getColorForThematic(timeline.thematic)">
+        <li *ngFor="let timeline of service.sujets; let i = index">
+          <div  [class.card_selected]="filterService.sidebarVisible && filterService.selectedItemIndex === service.name" (click)="toggleSidebar(i, service.name, timeline)" [style.background-color]="timeline.Thematics[0].color">
             <app-sidebar *ngIf="timeline" [sidebarData]="timeline"></app-sidebar>
           </div>
         </li>

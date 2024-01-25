@@ -16,10 +16,9 @@ const Thematic = require('./models/Thematic');
 const Timeline = require('./models/Timeline');
 const ThematicTimeline = require('./models/ThematicTimeline');
 
-func.belongsTo(User, Service, 'serviceId');
-func.belongsTo(Timeline, Service, 'serviceId');
-
-func.belongsToMany(Timeline, Thematic, ThematicTimeline, 'timeline_id');
+func.belongsTo(User, Service, 'service_id');
+func.belongsTo(Timeline, Service, 'service_id');
+func.belongsToMany(Timeline, Thematic,ThematicTimeline, 'timeline_id');
 func.belongsToMany(Thematic, Timeline, ThematicTimeline, 'thematic_id');
 
 app.use((req, res, next) => {
@@ -39,10 +38,12 @@ const authRoutes = require('./routes/auth');
 const userRoutes = require('./routes/user');
 const serviceRoutes = require('./routes/service');
 const thematicRoutes = require('./routes/thematic');
+const timelineRoutes = require('./routes/timeline');
 
 app.use('/api/auth', authRoutes);
 app.use('/api/user', userRoutes);
 app.use('/api/service', serviceRoutes);
 app.use('/api/thematic', thematicRoutes);
+app.use('/api/timeline', timelineRoutes);
 
 module.exports = app;

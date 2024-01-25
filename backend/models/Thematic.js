@@ -18,10 +18,9 @@ const Thematic = connection.define('Thematic', {
         allowNull: true,
     },
     color: {
-        type: DataTypes.STRING(6),
+        type: DataTypes.STRING(7),
         allowNull: true,
     },
 }, { timestamps: false, deletedAt: true, paranoid: true });
-
 
 module.exports = Thematic
