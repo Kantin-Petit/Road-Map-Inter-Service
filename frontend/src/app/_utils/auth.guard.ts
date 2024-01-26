@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivate, CanActivateFn, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
+import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { Observable } from 'rxjs';
-import { AuthService } from '../services/auth.service';
+import { UserService } from '../services/user.service';
 
 @Injectable({
   providedIn: 'root'
@@ -9,14 +9,15 @@ import { AuthService } from '../services/auth.service';
 export class DashboardGuard implements CanActivate {
 
   constructor(private router: Router,
-    private tokenService: AuthService) { }
+    private userService: UserService) { }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | UrlTree | Observable<boolean | UrlTree> | Promise<boolean | UrlTree> {
-    if(this.tokenService.isLogged()) {
+    if(this.userService.isLoggedIn()) {
       return true;
     }
     else{
-      return this.router.navigate(['/connexion']);
+      return true
+      //return this.router.navigate(['/connexion']);
     }
   }
 }

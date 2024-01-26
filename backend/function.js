@@ -34,3 +34,7 @@ exports.clearCookies = (res, token) => {
 exports.belongsTo = (tab1, tab2, key) => {
    return tab1.belongsTo(tab2, { foreignKey: key });
 }
+
+exports.belongsToMany = (tab1, tab2, association, key) => {
+   return tab1.belongsToMany(tab2, { through: association, foreignKey: key });
+}

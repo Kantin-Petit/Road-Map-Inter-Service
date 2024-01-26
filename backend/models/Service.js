@@ -13,12 +13,14 @@ const Service = connection.define('Service', {
         allowNull: false,
         unique: true,
     },
-    file_name: {
+    image: {
         type: DataTypes.STRING(100),
-        allowNull: false,
-        unique: true,
+        allowNull: true,
     },
-}, { timestamps: false, deletedAt: true, paranoid: true } );
-
+    description: {
+        type: DataTypes.TEXT(),
+        allowNull: true,
+    },
+}, { timestamps: false, deletedAt: true, paranoid: true });
 
 module.exports = Service

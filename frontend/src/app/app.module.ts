@@ -50,7 +50,7 @@ registerLocaleData(localeFr);
     SidebarComponent,
     ConnexionComponent,
     FilterComponent,
-  ],
+      ],
   imports: [
     BrowserModule,
     AppRoutingModule,

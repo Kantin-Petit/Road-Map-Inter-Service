@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { AdminRoutingModule } from './dashboard-routing.module';
+import { DashboardRoutingModule } from './dashboard-routing.module';
 import { SidemenuComponent } from './sidemenu/sidemenu.component';
 import { TableModule } from 'primeng/table';
 import { ToastModule } from 'primeng/toast';
@@ -18,6 +18,7 @@ import { AdminUserComponent } from './admin/admin-user/admin-user.component';
 import { AdminThematicComponent } from './admin/admin-thematic/admin-thematic.component';
 import { DashboardComponent } from './dashboard.component';
 import { ColorPickerModule } from 'primeng/colorpicker';
+import { ProfilComponent } from './profil/profil.component';
 
 @NgModule({
   declarations: [
@@ -25,11 +26,11 @@ import { ColorPickerModule } from 'primeng/colorpicker';
     AdminServiceComponent,
     AdminUserComponent,
     AdminThematicComponent,
-    DashboardComponent
+    DashboardComponent,
+    ProfilComponent
   ],
   imports: [
     CommonModule,
-    AdminRoutingModule,
     AccordionModule,
     TableModule,
     ToastModule,
@@ -41,7 +42,8 @@ import { ColorPickerModule } from 'primeng/colorpicker';
     ConfirmDialogModule,
     FormsModule,
     TagModule,
-    DropdownModule
+    DropdownModule,
+    DashboardRoutingModule
   ]
 })
-export class AdminModule { }
+export class DashboardModule { }

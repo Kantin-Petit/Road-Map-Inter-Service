@@ -5,6 +5,7 @@ import { map } from 'rxjs/operators';
 import { UserLogin } from '../../interfaces/auth';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-user-login',
@@ -18,7 +19,8 @@ export class UserLoginComponent {
   
   constructor(private formBuilder: FormBuilder, 
     private authService: AuthService,
-    private router: Router) { 
+    private router: Router,
+    private userService: UserService) { 
     this.loginForm = this.formBuilder.group({
       email: [null, [Validators.required, Validators.email]],
       password: [null, [Validators.required]],
@@ -39,7 +41,7 @@ export class UserLoginComponent {
       const formData: UserLogin = this.loginForm.value;
       this.authService.login(formData).subscribe(response => {
           console.log(response); 
-          this.authService.savedToken(response.token);
+          this.userService.saveToken(response.accesToken);
           this.router.navigate(['/dashboard']);
         },
         (error) => {

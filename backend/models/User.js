@@ -39,9 +39,9 @@ const User = connection.define('User', {
                     msg: "Le rôle doit être 'admin', 'admin_service' ou 'user'"
                 }
             }
-          })
+        })
     },
-    serviceId: {
+    service_id: {
         type: DataTypes.INTEGER,
         allowNull: true,
         validate: {
@@ -52,7 +52,6 @@ const User = connection.define('User', {
             }
         }
     }
-}, { timestamps: false, deletedAt: false, paranoid: true } );
+}, { timestamps: false, deletedAt: false, paranoid: true });
 
-
-module.exports = User
+module.exports = User;

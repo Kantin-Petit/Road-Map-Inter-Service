@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { UserService } from '../services/user.service';
 
 @Component({
   selector: 'app-header',
@@ -7,19 +8,15 @@ import { Router } from '@angular/router';
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent {
-  constructor(private router: Router) { }
+  constructor(private router: Router,
+    private userService: UserService) { }
   
-  isConnect() {
-    if (localStorage.getItem('token')) {
-      return true;
-    } else {
-      return false;
-    }
+  isLogged() {
+    return this.userService.isLoggedIn();
   }
 
   logout() {
-    localStorage.removeItem('token');
+    this.userService.logout();
     this.router.navigate(['/']);
   }
-
 }
