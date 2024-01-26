@@ -10,6 +10,7 @@ import { FormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { ErrorComponent } from './_utils/error/error.component';
 import { HomeComponent } from './pages/home/home.component';
 import { PlanningComponent } from './timeline/planning/planning.component';
 import { HeaderComponent } from './header/header.component';
@@ -40,6 +41,7 @@ registerLocaleData(localeFr);
 @NgModule({
   declarations: [
     AppComponent,
+    ErrorComponent,
     HomeComponent,
     PlanningComponent,
     HeaderComponent,
@@ -48,7 +50,7 @@ registerLocaleData(localeFr);
     SidebarComponent,
     ConnexionComponent,
     FilterComponent,
-  ],
+      ],
   imports: [
     BrowserModule,
     AppRoutingModule,

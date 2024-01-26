@@ -6,9 +6,9 @@ import { DashboardGuard } from './_utils/auth.guard';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
-  {
-    path: 'dashboard', loadChildren: () => import('./dashboard/dashboard.module').then(res => res.AdminModule),
-    canActivate: [DashboardGuard]
+  { 
+    path: 'dashboard', loadChildren: () => import('./dashboard/dashboard.module').then(res => res.DashboardModule),
+    canActivate: [DashboardGuard],
   },
   { path: 'connexion', component: ConnexionComponent },
   { path: '**', redirectTo: '/', pathMatch: 'full' }

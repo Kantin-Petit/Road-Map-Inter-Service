@@ -125,8 +125,9 @@
     padding: 20px;
     overflow: auto;
     transition: all .5s ease-in-out;
+    width: calc(100% - 200px);
 
-    margin-left: 150px;
+    margin-left: 200px;
 
     &.collapsed {
       margin-left: 20px;
@@ -174,7 +175,7 @@ img {
 .timeline {
   position: relative;
   white-space: nowrap;
-  max-width: 1400px;
+  max-width: 2300px;
   padding: 0 10px;
   margin: 0 auto;
   display: grid;

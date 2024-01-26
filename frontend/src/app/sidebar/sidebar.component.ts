@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-// import { ServiceModel } from '../models/service-model';
+import { TimelineModel } from '../models/timeline-model';
 
 @Component({
   selector: 'app-sidebar',
@@ -8,6 +8,6 @@ import { Component, Input } from '@angular/core';
 })
 export class SidebarComponent {
 
-  @Input() sidebarData!: any;
+  @Input() sidebarData!: TimelineModel;
 
 }
