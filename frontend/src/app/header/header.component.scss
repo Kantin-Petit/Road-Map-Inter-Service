@@ -1,0 +1,38 @@
+@import '../../styles.scss';
+
+header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  background-color: color(primary-color);
+  padding: 30px 0;
+  position:sticky;
+  z-index: 999;
+
+  ul {
+    display: flex;
+    justify-content: space-between;
+    li{
+      display: flex;
+      a {
+        color: white;
+        transition: all 0.3s ease-in-out;
+        padding: 8px 12px;
+        margin: auto;
+        border-radius: 5px;
+    
+        &:hover {
+          background-color: color(secondary-color);
+        }
+  
+        img{
+          min-width: 15mm;
+          width: 10rem;
+        }
+    
+      }
+    }
+    
+  }
+
+}

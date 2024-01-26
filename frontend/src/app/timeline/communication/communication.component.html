@@ -1,0 +1,29 @@
+<div class="communication">
+
+  <div class="timeline_wrapper container" [ngClass]="{ 'collapsed': filterService.isCollapsed }">
+  
+    <ng-container *ngFor="let service of filterService.services">
+    <section class="timeline">
+      <div class="info">
+        <img width="50" height="50" src="https://assets.codepen.io/210284/face.svg" alt=""/>
+        <h2>{{service.name | uppercase }}</h2>
+        <p>{{ service.description }}</p>
+      </div>
+      <ol>
+        <li *ngFor="let timeline of service.sujets; let i = index">
+          <div  [class.card_selected]="filterService.sidebarVisible && filterService.selectedItemIndex === service.name" (click)="toggleSidebar(i, service.name, timeline)" [style.background-color]="timeline.Thematics[0].color">
+            <app-sidebar *ngIf="timeline" [sidebarData]="timeline"></app-sidebar>
+          </div>
+        </li>
+      </ol>
+    </section>
+    </ng-container>
+  
+  </div>
+
+</div>
+
+<p-sidebar [(visible)]="filterService.sidebarVisible" position="right">
+  <app-sidebar *ngIf="filterService.sidebarData" [sidebarData]="filterService.sidebarData"></app-sidebar>
+</p-sidebar>
+

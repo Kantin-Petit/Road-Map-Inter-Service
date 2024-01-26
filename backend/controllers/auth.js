@@ -9,18 +9,23 @@ exports.token = (req, res, next) => {
 };
 
 exports.signup = (req, res, next) => {
-    const lastname = req.body.lastName.replace(/\s/g, '').toLowerCase();
-    const firstName = req.body.firstName.replace(/\s/g, '').toLowerCase();
-    const slug = firstName + lastname + Math.floor(Math.random() * 9999)
  
     bcrypt.hash(req.body.password, 10)
     .then(hash => {
+
+        let service = req.body.service
+        let role = req.body.role
+
+        if(role === 'admin') {  service = null; }
+        if((role === 'admin_service' || role === 'user') && typeof service === 'string') { service = Number(service); }
+
         const user = new User({
-            email: req.body.email,
-            password: hash,
             last_name: req.body.lastName,
             first_name: req.body.firstName,
-            slug: slug,
+            email: req.body.email,
+            password: hash,
+            role: req.body.role,
+            serviceId: service
         })
         user.save()
         .then(() => res.status(201).json({message: 'Utilisateur créé !'}))
@@ -38,7 +43,7 @@ exports.signin = (req, res, next) => {
             if(!valid) return res.status(401).json({error: 'Mot de passe incorrect'});
             const token = func.createToken(user.id, user.is_admin);
             const setCookie = func.setCookie(res, token)
-            setCookie.status(201).json({ message: 'Cookies created', accessToken : token})
+            setCookie.status(201).json({ message: 'Cookies created', accessToken : token, userId: user.id })
         })
         .catch(error => res.status(500).json({ error }));
     })

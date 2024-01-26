@@ -1,1 +1,144 @@
-/* You can add global styles to this file, and also import other style files */
+// autoload //
+
+@import "~@fortawesome/fontawesome-free/css/all.css";
+
+@import "primeng/resources/themes/lara-light-blue/theme.css";
+@import "primeng/resources/primeng.css";
+@import "primeicons/primeicons.css";
+@import "primeflex/primeflex.css";
+
+@import 'vis-timeline/styles/vis-timeline-graph2d.css';
+@import 'quill/dist/quill.core.css';
+
+// Variables //
+$html-font-size: 16px;
+
+$container: 2300px;
+$container-header: 1380px;
+
+$tablet: 999px;
+$mobile: 699px;
+
+$primary-color: #0c578d;
+$secondary-color: #0d3650;
+$third-color: #3e8ea1;
+$fourth-color: #72b5cc;
+$fifth-color: #5a6d7d;
+$sixth-color: #1d2e39;
+$seventh-color: #c48e33;
+$nav-color: #0c1e35;
+
+:root {
+	--primary-color: #{$primary-color};
+	--secondary-color: #{$secondary-color};
+	--third-color: #{$third-color};
+	--fourth-color: #{$fourth-color};
+	--fifth-color: #{$fifth-color};
+	--sixth-color: #{$sixth-color};
+	--seventh-color: #{$seventh-color};
+}
+
+// Font // 
+
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
+
+$primary-font : 'Lato', sans-serif;
+
+// Mixins //
+
+// FLEX
+@mixin flex($direction, $wrap, $justify-content, $align-items) {
+  display: flex;
+  flex-flow: $direction $wrap;
+  justify-content: $justify-content;
+  align-items: $align-items;
+}
+
+// Object Fit
+@mixin objectFit($object-fit, $object-position, $height, $width) {
+  object-fit: $object-fit;
+  object-position: $object-position;
+  height: $height;
+  width: $width;
+}
+
+// Function //
+@function color($color-name) {
+  @return var(--#{$color-name});
+}
+
+@function stripUnit($value) {
+  @return math.div($value, $value * 0 + 1);
+}
+
+@function rem($pxValue) {
+  @return #{math.div(stripUnit($pxValue), stripUnit($html-font-size))}rem;
+}
+
+// Global //
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  max-width: 100vw;
+  position: relative;
+
+  main {
+    overflow-x: hidden;
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  word-break: break-word;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+ul {
+  margin: 0;
+  padding-left: 0;
+  li {
+    list-style: none;
+  }
+}
+
+
+.container {
+    margin: 0 auto;
+    max-width: $container;
+    width: 100%;
+    padding-left: 0;
+    padding-right: 0;
+  
+    @media only screen and (max-width: 1680px) {
+      padding-left: 60px;
+      padding-right: 60px;
+    }
+    @media only screen and (max-width: $tablet) {
+      padding-left: 45px;
+      padding-right: 45px;
+    }
+    @media only screen and (max-width: $mobile) {
+      padding-left: 25px;
+      padding-right: 25px;
+    }
+  }
+
+  .custom_item {
+    color: rgb(20, 0, 98) !important;
+
+    &.active {
+      filter: brightness(0.5);
+    }
+    cursor: pointer;
+}
