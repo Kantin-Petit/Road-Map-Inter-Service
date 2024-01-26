@@ -1,10 +1,15 @@
-<!-- <app-sidemenu></app-sidemenu>
+<app-sidemenu></app-sidemenu>
 <div class="container">
+
+  <div>
+    <button (click)="createService()">Créer Service</button>
+  </div>
+
   <div class="select-container">
     <label for="serviceSelect">Sélectionner un service :</label>
     <select id="serviceSelect" [(ngModel)]="selectedService" (change)="onServiceChange()">
-      <ng-container *ngFor="let service of listServices | keyvalue">
-        <option  [value]="service.key">{{ service.value.name }}</option>
+      <ng-container *ngFor="let service of services">
+        <option  [value]="service.id">{{ service.name }}</option>
       </ng-container>
     </select>
   </div>
@@ -15,23 +20,30 @@
     </div>
 
     <div class="form-group">
-      <p for="photo">Chemin de la photo : {{selectedServiceDetails.photo}}</p>
-      <img [src]="selectedServiceDetails.photo" alt="service_picture" />
+      <p for="photo">Chemin de la photo : {{selectedServiceDetails.image}}</p>
+      <img [src]="selectedServiceDetails.image" alt="service_picture" />
     </div>
 
-    <div class="form-group">
+    <div class="wrapper-btn">
+          <button (click)="editService(selectedServiceDetails.id)">Modifier Service</button>
+          <button (click)="deleteService(selectedServiceDetails.id)">Supprimer Service</button>
+    </div>
+
+   
+
+    <!-- <div class="form-group">
       <label for="timelineSearch">Rechercher une timeline :</label>
       <input type="text" id="timelineSearch" [(ngModel)]="timelineSearchTerm" placeholder="Search timelines" (input)="filterTimelines()">
-    </div>
+    </div> -->
 
-    <div class="form-group">
+    <!-- <div class="form-group">
       <label for="timelineSelect">Sélectionner une timeline :</label>
       <select id="timelineSelect" [(ngModel)]="selectedTimelineId" name="timelineSelect" (change)="onTimelineChange()">
         <option *ngFor="let timeline of filteredTimelines" [value]="timeline.id">{{ timeline.titre }}</option>
       </select>
-    </div>
+    </div> -->
 
-    <div *ngIf="selectedTimeline">
+    <!-- <div *ngIf="selectedTimeline">
       <div class="timeline-details">
         <h3>{{ selectedTimeline.titre }}</h3>
         <p>{{ selectedTimeline.dateStart }} - {{ selectedTimeline.dateEnd }}</p>
@@ -40,10 +52,8 @@
           <li *ngFor="let texte of selectedTimeline.texte">{{ texte }}</li>
         </ul>
       </div>
-    </div>
+    </div> -->
 
-    <form (ngSubmit)="onSubmit()">
-      <button type="submit">Modifier</button>
-    </form>
+   
   </div>
-</div> -->
+</div>

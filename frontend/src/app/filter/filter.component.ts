@@ -42,8 +42,8 @@ export class FilterComponent implements OnInit {
 
   setServices() {
     this.TimelineService.getAllTimeline().subscribe(service => {
-        this.filterService.services = service;
-        this.filterService.servicesFilter = service;
+      this.filterService.services = service;
+      this.filterService.servicesFilter = [...service];
       this.filterService.setServicesFilter(true);
     });
   }
@@ -55,9 +55,11 @@ export class FilterComponent implements OnInit {
     });
   }
 
-  onCheckboxChange(event: any, id: number, hasThematic: boolean): void { 
+  onCheckboxChange(event: any, id: number, thematic: boolean): void { 
 
-    const checkedArray = hasThematic ? this.filterService.checkedThematics : this.filterService.checkedServices;
+    let checkedArray;
+
+    checkedArray = thematic ? this.filterService.checkedThematics : this.filterService.checkedServices;
 
     if (event.target.checked) {
       checkedArray.push(id);
@@ -72,15 +74,17 @@ export class FilterComponent implements OnInit {
       services: this.filterService.checkedServices,
     };
 
-    if (hasThematic) {
+    if (thematic || this.filterService.checkedThematics.length > 0) {
       data.thematic = this.filterService.checkedThematics,
       data.hasThematic = true
     };
 
+
       this.TimelineService.getfilteredTiemline(data).subscribe(updatedServices => {
         this.filterService.services = updatedServices;
-        if (hasThematic) {
-          this.filterService.servicesFilter = updatedServices;
+        if (thematic) {
+          this.filterService.servicesFilter = [...updatedServices];
+          this.filterService.checkedServices = [...this.filterService.checkedServicesInit];
         }
         this.filterService.setServicesFilter(true);
       });

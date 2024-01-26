@@ -13,19 +13,21 @@ import { FormsModule } from '@angular/forms';
 import { TagModule } from 'primeng/tag';
 import { DropdownModule } from 'primeng/dropdown';
 import { AccordionModule } from 'primeng/accordion';
-// import { AdminServiceComponent } from './admin/admin-service/admin-service.component';
+import { AdminServiceComponent } from './admin/admin-service/admin-service.component';
 import { AdminUserComponent } from './admin/admin-user/admin-user.component';
 import { AdminThematicComponent } from './admin/admin-thematic/admin-thematic.component';
 import { DashboardComponent } from './dashboard.component';
 import { ColorPickerModule } from 'primeng/colorpicker';
+import { AdminTimelineComponent } from './admin/admin-timeline/admin-timeline.component';
 
 @NgModule({
   declarations: [
     SidemenuComponent,
-    // AdminServiceComponent,
+    AdminServiceComponent,
     AdminUserComponent,
     AdminThematicComponent,
-    DashboardComponent
+    DashboardComponent,
+    AdminTimelineComponent
   ],
   imports: [
     CommonModule,
