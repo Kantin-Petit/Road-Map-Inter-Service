@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, HostListener } from '@angular/core';
-import { TimelineModel } from 'src/app/models/service-model';
+import { TimelineModel } from 'src/app/models/timeline-model';
 import { DataSet, Timeline } from "vis-timeline/standalone";
 import { FilterService } from 'src/app/services/filter.service';
 
@@ -34,49 +34,42 @@ export class PlanningComponent implements OnInit, AfterViewInit {
   }
 
   addDataIntoDom() {
-
-    const servicesKeys = Object.keys(this.filterService.services);
-    servicesKeys.forEach((serviceKey, serviceIndex) => {
-      const timelines = this.filterService.services[serviceKey].timelines;
+    this.filterService.services.forEach((service) => {
+      const { id, name, sujets } = service;
 
       this.groups.add({
-        id: serviceIndex,
-        content: this.filterService.services[serviceKey].name,
+        id: id,
+        content: name,
         className: "custom_group",
       });
 
-      timelines.forEach((timeline, timelineIndex) => {
-        const {
-          dateStart,
-          dateEnd,
-          thematic
-        } = timeline;
+      sujets.forEach((timeline) => {
+        const { id: timeeline_id, date_start: dateStart, date_end: dateEnd, Thematics } = timeline;
 
-        const timelineId = `service${serviceIndex}_timeline${timelineIndex}`;
-        const itemClassName = `custom_item ${thematic} ${timelineId}`;
+        const timelineId = `service${id}_timeline${timeeline_id}`;
+        const itemClassName = `custom_item ${Thematics[0].name} ${timelineId}`;
 
         this.data.add({
           id: timelineId,
-          content: timeline,
+          content: timeline, 
           start: dateStart,
           end: dateEnd,
           className: itemClassName,
-          group: serviceIndex,
+          group: id
         });
       });
     });
-
   }
+
 
   setThematics() {
 
-    const classes: string[] = Object.keys(this.filterService.thematics);
-    let cssStyles = '';
+      let cssStyles = '';
 
-    classes.forEach((className) => {
-      var color = this.getColorForThematic(className);
-      cssStyles += `.${className} { background-color: ${color}; }\n`;
-    });
+      this.filterService.thematics.forEach((thematic) => { 
+          let color = thematic.color;
+          cssStyles += `.${thematic.name} { background-color: ${color}; }\n`;
+      });
 
     let styleTag = document.createElement('style');
     styleTag.textContent = cssStyles;
@@ -132,10 +125,6 @@ export class PlanningComponent implements OnInit, AfterViewInit {
     if (timeline) timeline.classList.add("active");
   }
 
-  getColorForThematic(thematicName: string): string {
-    const foundThematic = this.filterService.thematics[thematicName];
-    return foundThematic ? foundThematic.color : '#000000';
-  }
 
   getOptions() {
 

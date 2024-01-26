@@ -1,21 +1,19 @@
 <aside>
   <div id="side_menu" class="side_menu" [ngClass]="{ 'collapsed': filterService.isCollapsed }">
-    <ul class="menu">
-      <li class="menu-item">
-        <div class="setThematicFilter" *ngFor="let thematic of filterService.thematics | keyvalue">
-          <input type="checkbox" name="input_{{thematic.key}}" id="input_{{thematic.key}}" [value]="thematic.key"
-            [(ngModel)]="filterService.checkedThematics[thematic.key]"
-            (ngModelChange)="setThematicFilter(thematic.key)"/>
-          <label>{{ thematic.value.name }}</label>
-        </div>
-      </li>
-      <li class="menu-item" *ngFor="let service of filterService.services | keyvalue">
-        <div class="input_wrapper">
-          <input name="input_{{service.key}}" id="input_{{service.key}}" type="checkbox" [(ngModel)]="filterService.checkedServices[service.key]" (ngModelChange)="isAllChecked()"/>
-          <label>{{ service.value.name }}</label>
-        </div>
-      </li>
-    </ul>
+    <div class="menu">
+      <ul class="menu-item" *ngFor="let thematic of filterService.thematics">
+        <li class="input_wrapper">
+          <input name="input_{{thematic.name}}" id="input_{{thematic.id}}" type="checkbox"  (change)="onCheckboxChange($event, thematic.id, true)"/> 
+          <label>{{ thematic.name }}</label>
+        </li>
+      </ul>
+      <ul class="menu-item" *ngFor="let service of filterService.servicesFilter">
+        <li class="input_wrapper">
+          <input name="input_{{service.name}}" id="input_{{service.id}}" type="checkbox"  (change)="onCheckboxChange($event, service.id, false)"/> 
+          <label>{{ service.name }}</label>
+        </li>
+      </ul>
+    </div>
 
     <div class="toggle-sidebar" (click)="toggleSidebarMenu()">
         <i class="fas fa-chevron-right arrow-icon"></i>

@@ -41,7 +41,6 @@ export class UserLoginComponent {
       const formData: UserLogin = this.loginForm.value;
       this.authService.login(formData).subscribe(response => {
           console.log(response); 
-          this.userService.saveToken(response.accesToken);
           this.router.navigate(['/dashboard']);
         },
         (error) => {

@@ -1,7 +1,7 @@
 @import '../../styles.scss';
 
 .side_menu {
-    padding: 114px 0;
+    padding: 79px 0;
     width: 200px;
     height: 100vh;
     overflow-y: auto;
@@ -11,7 +11,7 @@
     left: 0;
     z-index: 100;
 
-    background-color: $nav-color;
+    background-color: color(secondary-color);
 
     display: flex;
     align-items: flex-start;
@@ -21,30 +21,34 @@
     &::-webkit-scrollbar-thumb {
         border-radius: 4px;
     }
+
     &:hover {
         &::-webkit-scrollbar-thumb {
             background-color: lighten(#0c1e35, 15);
         }
     }
+
     &::-webkit-scrollbar {
         width: 6px;
         background-color: #0c1e35;
     }
+
     ul {
         width: 100%;
         opacity: 1;
 
         li {
-            width:calc(100% - 10px);
+            width: calc(100% - 10px);
             color: white;
             padding: 8px 5px;
-            
+
             overflow-x: hidden;
-    
+
             .input_wrapper {
                 display: flex;
-                align-items:flex-start;
+                align-items: flex-start;
                 width: 100%;
+
                 input[type="checkbox"] {
                     appearance: none;
                     width: 1rem;
@@ -53,16 +57,19 @@
                     border-radius: 1rem;
                     margin: auto 0;
                 }
+
                 input[type="checkbox"]:checked {
                     background-color: color(secondary-color);
                 }
-                label{
+
+                label {
                     margin-left: .8rem;
                     display: flex;
                     align-items: center;
                     overflow: hidden;
                 }
-                select{
+
+                select {
                     width: 100%;
                     height: 34px;
                     overflow: hidden;
@@ -71,20 +78,27 @@
                     border-radius: 8px;
                     font-size: 1rem;
                     color: white;
-                    
 
-                    
-                    option{
+
+
+                    option {
                         background-color: color(secondary-color);
                     }
                 }
+
                 select::-ms-expand {
-                    display: none; /* Masquer la flèche pour Internet Explorer */
+                    display: none;
+                    /* Masquer la flèche pour Internet Explorer */
                 }
-                select::-webkit-outer-spin-button, select::-webkit-inner-spin-button {
-                -webkit-appearance: none; /* Masquer la flèche pour Safari et Chrome */
-                margin: 0; /* Espacement */
+
+                select::-webkit-outer-spin-button,
+                select::-webkit-inner-spin-button {
+                    -webkit-appearance: none;
+                    /* Masquer la flèche pour Safari et Chrome */
+                    margin: 0;
+                    /* Espacement */
                 }
+
                 select {
                     -moz-appearance: none;
                     text-indent: 1px;
@@ -98,9 +112,11 @@
                     height: .5rem;
                     border-radius: .5rem;
                 }
+
                 input[type="checkbox"]:checked {
                     background-color: color(primary-color);
                 }
+
                 label {
                     margin-left: 1rem;
                 }
@@ -162,7 +178,7 @@
         background: color(primary-color);
         border-radius: 50%;
         transition: transform .3s;
-        
+
         .arrow-icon {
             margin-right: 5px;
         }
@@ -175,36 +191,43 @@
             outline: none;
         }
     }
+
     &.collapsed {
         width: 50px;
+
         .toggle-sidebar {
             transform: translateX(-150px) rotate(180deg);
             transition: transform .3s;
         }
-        ul{
-            li{
-                .input_wrapper{
+
+        ul {
+            li {
+                .input_wrapper {
                     width: 100%;
-                    input[type="checkbox"]{
+
+                    input[type="checkbox"] {
                         margin: auto;
                     }
-                    label{
+
+                    label {
                         display: none;
                     }
-                    select{
-                        
-                    }
+
+                    select {}
                 }
-                .sub-menu
-                {
-                    .sub-menu_item{
+
+                .sub-menu {
+                    .sub-menu_item {
                         width: 100%;
-                        .input_wrapper{
+
+                        .input_wrapper {
                             width: 100%;
-                            input[type="checkbox"]{
+
+                            input[type="checkbox"] {
                                 margin: auto;
                             }
-                            label{
+
+                            label {
                                 display: none;
                             }
                         }
@@ -224,6 +247,7 @@
 .menu .sub-menu {
     display: none;
 }
+
 .menu .sub-menu.active {
     display: block;
 }

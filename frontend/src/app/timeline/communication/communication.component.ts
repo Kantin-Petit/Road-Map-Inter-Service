@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { TimelineModel } from '../../models/service-model';
 import { FilterService } from '../../services/filter.service';
+import { TimelineModel } from '../../models/timeline-model';
 
 @Component({
   selector: 'app-communication',
@@ -10,11 +10,6 @@ import { FilterService } from '../../services/filter.service';
 export class CommunicationComponent {
 
   constructor(public filterService: FilterService) { }
-
-  getColorForThematic(thematicName: string): string {
-    const foundThematic = this.filterService.thematics[thematicName];
-    return foundThematic ? foundThematic.color : '#000000';
-  }
 
   toggleSidebar(index: number, service: string, timelineData: TimelineModel): void {
     if (!this.filterService.sidebarVisible || this.filterService.selectedItemIndex !== service[index]) {

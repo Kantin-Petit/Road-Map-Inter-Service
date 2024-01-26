@@ -1,11 +1,11 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ServiceService } from '../services/service.service';
 import { ThematicService } from '../services/thematic.service';
-import { ServiceModel, TimelineModel } from '../models/service-model';
+import { TimelineModel } from '../models/timeline-model';
 import { FilterService } from '../services/filter.service';
-import { Subscription, map } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { Router, NavigationStart } from '@angular/router';
-import { Thematic } from '../models/thematic-model';
+import { TimelineService } from '../services/timeline.service';
 
 @Component({
   selector: 'app-filter',
@@ -19,7 +19,8 @@ export class FilterComponent implements OnInit {
   constructor(
     public serviceService: ServiceService,
     public thematicService: ThematicService,
-    public filterService: FilterService,
+      public filterService: FilterService,
+    public TimelineService: TimelineService,
     private router: Router) {
 
     this.subscription = router.events.subscribe((event) => {
@@ -31,83 +32,62 @@ export class FilterComponent implements OnInit {
 
 
   ngOnInit() {
-    const elH = document.querySelectorAll(".timeline li > div");
     this.setServices();
     this.setThematics();
-    this.setEqualHeights(elH);
   }
 
   ngOnDestroy() {
     this.subscription.unsubscribe();
   }
 
-  getColorForThematic(thematicName: string): string {
-    const foundThematic = this.filterService.thematics[thematicName];
-    return foundThematic ? foundThematic.color : '#000000';
-  }
-
-  setThematicFilter(value: string) {
-    this.filterService.checkedServices = this.filterService.checkedServicesInit;
-
-    const res = Object.entries(this.filterService.servicesFilter).map((service: [string, ServiceModel]) => {
-      console.log(service[1].thematics);
-      console.log(service[1].thematics.includes(value));
-      if(service[1].thematics.includes(value))
-      {
-        this.filterService.checkedServices[service[0]] = true;
-      } 
-      else
-      { 
-        this.filterService.checkedServices[service[0]] = false;
-      }
-    });
-    console.log(this.filterService.checkedServices); 
-    
-    
-
-    this.isAllChecked();
-  }
-
   setServices() {
-    this.serviceService.getAllService().subscribe(service => {
-      this.filterService.services = { ...service };
-      this.filterService.servicesFilter = { ...service };
+    this.TimelineService.getAllTimeline().subscribe(service => {
+      this.filterService.services = service;
+      this.filterService.servicesFilter = [...service];
       this.filterService.setServicesFilter(true);
     });
   }
 
   setThematics() {
-    this.thematicService.getAllthematic().subscribe(thematics => {
-      this.filterService.thematics = { ...thematics };
-      this.filterService.thematicsFilter = { ...thematics };
-      Object.keys(this.filterService.thematicsFilter).forEach(key => {
-        this.filterService.checkedThematicsInit[key] = {};
-        this.filterService.checkedThematicsInit[key][key] = true;
-      });
+      this.thematicService.getAllthematic().subscribe(thematics => {
+      this.filterService.thematics = thematics;
       this.filterService.setServicesFilter(true);
     });
   }
 
-  isAllChecked() {
+  onCheckboxChange(event: any, id: number, thematic: boolean): void { 
 
-    let activeThematics;
-    const allFalseThematics = Object.values(this.filterService.checkedThematics).every(key => Object.values(key).every(innerValue => innerValue === false));
-    allFalseThematics ? activeThematics = this.filterService.checkedThematicsInit : activeThematics = this.filterService.checkedThematics;
+    let checkedArray;
 
-    let activeService;
-    const allFalse = Object.values(this.filterService.checkedServices).every(value => value === false);
-    allFalse && !allFalseThematics ? activeService = this.filterService.checkedServicesInit : activeService = this.filterService.checkedServices;
+    checkedArray = thematic ? this.filterService.checkedThematics : this.filterService.checkedServices;
 
-    const allCheckbox = {
-      services: activeService,
-      thematics: activeThematics
+    if (event.target.checked) {
+      checkedArray.push(id);
+    } else {
+      const index = checkedArray.indexOf(id);
+      if (index !== -1) {
+        checkedArray.splice(index, 1);
+      }
+    }
+
+    const data: { services: number[], thematic?: number[], hasThematic?: boolean } = {
+      services: this.filterService.checkedServices,
     };
 
-    this.serviceService.getfilteredService(allCheckbox).subscribe(updatedServices => {
-      console.log(updatedServices);
-      this.filterService.services = { ...updatedServices };
-      this.filterService.setServicesFilter(true);
-    });
+    if (thematic || this.filterService.checkedThematics.length > 0) {
+      data.thematic = this.filterService.checkedThematics,
+      data.hasThematic = true
+    };
+
+
+      this.TimelineService.getfilteredTiemline(data).subscribe(updatedServices => {
+        this.filterService.services = updatedServices;
+        if (thematic) {
+          this.filterService.servicesFilter = [...updatedServices];
+          this.filterService.checkedServices = [...this.filterService.checkedServicesInit];
+        }
+        this.filterService.setServicesFilter(true);
+      });
 
   }
 
@@ -122,49 +102,6 @@ export class FilterComponent implements OnInit {
       this.filterService.sidebarData = new TimelineModel();
     }
   }
-
-  getActiveThematics(key: string): string[] {
-    const trueInnerKeys: string[] = [];
-
-    if (this.filterService.checkedThematics.hasOwnProperty(key)) {
-      const innerKeys = this.filterService.checkedThematics[key];
-      for (const innerKey in innerKeys) {
-        if (innerKeys.hasOwnProperty(innerKey) && innerKeys[innerKey] === true) { trueInnerKeys.push(innerKey); }
-      }
-    }
-
-    return trueInnerKeys;
-  }
-
-  onSelectThematics(service: string, isChecked: boolean, thematic: string) {
-
-    if (!this.filterService.checkedThematics[service]) this.filterService.checkedThematics[service] = {};
-    this.filterService.checkedThematics[service][thematic] = isChecked;
-
-    const thematics = this.getActiveThematics(service);
-    this.serviceService.getService(service, thematics).subscribe(updatedService => {
-      if (this.filterService.services[service]) this.filterService.services[service].timelines = [...updatedService[service].timelines];
-      this.filterService.setServicesFilter(true);
-
-    });
-
-  }
-
-  setEqualHeights(el: any) {
-    let counter = 0;
-    for (let i = 0; i < el.length; i++) {
-      const singleHeight = el[i].offsetHeight;
-
-      if (counter < singleHeight) {
-        counter = singleHeight;
-      }
-    }
-
-    for (let i = 0; i < el.length; i++) {
-      el[i].style.height = `${counter}px`;
-    }
-  }
-
 
   toggleSidebarMenu() {
     this.filterService.isCollapsed = !this.filterService.isCollapsed;
