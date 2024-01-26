@@ -1,11 +1,10 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AuthService } from '../../services/auth.service';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { UserLogin } from '../../interfaces/auth';
 import { Router } from '@angular/router';
-import { TokenService } from 'src/app/services/token.service';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-user-login',
@@ -19,8 +18,7 @@ export class UserLoginComponent {
   
   constructor(private formBuilder: FormBuilder, 
     private authService: AuthService,
-    private router: Router,
-    private tokenService: TokenService) { 
+    private router: Router) { 
     this.loginForm = this.formBuilder.group({
       email: [null, [Validators.required, Validators.email]],
       password: [null, [Validators.required]],
@@ -41,7 +39,7 @@ export class UserLoginComponent {
       const formData: UserLogin = this.loginForm.value;
       this.authService.login(formData).subscribe(response => {
           console.log(response); 
-          this.tokenService.savedToken(response.token);
+          this.authService.savedToken(response.token);
           this.router.navigate(['/dashboard']);
         },
         (error) => {

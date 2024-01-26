@@ -1,49 +1,50 @@
-<app-sidemenu></app-sidemenu>
-<div class="container">
-  <div class="select-container">
-    <label for="serviceSelect">Sélectionner un service :</label>
-    <select id="serviceSelect" [(ngModel)]="selectedService" (change)="onServiceChange()">
-      <ng-container *ngFor="let service of listServices | keyvalue">
-        <option  [value]="service.key">{{ service.value.name }}</option>
-      </ng-container>
-    </select>
-  </div>
 
-  <div *ngIf="selectedService">
-    <div class="form-group">
-      <p>Description : {{selectedServiceDetails.description}}</p>
-    </div>
-
-    <div class="form-group">
-      <p for="photo">Chemin de la photo : {{selectedServiceDetails.photo}}</p>
-      <img [src]="selectedServiceDetails.photo" alt="service_picture" />
-    </div>
-
-    <div class="form-group">
-      <label for="timelineSearch">Rechercher une timeline :</label>
-      <input type="text" id="timelineSearch" [(ngModel)]="timelineSearchTerm" placeholder="Search timelines" (input)="filterTimelines()">
-    </div>
-
-    <div class="form-group">
-      <label for="timelineSelect">Sélectionner une timeline :</label>
-      <select id="timelineSelect" [(ngModel)]="selectedTimelineId" name="timelineSelect" (change)="onTimelineChange()">
-        <option *ngFor="let timeline of filteredTimelines" [value]="timeline.id">{{ timeline.titre }}</option>
+  <app-sidemenu></app-sidemenu>
+  <div class="container">
+    <div class="select-container">
+      <label for="serviceSelect">Sélectionner un service :</label>
+      <select id="serviceSelect" [(ngModel)]="selectedService" (change)="onServiceChange()">
+        <ng-container *ngFor="let service of listServices | keyvalue">
+          <option  [value]="service.key">{{ service.value.name }}</option>
+        </ng-container>
       </select>
     </div>
 
-    <div *ngIf="selectedTimeline">
-      <div class="timeline-details">
-        <h3>{{ selectedTimeline.titre }}</h3>
-        <p>{{ selectedTimeline.dateStart }} - {{ selectedTimeline.dateEnd }}</p>
-        <img [src]="selectedTimeline.image" alt="{{ selectedTimeline.titre }}" />
-        <ul>
-          <li *ngFor="let texte of selectedTimeline.texte">{{ texte }}</li>
-        </ul>
+    <div *ngIf="selectedService">
+      <div class="form-group">
+        <p>Description : {{selectedServiceDetails.description}}</p>
       </div>
-    </div>
 
-    <form (ngSubmit)="onSubmit()">
-      <button type="submit">Modifier</button>
-    </form>
+      <div class="form-group">
+        <p for="photo">Chemin de la photo : {{selectedServiceDetails.photo}}</p>
+        <img [src]="selectedServiceDetails.photo" alt="service_picture" />
+      </div>
+
+      <div class="form-group">
+        <label for="timelineSearch">Rechercher une timeline :</label>
+        <input type="text" id="timelineSearch" [(ngModel)]="timelineSearchTerm" placeholder="Search timelines" (input)="filterTimelines()">
+      </div>
+
+      <div class="form-group">
+        <label for="timelineSelect">Sélectionner une timeline :</label>
+        <select id="timelineSelect" [(ngModel)]="selectedTimelineId" name="timelineSelect" (change)="onTimelineChange()">
+          <option *ngFor="let timeline of filteredTimelines" [value]="timeline.id">{{ timeline.titre }}</option>
+        </select>
+      </div>
+
+      <div *ngIf="selectedTimeline">
+        <div class="timeline-details">
+          <h3>{{ selectedTimeline.titre }}</h3>
+          <p>{{ selectedTimeline.dateStart }} - {{ selectedTimeline.dateEnd }}</p>
+          <img [src]="selectedTimeline.image" alt="{{ selectedTimeline.titre }}" />
+          <ul>
+            <li *ngFor="let texte of selectedTimeline.texte">{{ texte }}</li>
+          </ul>
+        </div>
+      </div>
+
+      <form (ngSubmit)="onSubmit()">
+        <button type="submit">Modifier</button>
+      </form>
+    </div>
   </div>
-</div>

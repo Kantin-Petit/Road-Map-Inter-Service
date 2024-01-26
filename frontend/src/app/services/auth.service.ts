@@ -22,4 +22,11 @@ export class AuthService {
     return this.http.post(`${this.apiUrl}/${API.SIGNIN}`, userData, { withCredentials: true });
   }
 
+  savedToken(token: string): void {
+    localStorage.setItem('token', token);
+  }
+
+  isLogged(): boolean {
+    return !! localStorage.getItem('token');
+  }
 }
