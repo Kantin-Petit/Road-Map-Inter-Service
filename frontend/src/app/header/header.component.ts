@@ -9,14 +9,17 @@ import { Router } from '@angular/router';
 export class HeaderComponent {
   constructor(private router: Router) { }
   
-  logout() {
-    if (localStorage.getItem('token'))
-    {
-      localStorage.removeItem('token');
-      this.router.navigate(['/connexion']);
-    }else{
-      this.router.navigate(['/']);
+  isConnect() {
+    if (localStorage.getItem('token')) {
+      return true;
+    } else {
+      return false;
     }
+  }
+
+  logout() {
+    localStorage.removeItem('token');
+    this.router.navigate(['/']);
   }
 
 }

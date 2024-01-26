@@ -11,10 +11,12 @@ export class FilterService {
   services: { [key: string]: ServiceModel } = {};
   servicesFilter: { [key: string]: ServiceModel } = {};
   thematics: { [key: string]: Thematic } = {};
+  thematicsFilter: { [key: string]: Thematic } = {};
 
   checkedServices: { [key: string]: boolean } = {};
   checkedServicesInit: { [key: string]: boolean } = {};
   checkedThematics: { [key: string]: { [innerKey: string]: boolean } } = {};
+  checkedThematicsInit: { [key: string]: { [innerKey: string]: boolean } } = {};
 
   sidebarVisible: boolean = false;
   sidebarData!: TimelineModel;

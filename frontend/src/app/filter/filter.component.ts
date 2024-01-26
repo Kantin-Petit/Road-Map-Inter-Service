@@ -1,10 +1,11 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ServiceService } from '../services/service.service';
 import { ThematicService } from '../services/thematic.service';
-import { TimelineModel } from '../models/service-model';
+import { ServiceModel, TimelineModel } from '../models/service-model';
 import { FilterService } from '../services/filter.service';
-import { Subscription } from 'rxjs';
+import { Subscription, map } from 'rxjs';
 import { Router, NavigationStart } from '@angular/router';
+import { Thematic } from '../models/thematic-model';
 
 @Component({
   selector: 'app-filter',
@@ -14,7 +15,6 @@ import { Router, NavigationStart } from '@angular/router';
 export class FilterComponent implements OnInit {
 
   private subscription: Subscription;
-  selectedThematic: string = 'Default';
 
   constructor(
     public serviceService: ServiceService,
@@ -47,32 +47,31 @@ export class FilterComponent implements OnInit {
   }
 
   setThematicFilter(value: string) {
+    this.filterService.checkedServices = this.filterService.checkedServicesInit;
+
+    const res = Object.entries(this.filterService.servicesFilter).map((service: [string, ServiceModel]) => {
+      console.log(service[1].thematics);
+      console.log(service[1].thematics.includes(value));
+      if(service[1].thematics.includes(value))
+      {
+        this.filterService.checkedServices[service[0]] = true;
+      } 
+      else
+      { 
+        this.filterService.checkedServices[service[0]] = false;
+      }
+    });
+    console.log(this.filterService.checkedServices); 
     
-    if (!(value === "Default")) {
-      for(let service in this.filterService.servicesFilter) {
-        for(let thematic in this.filterService.thematics) {
-          this.onSelectThematics(service, false, thematic)
-        }
-        this.onSelectThematics(service, true, value)
-      }
-    }
-    else {
-      for(let service in this.filterService.servicesFilter) {
-        for(let thematic in this.filterService.thematics) {
-          this.onSelectThematics(service, false, thematic)
-        }
-      }
-    }
+    
+
+    this.isAllChecked();
   }
 
   setServices() {
     this.serviceService.getAllService().subscribe(service => {
       this.filterService.services = { ...service };
       this.filterService.servicesFilter = { ...service };
-      Object.keys(this.filterService.servicesFilter).forEach(key => {
-        this.filterService.checkedServicesInit[key] = true;
-        this.filterService.checkedThematics[key] = {};
-      });
       this.filterService.setServicesFilter(true);
     });
   }
@@ -80,22 +79,32 @@ export class FilterComponent implements OnInit {
   setThematics() {
     this.thematicService.getAllthematic().subscribe(thematics => {
       this.filterService.thematics = { ...thematics };
+      this.filterService.thematicsFilter = { ...thematics };
+      Object.keys(this.filterService.thematicsFilter).forEach(key => {
+        this.filterService.checkedThematicsInit[key] = {};
+        this.filterService.checkedThematicsInit[key][key] = true;
+      });
       this.filterService.setServicesFilter(true);
     });
   }
 
   isAllChecked() {
 
+    let activeThematics;
+    const allFalseThematics = Object.values(this.filterService.checkedThematics).every(key => Object.values(key).every(innerValue => innerValue === false));
+    allFalseThematics ? activeThematics = this.filterService.checkedThematicsInit : activeThematics = this.filterService.checkedThematics;
+
     let activeService;
     const allFalse = Object.values(this.filterService.checkedServices).every(value => value === false);
-    allFalse ? activeService = this.filterService.checkedServicesInit : activeService = this.filterService.checkedServices;
+    allFalse && !allFalseThematics ? activeService = this.filterService.checkedServicesInit : activeService = this.filterService.checkedServices;
 
     const allCheckbox = {
       services: activeService,
-      thematics: this.filterService.checkedThematics,
+      thematics: activeThematics
     };
 
     this.serviceService.getfilteredService(allCheckbox).subscribe(updatedServices => {
+      console.log(updatedServices);
       this.filterService.services = { ...updatedServices };
       this.filterService.setServicesFilter(true);
     });
@@ -112,10 +121,6 @@ export class FilterComponent implements OnInit {
       this.filterService.sidebarVisible = false;
       this.filterService.sidebarData = new TimelineModel();
     }
-  }
-
-  selectedForService(service: any): string {
-    return service.key;
   }
 
   getActiveThematics(key: string): string[] {
@@ -163,10 +168,6 @@ export class FilterComponent implements OnInit {
 
   toggleSidebarMenu() {
     this.filterService.isCollapsed = !this.filterService.isCollapsed;
-  }
-
-  toggleSubMenu(serviceKey: string) {
-    this.filterService.isOpen[serviceKey] = !this.filterService.isOpen[serviceKey];
   }
 
 }
