@@ -1,0 +1,7 @@
+<div class="planning container" [ngClass]="{ 'collapsed': filterService.isCollapsed }">
+    <div #timeline id="timeline"></div>
+</div>
+
+<p-sidebar [(visible)]="filterService.sidebarVisible" position="right">
+  <app-sidebar *ngIf="filterService.sidebarData" [sidebarData]="filterService.sidebarData"></app-sidebar>
+</p-sidebar>

@@ -1,0 +1,88 @@
+@import '../../../styles.scss'; 
+
+$text-color: #7d84ab;
+$secondary-text-color: #dee2ec;
+
+
+.layout {
+  z-index: 1;
+  width: 180px;
+  position: fixed;
+  .content {
+    padding: 12px 50px;
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+
+.sidebar {
+  color: $text-color;
+  overflow-x: hidden !important;
+  position: relative;
+
+  .sidebar-layout {
+    height: auto;
+    min-height: calc(100vh - 79px);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    background-color: $nav-color;
+    z-index: 2;
+
+    .sidebar-content {
+      flex-grow: 1;
+      padding: 10px 0;
+    }
+  }
+}
+
+.layout {
+  .sidebar {
+    .menu {
+      ul {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+        
+      }
+      .menu-header {
+        font-weight: 600;
+        padding: 10px 25px;
+        font-size: 0.8em;
+        letter-spacing: 2px;
+        transition: opacity 0.3s;
+        opacity: 0.5;
+      }
+      .menu-item {
+        a {
+          display: flex;
+          align-items: center;
+          height: 50px;
+          padding: 0 20px;
+          color: $text-color;
+          
+          &:hover {
+            background-color: $secondary-text-color !important;
+          }
+        } 
+      }
+    }
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  height: 100vh;
+  font-family: 'Poppins', sans-serif;
+  color: #3f4750;
+  font-size: 0.9rem;
+}
+
+a {
+  text-decoration: none;
+}
