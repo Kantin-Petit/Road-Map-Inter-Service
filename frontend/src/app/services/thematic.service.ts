@@ -14,12 +14,12 @@ export class ThematicService {
 
   private apiUrl = environment.apiUrl;
 
-  getAllthematic(): Observable<{ [key: string]: Thematic }> {
-    return this.http.get<{ [key: string]: Thematic }>(`${this.apiUrl}/${API.THEMATIC}`);
+  getAllthematic(): Observable<Thematic[]> {
+    return this.http.get<Thematic[]>(`${this.apiUrl}/${API.THEMATIC}`);
   }
 
-  getOnethematic(name: string): Observable<Thematic> {
-    return this.http.get<Thematic>(`${this.apiUrl}/${API.THEMATIC}/${name}`);
+  getOnethematic(id: number): Observable<Thematic> {
+    return this.http.get<Thematic>(`${this.apiUrl}/${API.THEMATIC}/${id}`);
   }
 
   createthematic(thematic: Thematic): Observable<Thematic> {

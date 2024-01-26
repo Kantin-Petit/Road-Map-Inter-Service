@@ -4,7 +4,6 @@
             <ul>
                 <li><a [routerLink]="['']"><img src="../../assets/iTEAM.png" alt="i-TEAM"></a></li>
                 <li *ngIf="isLogged()">
-                    <a (click)="logout()">Déconnexion</a>
                     <a [routerLink]="['/dashboard/profil']">Dashboard</a>
                 </li>
                 <li *ngIf="!isLogged()"><a [routerLink]="['connexion']">Connexion</a></li>

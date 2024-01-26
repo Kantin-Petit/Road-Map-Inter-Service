@@ -55,18 +55,13 @@ export class UserService {
     return {};
   }
 
-  saveToken(token: string): void {
-    window.sessionStorage.removeItem('jwt');
-    window.sessionStorage.setItem('jwt', token);
-  }
-
   isLoggedIn(): boolean {
-    const user = this.getUser();
-    return user && user.jwt;
-  }
+    const user = window.sessionStorage.getItem(USER_KEY);
+    if (user) {
+      return true;
+    }
 
-  logout(): void {
-    window.sessionStorage.clear();
+    return false;
   }
 }
 
