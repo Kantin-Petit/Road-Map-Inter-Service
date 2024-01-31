@@ -1,4 +1,4 @@
-@import '../../../styles.scss'; 
+@import '../../../styles.scss';
 
 $text-color: #7d84ab;
 $secondary-text-color: #dee2ec;
@@ -7,7 +7,7 @@ $secondary-text-color: #dee2ec;
 .layout {
   z-index: 1;
   width: 180px;
-  position: fixed;
+  // position: fixed;
   .content {
     padding: 12px 50px;
     display: flex;
@@ -44,7 +44,7 @@ $secondary-text-color: #dee2ec;
         list-style-type: none;
         padding: 0;
         margin: 0;
-        
+
       }
       .menu-header {
         font-weight: 600;
@@ -61,11 +61,11 @@ $secondary-text-color: #dee2ec;
           height: 50px;
           padding: 0 20px;
           color: $text-color;
-          
+
           &:hover {
             background-color: $secondary-text-color !important;
           }
-        } 
+        }
       }
     }
   }

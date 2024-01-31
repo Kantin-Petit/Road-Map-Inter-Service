@@ -1,6 +1,5 @@
-<app-sidemenu></app-sidemenu>
 
-<div class="admin container">
+<div class="user container">
     <p-toast></p-toast>
 
     <div class="card">
@@ -10,7 +9,7 @@
                 <button pButton pRipple [label]="Delete" icon="pi pi-trash" class="p-button-danger" (click)="deleteSelectedUsers()" [disabled]="!selectedUsers || !selectedUsers.length"></button>
             </ng-template>
         </p-toolbar>
-    
+
         <p-table
             #dt
             [value]="utilisateurs"
@@ -124,14 +123,14 @@
                     </div>
                 </p-accordionTab> -->
             </p-accordion>
-        
+
         </ng-template>
-    
+
         <ng-template pTemplate="footer">
             <button pButton pRipple label="Annuler" icon="pi pi-times mr-2" class="p-button-text" (click)="hideDialog()"></button>
             <button pButton pRipple label="Enregistrer" icon="pi pi-check mr-2" class="p-button-text" (click)="saveUser()"></button>
         </ng-template>
     </p-dialog>
-    
+
     <p-confirmDialog  locale="fr" [style]="{ width: '450px' }" header="Confirmation" acceptLabel="Oui" rejectLabel="Non"></p-confirmDialog>
 </div>
