@@ -41,7 +41,7 @@ exports.signin = (req, res, next) => {
         bcrypt.compare(req.body.password, user.password)
         .then(valid => {
             if(!valid) return res.status(401).json({error: 'Mot de passe incorrect'});
-            const token = func.createToken(user.id, user.is_admin);
+            const token = func.createToken(user.id);
             const setCookie = func.setCookie(res, token)
             setCookie.status(201).json({ message: 'Cookies created', accessToken : token })
         })
