@@ -81,8 +81,9 @@ body {
   font-family: 'Poppins', sans-serif;
   color: #3f4750;
   font-size: 0.9rem;
+
+  a {
+      text-decoration: none;
+    }
 }
 
-a {
-  text-decoration: none;
-}

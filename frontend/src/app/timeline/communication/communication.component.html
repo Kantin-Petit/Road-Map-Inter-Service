@@ -1,7 +1,7 @@
 <div class="communication">
 
   <div class="timeline_wrapper container" [ngClass]="{ 'collapsed': filterService.isCollapsed }">
-  
+
     <ng-container *ngFor="let service of filterService.services">
     <section class="timeline">
       <div class="info">
@@ -18,7 +18,7 @@
       </ol>
     </section>
     </ng-container>
-  
+
   </div>
 
 </div>
@@ -26,4 +26,3 @@
 <p-sidebar [(visible)]="filterService.sidebarVisible" position="right">
   <app-sidebar *ngIf="filterService.sidebarData" [sidebarData]="filterService.sidebarData"></app-sidebar>
 </p-sidebar>
-

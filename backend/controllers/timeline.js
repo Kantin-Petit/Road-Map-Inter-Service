@@ -13,7 +13,7 @@ const getTimelines = async (req, res, next, servicesFilter, thematicFilter) => {
                 },
                 {
                     model: Thematic,
-                    attributes: ['name', 'id'],
+                    attributes: ['name', 'id', 'color'],
                     through: { attributes: [] },
                     where: thematicFilter,
                 }
