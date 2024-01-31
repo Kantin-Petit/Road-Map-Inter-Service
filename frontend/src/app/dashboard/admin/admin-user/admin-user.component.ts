@@ -1,10 +1,10 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { User } from '../../../models/user-model';
+import { UserModel } from '../../../models/user-model';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { UserService } from '../../../services/user.service';
 import { Table } from 'primeng/table';
 import { ServiceService } from '../../../services/service.service'
-import { Thematic } from '../../../models/thematic-model';
+import { ThematicModel } from '../../../models/thematic-model';
 import { Observable } from 'rxjs';
 import { UserRegistration, UserRole } from '../../../interfaces/auth';
 import { AuthService } from '../../../services/auth.service';
@@ -20,13 +20,13 @@ export class AdminUserComponent implements OnInit {
 
   @ViewChild('dt') dt!: Table;
 
-  utilisateurs!: User[];
-  utilisateur!: User;
+  utilisateurs!: UserModel[];
+  utilisateur!: UserModel;
   utilisateurDialog: boolean = false;
-  selectedUsers!: User[] | null;
+  selectedUsers!: UserModel[] | null;
   submitted: boolean = false;
   Delete!: string;
-  service!: Thematic[];
+  service!: ThematicModel[];
   createUser: boolean = false
 
   constructor(
@@ -49,7 +49,7 @@ export class AdminUserComponent implements OnInit {
 
   openNew() {
     this.createUser = true;
-    this.utilisateur = new User();
+    this.utilisateur = new UserModel();
     this.submitted = false;
     this.utilisateurDialog = true;
   }
@@ -77,12 +77,12 @@ export class AdminUserComponent implements OnInit {
     });
   }
 
-  editUser(utilisateur: User) {
+  editUser(utilisateur: UserModel) {
     this.utilisateur = { ...utilisateur };
     this.utilisateurDialog = true;
   }
 
-  deleteUser(utilisateur: User) {
+  deleteUser(utilisateur: UserModel) {
     console.log(utilisateur['id'])
     this.confirmationService.confirm({
       message: 'Êtes-vous sûr de vouloir supprimer ' + utilisateur.last_name + '?',
@@ -91,7 +91,7 @@ export class AdminUserComponent implements OnInit {
       accept: () => {
         this.userService.deleteUser(utilisateur['id']).subscribe(() => {
           this.utilisateurs = this.utilisateurs.filter((val) => val.id !== utilisateur.id);
-          this.utilisateur = new User();
+          this.utilisateur = new UserModel();
           this.messageService.add({ severity: 'success', summary: 'Réussite', detail: 'Utilisateur supprimé', life: 3000 });
         },
         );
@@ -140,7 +140,7 @@ export class AdminUserComponent implements OnInit {
       this.utilisateurs = [...this.utilisateurs];
       this.utilisateurDialog = false;
       this.createUser = false;
-      this.utilisateur = new User();
+      this.utilisateur = new UserModel();
     }
   }
 

@@ -6,10 +6,11 @@ import { AdminServiceComponent } from './admin/admin-service/admin-service.compo
 import { AdminThematicComponent } from './admin/admin-thematic/admin-thematic.component';
 import { ProfilComponent } from './profil/profil.component';
 import { DashboardComponent } from './dashboard.component';
+import { AdminTimelineComponent } from './admin/admin-timeline/admin-timeline.component';
 
 
 const routes: Routes = [
-  { 
+  {
     path: '',
     component: DashboardComponent,
     children: [
@@ -18,6 +19,7 @@ const routes: Routes = [
       { path: 'services', component: AdminServiceComponent },
       { path: 'thematiques', component: AdminThematicComponent },
       { path: 'utilisateurs', component: AdminUserComponent },
+      { path: 'timelines', component: AdminTimelineComponent },
     ]},
 ];
 

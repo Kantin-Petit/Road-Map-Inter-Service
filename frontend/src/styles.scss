@@ -38,7 +38,7 @@ $nav-color: #0c1e35;
 	--seventh-color: #{$seventh-color};
 }
 
-// Font // 
+// Font //
 
 @import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
 
@@ -119,7 +119,7 @@ ul {
     width: 100%;
     padding-left: 0;
     padding-right: 0;
-  
+
     @media only screen and (max-width: 1680px) {
       padding-left: 60px;
       padding-right: 60px;
@@ -142,3 +142,16 @@ ul {
     }
     cursor: pointer;
 }
+
+app-dashboard {
+  display: flex;
+}
+
+app-admin-timeline {
+  overflow-x: hidden;
+}
+
+
+// * {
+//   outline: solid 1px red;
+// }

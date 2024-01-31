@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
 import { ServiceService } from '../../../services/service.service'
-import { Thematic } from '../../../models/thematic-model';
+import { ThematicModel } from '../../../models/thematic-model';
 import { AuthService } from '../../../services/auth.service';
 import { ThematicService } from '../../../services/thematic.service';
 import { of, map } from 'rxjs';
@@ -18,15 +18,15 @@ export class AdminThematicComponent implements OnInit {
 
   @ViewChild('dt') dt!: Table;
 
-  thematics!: Thematic[];
-  thematic!: Thematic
+  thematics!: ThematicModel[];
+  thematic!: ThematicModel
   thematicDialog: boolean = false;
-  selectedThematics!: Thematic[] | null;
+  selectedThematics!: ThematicModel[] | null;
   submitted: boolean = false;
   Delete!: string;
-  service!: Thematic[];
+  service!: ThematicModel[];
   createThematic: boolean = false
- 
+
 
   constructor(
     private thematicService: ThematicService,
@@ -46,7 +46,7 @@ export class AdminThematicComponent implements OnInit {
 
   openNew() {
     this.createThematic = true;
-    this.thematic = new Thematic();
+    this.thematic = new ThematicModel();
     this.submitted = false;
     this.thematicDialog = true;
   }
@@ -74,12 +74,12 @@ export class AdminThematicComponent implements OnInit {
     });
   }
 
-  editThematic(thematic: Thematic) {
+  editThematic(thematic: ThematicModel) {
     this.thematic = { ...thematic };
     this.thematicDialog = true;
   }
 
-  deleteThematic(thematic: Thematic) {
+  deleteThematic(thematic: ThematicModel) {
     this.confirmationService.confirm({
       message: 'Êtes-vous sûr de vouloir supprimer ' + thematic.name + '?',
       header: 'Confirmation',
@@ -87,7 +87,7 @@ export class AdminThematicComponent implements OnInit {
       accept: () => {
         this.thematicService.deletethematic(thematic['id']).subscribe(() => {
           this.thematics = this.thematics.filter((val) => val.id !== thematic['id']);
-          this.thematic = new Thematic();
+          this.thematic = new ThematicModel();
           this.messageService.add({ severity: 'success', summary: 'Réussite', detail: 'Thématique supprimé', life: 3000 });
         },
         );
@@ -114,14 +114,12 @@ export class AdminThematicComponent implements OnInit {
           });
       } else {
 
-        const formData: Thematic = {
+        const formData: ThematicModel = {
           id: this.thematic.id,
           name: this.thematic.name,
           description: this.thematic.description,
           color: this.thematic.color,
         };
-
-        console.log(formData)
 
         this.thematics.push(this.thematic);
         this.messageService.add({ severity: 'success', summary: 'Réussite', detail: 'Thématique Créer', life: 3000 });
@@ -134,7 +132,7 @@ export class AdminThematicComponent implements OnInit {
       this.thematics = [...this.thematics];
       this.thematicDialog = false;
       this.createThematic = false;
-      this.thematic = new Thematic();
+      this.thematic = new ThematicModel();
     }
   }
 

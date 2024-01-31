@@ -22,4 +22,16 @@ export class ServiceService {
     return this.http.get<ServiceModel>(`${this.apiUrl}/${API.SERVICE}/${serviceName}`);
   }
 
+  createservice(service: ServiceModel): Observable<ServiceModel> {
+    return this.http.post<ServiceModel>(`${this.apiUrl}/${API.SERVICE}`, service);
+  }
+
+  updateservice(id: number, service: ServiceModel): Observable<ServiceModel> {
+    return this.http.put<ServiceModel>(`${this.apiUrl}/${API.SERVICE}/${id}`, service);
+  }
+
+  deleteservice(id: number): Observable<ServiceModel> {
+    return this.http.delete<ServiceModel>(`${this.apiUrl}/${API.SERVICE}/${id}`);
+  }
+
 }
