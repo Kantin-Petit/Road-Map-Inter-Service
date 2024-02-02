@@ -13,7 +13,6 @@ export class LoggedGuard implements CanActivate {
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | UrlTree | Observable<boolean | UrlTree> | Promise<boolean | UrlTree> {
     if(!this.authService.isLogged()) {
-      console.log('logged');
       return true;
     }
     else{

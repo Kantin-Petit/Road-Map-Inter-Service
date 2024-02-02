@@ -17,7 +17,12 @@ exports.getAllUsers = (req, res, next) => {
 
 
 exports.getOneUser = (req, res, next) => {
-    User.findOne({ where: { id: req.params.id }, attributes: { exclude: ['password'] } })
+    User.findOne({ where: { id: req.params.id },
+        include: [{
+            model: Service,
+            attributes: ['name']
+        }] 
+    })
         .then(user => res.send(user))
         .catch(error => res.status(500).json({ error }));
 };
@@ -42,7 +47,6 @@ exports.modifyUser = (req, res, next) => {
             user.password = req.body.password
             user.first_name = req.body.first_name
             user.last_name = req.body.last_name
-            user.biography = req.body.biography
             user.save()
                 .then(() => res.status(201).json({ message: 'Utilisateur modifié !' }))
                 .catch(error => res.status(400).json({ error }));

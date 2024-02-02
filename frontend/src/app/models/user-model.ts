@@ -6,6 +6,10 @@ export class UserModel {
     password!: string;
     role!: UserRole;
     serviceId!: number;
+    service!: {
+        name: string;
+    };
+    
 }
 
 export enum UserRole {

@@ -8,8 +8,11 @@
         </summary>
         <ul class="menu-item" >
           <li class="input_wrapper" *ngFor="let thematic of filterService.thematics">
-            <input name="input_{{thematic.name}}" id="input_{{thematic.id}}" type="checkbox"  (change)="onCheckboxChange($event, thematic.id, true)" />
-            <label for="input_{{thematic.id}}" [style.color]="thematic.color" [style.textDecoration]="thematic.color ? 'underline' : 'none'">{{ thematic.name }}</label>
+            <div class="thematic">
+              <input name="input_{{thematic.name}}" id="input_{{thematic.id}}" type="checkbox"  (change)="onCheckboxChange($event, thematic.id, true)" />
+              <label for="input_{{thematic.id}}" >{{ thematic.name }}</label>
+            </div>
+            <div [style.background-color]="thematic.color" class="puce"></div>
           </li>
         </ul>
       </details>
