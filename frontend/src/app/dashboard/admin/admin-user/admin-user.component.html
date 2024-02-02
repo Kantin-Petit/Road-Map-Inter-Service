@@ -80,7 +80,7 @@
                         <small class="p-error" *ngIf="submitted && !utilisateur.first_name">Le Prénom est requis.</small>
                     </div>
                     <div class="field flex flex-column">
-                        <label for="first_name">E-mail</label>
+                        <label for="email">E-mail</label>
                         <input class="h-2rem" type="email" pInputText id="email" [(ngModel)]="utilisateur.email" required autofocus />
                         <small class="p-error" *ngIf="submitted && !utilisateur.email">L'E-mail est requis.</small>
                     </div>
@@ -92,19 +92,19 @@
                         <small class="p-error" *ngIf="submitted && !utilisateur.password">Le nouveau mot de passe.</small>
                     </div>
                     <div class="field flex flex-column">
-                        <label for="first_name">Confirmer le nouveau Mot de Passe</label>
+                        <label for="confirmpassword">Confirmer le nouveau Mot de Passe</label>
                         <input class="h-2rem" type="password" pInputText id="confirmpassword" autofocus />
                         <small class="p-error" *ngIf="submitted && !utilisateur.password">Confirmer le nouveau mot de passe.</small>
                     </div>
                 </p-accordionTab>
                 <p-accordionTab header="Option admin">
                     <div class="field flex flex-column">
-                        <label for="first_name">Role</label>
+                        <label for="role">Role</label>
                         <input class="h-2rem" type="text" pInputText id="role" [(ngModel)]="utilisateur.role" required autofocus />
                         <small class="p-error" *ngIf="submitted && !utilisateur.role">Le role est requis.</small>
                     </div>
                     <div class="field flex flex-column">
-                        <label for="first_name">Service</label>
+                        <label for="service">Service</label>
                         <input class="h-2rem" type="text" pInputText id="service" [(ngModel)]="utilisateur.serviceId" required autofocus />
                         <small class="p-error" *ngIf="submitted && !utilisateur.serviceId">Le service est requis.</small>
                     </div>
