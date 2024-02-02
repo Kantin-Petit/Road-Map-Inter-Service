@@ -14,7 +14,7 @@
             [value]="timelines"
             [rows]="10"
             [paginator]="true"
-            [globalFilterFields]="['title', 'text']"
+            [globalFilterFields]="['title', 'date_start', 'date_end', 'service_id']"
             [tableStyle]="{ 'min-width': '75rem' }"
             [(selection)]="selectedTimelines"
             [rowHover]="true"
@@ -37,12 +37,9 @@
                         <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
                     </th>
                     <th pSortableColumn="title" style="min-width:15rem">Titre <p-sortIcon field="title"></p-sortIcon></th>
-                    <th pSortableColumn="text" style="min-width:15rem">Texte <p-sortIcon field="text"></p-sortIcon></th>
-                    <th pSortableColumn="image" style="min-width:15rem">Image <p-sortIcon field="image"></p-sortIcon></th>
                     <th pSortableColumn="date_start" style="min-width:15rem">Date de début <p-sortIcon field="date_start"></p-sortIcon></th>
                     <th pSortableColumn="date_end" style="min-width:15rem">Date de fin <p-sortIcon field="date_end"></p-sortIcon></th>
-                    <th pSortableColumn="service_name" style="min-width:15rem">Service <p-sortIcon field="service_name"></p-sortIcon></th>
-                    <th pSortableColumn="thematics_name" style="min-width:15rem">Thématique <p-sortIcon field="thematics_name"></p-sortIcon></th>
+                    <th pSortableColumn="service_id" style="min-width:15rem">Service <p-sortIcon field="service_id"></p-sortIcon></th>
                     <th></th>
                 </tr>
             </ng-template>
@@ -52,13 +49,9 @@
                         <p-tableCheckbox [value]="timeline"></p-tableCheckbox>
                     </td>
                     <td>{{ timeline.title }}</td>
-                    <td>{{ timeline.text }}</td>
-                    <td>{{ timeline.image }}</td>
                     <td>{{ timeline.date_start }}</td>
                     <td>{{ timeline.date_end }}</td>
                     <td>{{ timeline.Service.name }}</td>
-                    <td>{{ timeline.Thematics[0].name }}</td>
-
                     <td>
                         <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editTimeline(timeline)"></button>
                         <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="deleteTimeline(timeline)"></button>
@@ -78,9 +71,12 @@
                         <small class="p-error" *ngIf="submitted && !timeline.title">Le Titre est requis.</small>
                     </div>
                     <div class="field flex flex-column">
-                        <label for="description">Texte</label>
-                        <input class="h-2rem" type="text" pInputText id="description" [(ngModel)]="timeline.text" required autofocus />
+                        <label for="texte">Texte</label>
+                        <input class="h-2rem" type="text" pInputText id="texte" [(ngModel)]="timeline.text" required autofocus />
                         <small class="p-error" *ngIf="submitted && !timeline.text">La text est requis.</small>
+                    </div>
+                    <div class="field flex">
+                       <a (click)="updateOptionThematic(timeline.id)" [routerLink]="'/dashboard/timelines/option_thematic'">Thématique</a>
                     </div>
         </ng-template>
         <ng-template pTemplate="footer">

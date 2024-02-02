@@ -24,20 +24,16 @@ export class AdminTimelineComponent {
   submitted: boolean = false;
   Delete!: string;
   createTimeline: boolean = false
-  serviceId: number | string = '';
-
+  serviceName: string = '';
 
   constructor(
     private timelineService: TimelineService,
     private messageService: MessageService,
-    private confirmationService: ConfirmationService,
-    private authService: AuthService) { }
+    private confirmationService: ConfirmationService) { }
 
   ngOnInit() {
-    this.serviceId = this.authService.getUser().serviceId;
-    this.timelineService.getListTimeline(this.serviceId).subscribe(response => {
+    this.timelineService.getListTimeline(this.serviceName).subscribe(response => {
       this.timelines = response;
-      console.log(this.timelines)
     });
   }
 
@@ -155,6 +151,10 @@ export class AdminTimelineComponent {
     }
 
     return index;
+  }
+
+  updateOptionThematic(option_thematic: number): void {
+    this.timelineService.setOptionThematic(option_thematic);
   }
 
 }
