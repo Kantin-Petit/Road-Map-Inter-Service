@@ -6,17 +6,18 @@ import { AuthService } from '../services/auth.service';
 @Injectable({
   providedIn: 'root'
 })
-export class DashboardGuard implements CanActivate {
+export class AdminGuard implements CanActivate {
 
   constructor(private router: Router,
     private authService: AuthService) { }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | UrlTree | Observable<boolean | UrlTree> | Promise<boolean | UrlTree> {
-    if(this.authService.isLogged()) {
+    if(this.authService.isLogged() && this.authService.getRole() === 'admin') {
       return true;
     }
     else{
-      return this.router.navigate(['/connexion']);
+      console.log('not admin', this.authService.getRole());
+      return this.router.navigate(['dashboard']);
     }
   }
 }

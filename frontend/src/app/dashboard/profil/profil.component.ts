@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { MessageService } from 'primeng/api';
 import { UserModel } from 'src/app/models/user-model';
+import { AuthService } from 'src/app/services/auth.service';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({
@@ -7,17 +9,31 @@ import { UserService } from 'src/app/services/user.service';
   templateUrl: './profil.component.html',
   styleUrls: ['./profil.component.scss']
 })
-export class ProfilComponent {
+export class ProfilComponent implements OnInit{
 
-  utilisateurDialog: boolean = false;
-  utilisateur: UserModel = this.userService.getUser();
+  utilisateurDialog: boolean = false; 
+  submitted: boolean = false;
+  utilisateur!: UserModel;
 
   constructor(
-    private userService: UserService
+    private authService: AuthService,
+    private userService: UserService,
+    private messageService: MessageService,
   ) { }
+
+  ngOnInit(): void {
+    this.utilisateur = JSON.parse(localStorage.getItem('user')!);
+  }
 
   editUser(utilisateur: UserModel) {
     this.utilisateurDialog = true;
   }
 
+  saveUser() {
+    this.submitted = true;
+    this.userService.modifyUser(this.utilisateur.id, this.utilisateur).subscribe(() => {
+      this.messageService.add({ severity: 'success', summary: 'Réussite', detail: 'Utilisateur Modifier', life: 3000 });
+    });
+    this.utilisateurDialog = false;
+  }
 }

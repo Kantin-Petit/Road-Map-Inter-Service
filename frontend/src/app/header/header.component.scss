@@ -1,9 +1,6 @@
 @import '../../styles.scss';
 
 header {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
   background-color: color(primary-color);
   padding: 30px 0;
   position:sticky;
@@ -15,23 +12,25 @@ header {
 
     li{
       color: white;
-      border-radius: 5px;
-      transition: all 0.3s ease-in-out;
+      cursor: pointer;
 
       &:not(.logo-header) {
+        display: flex;
 
         a {
           display: flex;
           align-items: center;
-          justify-content: center;
           padding: 2px 12px;
-          width: 100%;
           height: 100%;
+          border-radius: 5px;
+          transition: all 0.3s ease-in-out;
+
+          &:hover {
+            background-color: color(secondary-color);
+          }
         }
 
-        &:hover {
-          background-color: color(secondary-color);
-        }
+        
       }
 
     }

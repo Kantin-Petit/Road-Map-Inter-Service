@@ -34,21 +34,22 @@ export class UserLoginComponent {
   }
 
   
-  onSubmit() {
+  async onSubmit() {
 
     if (this.loginForm.valid) {
-
-      const formData: UserLogin = this.loginForm.value;
-      this.authService.login(formData).subscribe(response => {
-          console.log(response); 
-          this.router.navigate(['/dashboard']);
-        },
-        (error) => {
-          console.error('Erreur lors de l\'inscription:', error);
-        }
-      );
-            
+      try{
+        const formData: UserLogin = this.loginForm.value;
+        await this.authService.login(formData).toPromise();
+        await this.authService.verifyToken();  // Attend la fin de la vérification du token
+        const id = this.authService.getId();  // Récupère l'ID après la vérification du token
+        this.authService.setUser(id);  // Récupère l'utilisateur après la vérification du token
+        this.router.navigate(['']);
+      }catch (error) {
+        console.error('Erreur lors de l\'inscription:', error);
+      }
+      
+      
     }
-  } 
-
+            
+  }
 }

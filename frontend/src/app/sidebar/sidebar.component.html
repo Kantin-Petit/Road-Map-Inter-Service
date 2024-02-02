@@ -1,2 +1,5 @@
 <h2>{{sidebarData.title}}</h2>
+<div class="puces">
+    <div *ngFor="let thematic of sidebarData.Thematics" [style.background-color]="thematic.color" class="puce"></div>
+</div>
 <p>{{ sidebarData.text }}</p>

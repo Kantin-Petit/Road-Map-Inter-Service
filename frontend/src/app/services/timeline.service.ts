@@ -24,7 +24,7 @@ export class TimelineService {
     return this.http.post<TimelineModelWithService[]>(`${this.apiUrl}/${API.TIMELINE_FILTERED}`, data);
   }
 
-  getListTimeline(data: string): Observable<TimelineModel[]> {
+  getListTimeline(data: string | number): Observable<TimelineModel[]> {
     return this.http.post<TimelineModel[]>(`${this.apiUrl}/${API.TIMELINE_LIST}`, data);
   }
 

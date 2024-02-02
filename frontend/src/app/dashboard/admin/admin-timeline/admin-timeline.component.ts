@@ -24,15 +24,18 @@ export class AdminTimelineComponent {
   submitted: boolean = false;
   Delete!: string;
   createTimeline: boolean = false
+  serviceId: number | string = '';
 
 
   constructor(
     private timelineService: TimelineService,
     private messageService: MessageService,
-    private confirmationService: ConfirmationService) { }
+    private confirmationService: ConfirmationService,
+    private authService: AuthService) { }
 
   ngOnInit() {
-    this.timelineService.getListTimeline('').subscribe(response => {
+    this.serviceId = this.authService.getUser().serviceId;
+    this.timelineService.getListTimeline(this.serviceId).subscribe(response => {
       this.timelines = response;
       console.log(this.timelines)
     });
