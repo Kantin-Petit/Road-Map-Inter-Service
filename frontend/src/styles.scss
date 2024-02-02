@@ -36,6 +36,7 @@ $nav-color: #0c1e35;
 	--fifth-color: #{$fifth-color};
 	--sixth-color: #{$sixth-color};
 	--seventh-color: #{$seventh-color};
+	--nav-color: #{$nav-color};
 }
 
 // Font //
@@ -86,6 +87,7 @@ body {
 body {
   max-width: 100vw;
   position: relative;
+  background-color: #f7f8fa;
 
   main {
     overflow-x: hidden;
@@ -117,13 +119,9 @@ ul {
     margin: 0 auto;
     max-width: $container;
     width: 100%;
-    padding-left: 0;
-    padding-right: 0;
+    padding-left: 60px;
+    padding-right: 60px;
 
-    @media only screen and (max-width: 1680px) {
-      padding-left: 60px;
-      padding-right: 60px;
-    }
     @media only screen and (max-width: $tablet) {
       padding-left: 45px;
       padding-right: 45px;
@@ -141,16 +139,4 @@ ul {
       filter: brightness(0.5);
     }
     cursor: pointer;
-}
-
-app-dashboard {
-  display: flex;
-}
-
-app-admin-timeline {
-  overflow-x: hidden;
-}
-
-app-profil {
-  width: 100%;
 }

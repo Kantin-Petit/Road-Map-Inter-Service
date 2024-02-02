@@ -12,12 +12,13 @@ export class DashboardGuard implements CanActivate {
     private userService: UserService) { }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | UrlTree | Observable<boolean | UrlTree> | Promise<boolean | UrlTree> {
-    if(this.userService.isLoggedIn()) {
-      return true;
-    }
-    else{
-      return true
-      //return this.router.navigate(['/connexion']);
-    }
+    // if(this.userService.isLoggedIn()) {
+    //   return true;
+    // }
+    // else{
+    //   return true
+    //   return this.router.navigate(['/connexion']);
+    // }
+    return true;
   }
 }

@@ -7,7 +7,7 @@ import { AdminThematicComponent } from './admin/admin-thematic/admin-thematic.co
 import { ProfilComponent } from './profil/profil.component';
 import { DashboardComponent } from './dashboard.component';
 import { AdminTimelineComponent } from './admin/admin-timeline/admin-timeline.component';
-
+import { OptionThematicComponent } from './admin/option-thematic/option-thematic.component';
 
 const routes: Routes = [
   {
@@ -20,6 +20,7 @@ const routes: Routes = [
       { path: 'thematiques', component: AdminThematicComponent },
       { path: 'utilisateurs', component: AdminUserComponent },
       { path: 'timelines', component: AdminTimelineComponent },
+      { path: 'timelines/option_thematic', component: OptionThematicComponent },
     ]},
 ];
 
