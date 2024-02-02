@@ -1,59 +1,85 @@
-<app-sidemenu></app-sidemenu>
-<div class="container">
 
-  <div>
-    <button (click)="createService()">Créer Service</button>
-  </div>
+<div class="service container">
+    <p-toast></p-toast>
 
-  <div class="select-container">
-    <label for="serviceSelect">Sélectionner un service :</label>
-    <select id="serviceSelect" [(ngModel)]="selectedService" (change)="onServiceChange()">
-      <ng-container *ngFor="let service of services">
-        <option  [value]="service.id">{{ service.name }}</option>
-      </ng-container>
-    </select>
-  </div>
+    <div class="card">
+        <p-toolbar styleClass="mb-4 gap-2">
+            <ng-template pTemplate="left">
+                <button pButton pRipple label="Nouveau" icon="pi pi-plus mr-2" class="p-button-success mr-2" (click)="openNew()"></button>
+                <button pButton pRipple [label]="Delete" icon="pi pi-trash" class="p-button-danger" (click)="deleteSelectedServices()" [disabled]="!selectedServices || !selectedServices.length"></button>
+            </ng-template>
+        </p-toolbar>
 
-  <div *ngIf="selectedService">
-    <div class="form-group">
-      <p>Description : {{selectedServiceDetails.description}}</p>
+        <p-table
+            #dt
+            [value]="services"
+            [rows]="10"
+            [paginator]="true"
+            [globalFilterFields]="['name', 'description', 'color']"
+            [tableStyle]="{ 'min-width': '75rem' }"
+            [(selection)]="selectedServices"
+            [rowHover]="true"
+            dataKey="id"
+            currentPageReportTemplate="Tématiques de {first} à {last}"
+            [showCurrentPageReport]="true"
+        >
+            <ng-template pTemplate="caption">
+                <div class=" search_bar flex align-items-center justify-content-between">
+                    <h5 class="m-0">Service</h5>
+                    <span class="p-input-icon-left">
+                        <i class="pi pi-search"></i>
+                        <input class="p-inputtext p-component p-element" pInputText type="text" (input)="filterGlobal($event)" placeholder="Recherce" />
+                    </span>
+                </div>
+            </ng-template>
+            <ng-template pTemplate="header">
+                <tr>
+                    <th style="width: 4rem">
+                        <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                    </th>
+                    <th pSortableColumn="name" style="min-width:15rem">Nom <p-sortIcon field="name"></p-sortIcon></th>
+                    <th pSortableColumn="image" style="min-width:15rem">Image <p-sortIcon field="image"></p-sortIcon></th>
+                    <th pSortableColumn="description" style="min-width:15rem">Description <p-sortIcon field="description"></p-sortIcon></th>
+                    <th></th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-service>
+                <tr>
+                    <td>
+                        <p-tableCheckbox [value]="service"></p-tableCheckbox>
+                    </td>
+                    <td>{{ service.name }}</td>
+                    <td>{{ service.image }}</td>
+                    <td>{{ service.description }}</td>
+                    <td>
+                        <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editService(service)"></button>
+                        <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="deleteService(service)"></button>
+                    </td>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="summary">
+                <div class="flex align-items-center justify-content-between">Au total, il y a {{ services ? services.length : 0 }} Services.</div>
+            </ng-template>
+        </p-table>
     </div>
+    <p-dialog [(visible)]="serviceDialog" (onHide)="onDialogHide()" [style]="{ width: '450px' }" header="Service" [modal]="true" styleClass="p-fluid">
+        <ng-template pTemplate="content">
+             <div class="field flex flex-column">
+                        <label for="name">Nom</label>
+                        <input  class="h-2rem" type="text" pInputText id="name" [(ngModel)]="service.name" required autofocus />
+                        <small class="p-error" *ngIf="submitted && !service.name">Le Nom est requis.</small>
+                    </div>
+                    <div class="field flex flex-column">
+                        <label for="description">Description</label>
+                        <input class="h-2rem" type="text" pInputText id="description" [(ngModel)]="service.description" required autofocus />
+                        <small class="p-error" *ngIf="submitted && !service.description">La description est requise.</small>
+                    </div>
+        </ng-template>
+        <ng-template pTemplate="footer">
+            <button pButton pRipple label="Annuler" icon="pi pi-times mr-2" class="p-button-text" (click)="hideDialog()"></button>
+            <button pButton pRipple label="Enregistrer" icon="pi pi-check mr-2" class="p-button-text" (click)="saveService()"></button>
+        </ng-template>
+    </p-dialog>
 
-    <div class="form-group">
-      <p for="photo">Chemin de la photo : {{selectedServiceDetails.image}}</p>
-      <img [src]="selectedServiceDetails.image" alt="service_picture" />
-    </div>
-
-    <div class="wrapper-btn">
-          <button (click)="editService(selectedServiceDetails.id)">Modifier Service</button>
-          <button (click)="deleteService(selectedServiceDetails.id)">Supprimer Service</button>
-    </div>
-
-   
-
-    <!-- <div class="form-group">
-      <label for="timelineSearch">Rechercher une timeline :</label>
-      <input type="text" id="timelineSearch" [(ngModel)]="timelineSearchTerm" placeholder="Search timelines" (input)="filterTimelines()">
-    </div> -->
-
-    <!-- <div class="form-group">
-      <label for="timelineSelect">Sélectionner une timeline :</label>
-      <select id="timelineSelect" [(ngModel)]="selectedTimelineId" name="timelineSelect" (change)="onTimelineChange()">
-        <option *ngFor="let timeline of filteredTimelines" [value]="timeline.id">{{ timeline.titre }}</option>
-      </select>
-    </div> -->
-
-    <!-- <div *ngIf="selectedTimeline">
-      <div class="timeline-details">
-        <h3>{{ selectedTimeline.titre }}</h3>
-        <p>{{ selectedTimeline.dateStart }} - {{ selectedTimeline.dateEnd }}</p>
-        <img [src]="selectedTimeline.image" alt="{{ selectedTimeline.titre }}" />
-        <ul>
-          <li *ngFor="let texte of selectedTimeline.texte">{{ texte }}</li>
-        </ul>
-      </div>
-    </div> -->
-
-   
-  </div>
+    <p-confirmDialog  locale="fr" [style]="{ width: '450px' }" header="Confirmation" acceptLabel="Oui" rejectLabel="Non"></p-confirmDialog>
 </div>

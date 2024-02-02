@@ -47,6 +47,7 @@
       ul {
         margin-top: 8px;
         background-color: color(secondary-color);
+
         li {
           background-color: inherit;
         }
@@ -72,11 +73,11 @@
     padding: 10px;
     border-bottom: 1px solid #ddd;
   }
-  
+
   .thematic_name {
     width: 100;
   }
-  
+
   .thematic_name.active {
     width: 100%;
   }
@@ -111,7 +112,7 @@
   }
 
   .wrapper_menu {
-    padding-top: 200px; 
+    padding-top: 200px;
     background-color: color(fourth-color);
     width: 150px;
   }
@@ -251,7 +252,7 @@ img {
     transition: all 1s;
     overflow-x: scroll;
     scroll-snap-type: x mandatory;
-    scrollbar-color: yellow green;
+    scrollbar-color: color(primary-color) color(third-color);
 
     li {
       position: relative;
@@ -353,9 +354,6 @@ img {
     }
   }
 }
-
-
-
 
 .menu .sub-menu {
   display: none;

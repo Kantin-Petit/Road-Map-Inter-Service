@@ -1,6 +1,5 @@
-<app-sidemenu></app-sidemenu>
 
-<div class="admin container">
+<div class="user container">
     <p-toast></p-toast>
 
     <div class="card">
@@ -10,7 +9,7 @@
                 <button pButton pRipple [label]="Delete" icon="pi pi-trash" class="p-button-danger" (click)="deleteSelectedUsers()" [disabled]="!selectedUsers || !selectedUsers.length"></button>
             </ng-template>
         </p-toolbar>
-    
+
         <p-table
             #dt
             [value]="utilisateurs"
@@ -40,7 +39,6 @@
                     </th>
                     <th pSortableColumn="last_name" style="min-width:15rem">Nom <p-sortIcon field="last_name"></p-sortIcon></th>
                     <th pSortableColumn="first_name" style="min-width:15rem">Prénom <p-sortIcon field="first_name"></p-sortIcon></th>
-                    <th pSortableColumn="email" style="min-width:15rem">E-mail <p-sortIcon field="email"></p-sortIcon></th>
                     <th pSortableColumn="role">Role <p-sortIcon field="role"></p-sortIcon></th>
                     <th pSortableColumn="service" style="min-width:10rem">Service <p-sortIcon field="service"></p-sortIcon></th>
                     <th></th>
@@ -53,7 +51,6 @@
                     </td>
                     <td>{{ utilisateur.last_name }}</td>
                     <td>{{ utilisateur.first_name }}</td>
-                    <td>{{ utilisateur.email }}</td>
                     <td>{{ utilisateur.role }}</td>
                     <td>{{ utilisateur.Service ? utilisateur.Service.name : '' }}</td>
                     <td>
@@ -124,14 +121,14 @@
                     </div>
                 </p-accordionTab> -->
             </p-accordion>
-        
+
         </ng-template>
-    
+
         <ng-template pTemplate="footer">
             <button pButton pRipple label="Annuler" icon="pi pi-times mr-2" class="p-button-text" (click)="hideDialog()"></button>
             <button pButton pRipple label="Enregistrer" icon="pi pi-check mr-2" class="p-button-text" (click)="saveUser()"></button>
         </ng-template>
     </p-dialog>
-    
+
     <p-confirmDialog  locale="fr" [style]="{ width: '450px' }" header="Confirmation" acceptLabel="Oui" rejectLabel="Non"></p-confirmDialog>
 </div>

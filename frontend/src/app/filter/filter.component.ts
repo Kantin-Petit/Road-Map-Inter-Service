@@ -55,7 +55,7 @@ export class FilterComponent implements OnInit {
     });
   }
 
-  onCheckboxChange(event: any, id: number, thematic: boolean): void { 
+  onCheckboxChange(event: any, id: number, thematic: boolean): void {
 
     let checkedArray;
 
@@ -80,7 +80,7 @@ export class FilterComponent implements OnInit {
     };
 
 
-      this.TimelineService.getfilteredTiemline(data).subscribe(updatedServices => {
+      this.TimelineService.getFilteredTimeline(data).subscribe(updatedServices => {
         this.filterService.services = updatedServices;
         if (thematic) {
           this.filterService.servicesFilter = [...updatedServices];

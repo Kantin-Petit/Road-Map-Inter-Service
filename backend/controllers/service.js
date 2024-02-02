@@ -19,12 +19,12 @@ exports.getOneService = (req, res, next) => {
 exports.createService = (req, res, next) => {
 
   const name = req.body.name;
-  const image = req.body.name;
+  const image = req.body.image;
   const description = req.body.description;
 
   const service = new Service({
     name: name,
-    description: image,
+    image: image,
     description: description
   })
 

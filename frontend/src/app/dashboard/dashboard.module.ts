@@ -19,6 +19,7 @@ import { AdminThematicComponent } from './admin/admin-thematic/admin-thematic.co
 import { DashboardComponent } from './dashboard.component';
 import { ColorPickerModule } from 'primeng/colorpicker';
 import { ProfilComponent } from './profil/profil.component';
+import { AdminTimelineComponent } from './admin/admin-timeline/admin-timeline.component';
 
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import { ProfilComponent } from './profil/profil.component';
     AdminServiceComponent,
     AdminUserComponent,
     AdminThematicComponent,
+    AdminTimelineComponent,
     DashboardComponent,
     ProfilComponent
   ],

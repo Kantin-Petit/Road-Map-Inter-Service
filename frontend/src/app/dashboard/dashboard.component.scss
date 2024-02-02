@@ -1,5 +1,15 @@
 @import '../../styles.scss';
 
-.app-dashboard{
+.dashboard{
     display: flex;
+
+    app-sidemenu{
+        width: 180px;
+    }
+    
+    .wrapper-component{
+        width: calc(100% - 180px);
+        padding: 60px 0;
+    }
 }
+

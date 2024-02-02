@@ -1,15 +1,22 @@
 <aside>
   <div id="side_menu" class="side_menu" [ngClass]="{ 'collapsed': filterService.isCollapsed }">
     <div class="menu">
-      <ul class="menu-item" *ngFor="let thematic of filterService.thematics">
-        <li class="input_wrapper">
-          <input name="input_{{thematic.name}}" id="input_{{thematic.id}}" type="checkbox"  (change)="onCheckboxChange($event, thematic.id, true)"/> 
-          <label>{{ thematic.name }}</label>
-        </li>
-      </ul>
+      <details>
+        <summary>
+          <span>Thematiques</span>
+          <i class="fas fa-chevron-down arrow-icon"></i>
+        </summary>
+        <ul class="menu-item" >
+          <li class="input_wrapper" *ngFor="let thematic of filterService.thematics">
+            <input name="input_{{thematic.name}}" id="input_{{thematic.id}}" type="checkbox"  (change)="onCheckboxChange($event, thematic.id, true)"/>
+            <label>{{ thematic.name }}</label>
+          </li>
+        </ul>
+      </details>
+
       <ul class="menu-item" *ngFor="let service of filterService.servicesFilter">
         <li class="input_wrapper">
-          <input name="input_{{service.name}}" id="input_{{service.id}}" type="checkbox"  (change)="onCheckboxChange($event, service.id, false)"/> 
+          <input name="input_{{service.name}}" id="input_{{service.id}}" type="checkbox"  (change)="onCheckboxChange($event, service.id, false)"/>
           <label>{{ service.name }}</label>
         </li>
       </ul>
@@ -18,6 +25,6 @@
     <div class="toggle-sidebar" (click)="toggleSidebarMenu()">
         <i class="fas fa-chevron-right arrow-icon"></i>
     </div>
-  
+
   </div>
 </aside>

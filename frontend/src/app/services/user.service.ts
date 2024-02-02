@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { User} from '../models/user-model';
+import { UserModel} from '../models/user-model';
 import { environment } from 'src/environments/environment';
 import { API } from 'src/app/routes/api';
 
@@ -18,20 +18,20 @@ export class UserService {
 
 
   // Ajouter le widthcredentials: true
-  getAllUser(): Observable<User[]> {
-    return this.http.get<User[]>(`${this.apiUrl}/${API.USER}`);
+  getAllUser(): Observable<UserModel[]> {
+    return this.http.get<UserModel[]>(`${this.apiUrl}/${API.USER}`);
   }
 
   // getOneUser(userId): Observable<User[]> {
   //   return this.http.get<User[]>(`${this.apiUrl}/${API.USER}/${userId}`);
   // }
 
-  deleteUser(userId: number): Observable<User[]> {
-    return this.http.delete<User[]>(`${this.apiUrl}/${API.USER}/${userId}`);
+  deleteUser(userId: number): Observable<UserModel[]> {
+    return this.http.delete<UserModel[]>(`${this.apiUrl}/${API.USER}/${userId}`);
   }
 
-  modifyUser(userId: number, user: User): Observable<User[]> {
-    return this.http.put<User[]>(`${this.apiUrl}/${API.USER}/${userId}`, user);
+  modifyUser(userId: number, user: UserModel): Observable<UserModel[]> {
+    return this.http.put<UserModel[]>(`${this.apiUrl}/${API.USER}/${userId}`, user);
   }
 
   ////////////////////////////////////////////
