@@ -35,7 +35,6 @@ $nav-color: #0c1e35;
 	--fourth-color: #{$fourth-color};
 	--fifth-color: #{$fifth-color};
 	--sixth-color: #{$sixth-color};
-	--seventh-color: #{$seventh-color};
 	--nav-color: #{$nav-color};
 }
 
@@ -88,7 +87,7 @@ body {
   max-width: 100vw;
   position: relative;
   background-color: #f7f8fa;
-
+  
   main {
     overflow-x: hidden;
   }
@@ -121,7 +120,6 @@ ul {
     width: 100%;
     padding-left: 60px;
     padding-right: 60px;
-
     @media only screen and (max-width: $tablet) {
       padding-left: 45px;
       padding-right: 45px;

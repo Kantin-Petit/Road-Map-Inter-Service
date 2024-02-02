@@ -47,8 +47,8 @@ registerLocaleData(localeFr);
     SidebarComponent,
     ConnexionComponent,
     FilterComponent,
-    OptionThematicComponent,
-      ],
+    OptionThematicComponent
+    ],
   imports: [
     BrowserModule,
     AppRoutingModule,

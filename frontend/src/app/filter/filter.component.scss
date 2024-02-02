@@ -47,7 +47,7 @@
     transition: width .3s;
   }
 
-  width: 200px;
+  width: 300px;
   transition: width .3s;
 
   .menu {
@@ -59,7 +59,7 @@
       background-color: #fff;
       border: 1px solid #dbdbdb;
       border-radius: 8px;
-      padding: 1rem;
+      padding: 10px;
       margin-bottom: 0.5rem;
 
       summary {
@@ -79,7 +79,18 @@
       }
 
       ul {
+        padding-top: 12px;
         li {
+          display: flex;
+          .thematic{
+            display: flex;
+          }
+          .puce{
+            width: 10px;
+            height: 10px;
+            margin-right: 5px;
+            border-radius: 10px 10px 10px 0;
+          }
           input[type="checkbox"] {
             margin: 0;
             border-radius: 3px;
@@ -87,6 +98,7 @@
 
           label {
             color: #000;
+            word-wrap: break-word;
           }
         }
       }

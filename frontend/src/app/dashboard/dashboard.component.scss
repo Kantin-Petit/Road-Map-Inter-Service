@@ -1,16 +1,15 @@
 @import '../../styles.scss';
 
-.dashboard {
-  display: flex;
+.dashboard{
+    display: flex;
 
-  app-sidemenu {
-      width: 180px;
+    app-sidemenu{
+        width: 180px;
     }
-
-  .wrapper-component {
-      width: calc(100% - 180px);
-      padding: 60px 0;
-  }
+    
+    .wrapper-component{
+        width: calc(100% - 180px);
+        padding: 60px 0;
+    }
 }
-
 

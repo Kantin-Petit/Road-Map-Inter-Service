@@ -8,15 +8,21 @@ header {
 
   ul {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
 
     li{
       color: white;
-      border-radius: 5px;
-      transition: all 0.3s ease-in-out;
+      cursor: pointer;
 
       &:not(.logo-header) {
+        display: flex;
+        
+        border-radius: 5px;
+        transition: all 0.3s ease-in-out;
 
+        &:hover {
+          background-color: color(secondary-color);
+        }
         a {
           display: flex;
           align-items: center;
@@ -24,22 +30,18 @@ header {
           height: 100%;
         }
 
-        &:hover {
-          background-color: color(secondary-color);
-        }
+        
       }
 
     }
 
       .logo-header {
+        margin-right: auto;
 
         a {
           width: 100%;
           max-width: 165px;
           display: block;
-          @media screen and (max-width: 500px) {
-            max-width: 120px;
-          }
 
           img {
             width: 100%;

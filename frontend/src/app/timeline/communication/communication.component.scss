@@ -128,7 +128,7 @@
     transition: all .5s ease-in-out;
     width: calc(100% - 200px);
 
-    margin-left: 200px;
+    margin-left: 300px;
 
     &.collapsed {
       margin-left: 20px;
@@ -295,6 +295,7 @@ img {
         color: black;
         background: white;
         border-radius: 0 10px 10px 10px;
+        box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 
         &::before {
           content: "";
