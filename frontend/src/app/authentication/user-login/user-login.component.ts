@@ -34,21 +34,28 @@ export class UserLoginComponent {
   }
 
   
-  async onSubmit() {
+  onSubmit() {
 
     if (this.loginForm.valid) {
-      try{
-        const formData: UserLogin = this.loginForm.value;
-        await this.authService.login(formData).toPromise();
-        await this.authService.verifyToken();  // Attend la fin de la vérification du token
-        const id = this.authService.getId();  // Récupère l'ID après la vérification du token
-        this.authService.setUser(id);  // Récupère l'utilisateur après la vérification du token
-        this.router.navigate(['']);
-      }catch (error) {
-        console.error('Erreur lors de l\'inscription:', error);
-      }
-      
-      
+      const formData: UserLogin = this.loginForm.value;
+        this.authService.login(formData).subscribe({
+          next: (reponse) => {
+            this.userService.getOneUser(reponse.id).subscribe(userData => {
+              this.authService.setToken(reponse.accessToken);
+              this.authService.setUser(userData);  
+              this.router.navigate(['/dashboard']);
+            });
+
+            
+            
+          },
+          error: (error: any) => {
+            console.error('Erreur lors de la connexion:', error);
+          },
+          complete: () => {
+            
+          }
+        });
     }
             
   }

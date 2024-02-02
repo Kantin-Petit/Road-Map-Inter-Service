@@ -10,13 +10,14 @@ import { AuthService } from '../services/auth.service';
 export class HeaderComponent {
   constructor(private router: Router,
     private authService: AuthService) { }
-  
-  isLogged() {
-    return this.authService.isLogged();
-  }
+
+    isLogged(){
+      return this.authService.isLogged();
+    }
 
   logout() {
     this.authService.logout();
+    
     this.router.navigate(['/']);
   }
 }

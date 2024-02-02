@@ -22,7 +22,7 @@ export class ProfilComponent implements OnInit{
   ) { }
 
   ngOnInit(): void {
-    this.utilisateur = JSON.parse(localStorage.getItem('user')!);
+    this.utilisateur = this.authService.getUser();
   }
 
   editUser(utilisateur: UserModel) {

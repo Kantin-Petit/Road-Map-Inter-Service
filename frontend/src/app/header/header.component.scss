@@ -8,7 +8,7 @@ header {
 
   ul {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
 
     li{
       color: white;
@@ -16,18 +16,18 @@ header {
 
       &:not(.logo-header) {
         display: flex;
+        
+        border-radius: 5px;
+        transition: all 0.3s ease-in-out;
 
+        &:hover {
+          background-color: color(secondary-color);
+        }
         a {
           display: flex;
           align-items: center;
           padding: 2px 12px;
           height: 100%;
-          border-radius: 5px;
-          transition: all 0.3s ease-in-out;
-
-          &:hover {
-            background-color: color(secondary-color);
-          }
         }
 
         
@@ -36,6 +36,7 @@ header {
     }
 
       .logo-header {
+        margin-right: auto;
 
         a {
           width: 100%;

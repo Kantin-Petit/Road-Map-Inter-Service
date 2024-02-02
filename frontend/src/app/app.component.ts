@@ -2,6 +2,9 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { AuthService } from './services/auth.service';
+import { Router } from '@angular/router';
+import { jwtDecode } from 'jwt-decode';
+import { UserService } from './services/user.service';
 
 @Component({
   selector: 'app-root',
@@ -14,18 +17,29 @@ export class AppComponent implements OnInit{
   title = 'Inter-Service';
 
   constructor(
-    private authService: AuthService
+    private authService: AuthService,
+    private router: Router,
+    private userService: UserService
   ) {}
 
-  async ngOnInit(): Promise<void> {
-    
-    try {
-      await this.authService.verifyToken();  // Attend la fin de la vérification du token
-      const id = this.authService.getId();  // Récupère l'ID après la vérification du token
-      this.authService.setUser(id);
-    } catch (error) {
-      console.error('Erreur lors de l\'initialisation:', error);
-    }
+  ngOnInit(){
+      this.authService.verifyToken().subscribe({
+          next: (reponse: any) => {
+            const decodeToken: any = jwtDecode(reponse.accessToken);
+            this.userService.getOneUser(decodeToken.id).subscribe(
+              userData => {
+              this.authService.setUser(userData);
+              console.log("User:", this.authService.getUser());
+            });
+            
+          },
+          error: (error: any) => {
+          },
+          complete: () => {
+            this.router.navigate(['']);
+          }
+        }
+      );
   }
 }
 

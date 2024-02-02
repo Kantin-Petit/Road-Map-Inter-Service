@@ -43,7 +43,7 @@ exports.signin = (req, res, next) => {
             if(!valid) return res.status(401).json({error: 'Mot de passe incorrect'});
             const token = func.createToken(user.id);
             const setCookie = func.setCookie(res, token)
-            setCookie.status(201).json({ message: 'Cookies created', accessToken : token })
+            setCookie.status(201).json({ message: 'Cookies created', accessToken : token, id: user.id })
         })
         .catch(error => res.status(500).json({ error }));
     })

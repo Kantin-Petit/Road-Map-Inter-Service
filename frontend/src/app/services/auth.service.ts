@@ -23,10 +23,6 @@ export class AuthService {
     private userService: UserService) {
   }
 
-  ngONInit() {
-    console.log(this.getId());
-  }
-
   register(userData: UserRegistration): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/${API.REGISTER}`, userData);
   }
@@ -35,21 +31,9 @@ export class AuthService {
     return this.http.post(`${this.apiUrl}/${API.SIGNIN}`, userData, { withCredentials: true });
   }
 
-  verifyToken(): Promise<void> {
-  return new Promise<void>((resolve, reject) => {
-    const response = this.http.get(`${this.apiUrl}/${API.TOKEN}`, { withCredentials: true });
-    response.subscribe(
-      (data: any) => {
-        this.accessToken = data.accessToken;
-        resolve();  // Résout la promesse une fois que le token est récupéré
-      },
-      (error) => {
-        console.error('Erreur lors de la vérification du token', error);
-        reject(error);  // Rejette la promesse en cas d'erreur
-      }
-    );
-  });
-}
+  verifyToken() {
+    return this.http.get(`${this.apiUrl}/${API.TOKEN}`, { withCredentials: true });
+  }
 
   getId() {
     const token = this.accessToken;
@@ -60,30 +44,32 @@ export class AuthService {
     return null;
   }
 
-  setUser(id: number) {
-    this.userService.getOneUser(id).subscribe((data: UserModel) => {
-      localStorage.setItem('user', JSON.stringify(data));
-    });
+  setToken(token : string){
+    this.accessToken = token;
+  }
+
+  getToken(){
+    return this.accessToken;
+  }
+
+  setUser(user: UserModel) {
+    this.User = user;
   }
 
   getUser(): UserModel {
-    const storedUser = localStorage.getItem('user');
-    return storedUser ? JSON.parse(storedUser) : null;
-  }
-
-  hasUser() {
-    return !!this.User;
+    return this.User;
   }
 
   isLogged() {
-    if(this.accessToken)
-      return true;
-    return false;
+    if(this.accessToken === ''){
+      return false;
+    }
+    return true;
   }
 
   logout() {
     this.accessToken = '';
-    localStorage.removeItem('user');
+    this.User = new UserModel();
     this.http.get(`${this.apiUrl}/${API.SIGNOUT}`, { withCredentials: true }).subscribe();
   }
 
