@@ -24,7 +24,7 @@ export class AdminTimelineComponent {
   submitted: boolean = false;
   Delete!: string;
   createTimeline: boolean = false
-
+  serviceName: string = '';
 
   constructor(
     private timelineService: TimelineService,
@@ -32,9 +32,8 @@ export class AdminTimelineComponent {
     private confirmationService: ConfirmationService) { }
 
   ngOnInit() {
-    this.timelineService.getListTimeline('').subscribe(response => {
+    this.timelineService.getListTimeline(this.serviceName).subscribe(response => {
       this.timelines = response;
-      console.log(this.timelines)
     });
   }
 
@@ -152,6 +151,10 @@ export class AdminTimelineComponent {
     }
 
     return index;
+  }
+
+  updateOptionThematic(option_thematic: number): void {
+    this.timelineService.setOptionThematic(option_thematic);
   }
 
 }

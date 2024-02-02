@@ -4,7 +4,6 @@ import { environment } from 'src/environments/environment';
 import { TimelineModel, TimelineModelWithService } from '../models/timeline-model';
 import { API } from '../routes/api';
 import { Observable } from 'rxjs';
-import { Timeline } from 'vis-timeline';
 
 
 @Injectable({
@@ -15,6 +14,15 @@ export class TimelineService {
   constructor(private http: HttpClient) { }
 
   private apiUrl = environment.apiUrl;
+  private option_thematic!: number;
+
+  getOptionThematic(): number {
+    return this.option_thematic;
+  }
+
+  setOptionThematic(option_thematic: number): void {
+    this.option_thematic = option_thematic;
+  }
 
   getAllTimeline(): Observable<TimelineModelWithService[]> {
     return this.http.get<TimelineModelWithService[]>(`${this.apiUrl}/${API.TIMELINE}`);

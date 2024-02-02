@@ -10,11 +10,9 @@ import { FormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { ErrorComponent } from './_utils/error/error.component';
 import { HomeComponent } from './pages/home/home.component';
 import { PlanningComponent } from './timeline/planning/planning.component';
 import { HeaderComponent } from './header/header.component';
-import { UserLoginComponent } from './authentication/user-login/user-login.component';
 
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
@@ -35,21 +33,21 @@ import { ConnexionComponent } from './pages/connexion/connexion.component';
 import { DialogModule } from 'primeng/dialog';
 import { AccordionModule } from 'primeng/accordion';
 import { FilterComponent } from './filter/filter.component';
+import { OptionThematicComponent } from './dashboard/admin/option-thematic/option-thematic.component';
 
 registerLocaleData(localeFr);
 
 @NgModule({
   declarations: [
     AppComponent,
-    ErrorComponent,
     HomeComponent,
     PlanningComponent,
     HeaderComponent,
-    UserLoginComponent,
     CommunicationComponent,
     SidebarComponent,
     ConnexionComponent,
     FilterComponent,
+    OptionThematicComponent,
       ],
   imports: [
     BrowserModule,

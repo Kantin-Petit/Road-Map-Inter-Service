@@ -10,10 +10,10 @@ import { UserService } from '../services/user.service';
 export class HeaderComponent {
   constructor(private router: Router,
     private userService: UserService) { }
-  
-  isLogged() {
-    return this.userService.isLoggedIn();
-  }
+
+  // isLogged() {
+  //   return this.userService.isLoggedIn();
+  // }
 
   logout() {
     this.router.navigate(['/']);

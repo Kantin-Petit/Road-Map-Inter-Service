@@ -10,7 +10,7 @@ import { UserService } from 'src/app/services/user.service';
 export class ProfilComponent {
 
   utilisateurDialog: boolean = false;
-  utilisateur: UserModel = this.userService.getUser();
+  // utilisateur: UserModel = this.userService.getUser();
 
   constructor(
     private userService: UserService
