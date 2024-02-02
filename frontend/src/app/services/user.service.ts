@@ -5,6 +5,7 @@ import { UserModel} from '../models/user-model';
 import { environment } from 'src/environments/environment';
 import { API } from 'src/app/routes/api';
 
+const USER_KEY = 'auth-user';
 
 @Injectable({
   providedIn: 'root'
@@ -21,8 +22,8 @@ export class UserService {
     return this.http.get<UserModel[]>(`${this.apiUrl}/${API.USER}`);
   }
 
-  getOneUser(userId: number): Observable<UserModel[]> {
-    return this.http.get<UserModel[]>(`${this.apiUrl}/${API.USER}/${userId}`);
+  getOneUser(userId: number): Observable<UserModel> {
+    return this.http.get<UserModel>(`${this.apiUrl}/${API.USER}/${userId}`);
   }
 
   deleteUser(userId: number): Observable<UserModel[]> {
@@ -32,5 +33,4 @@ export class UserService {
   modifyUser(userId: number, user: UserModel): Observable<UserModel[]> {
     return this.http.put<UserModel[]>(`${this.apiUrl}/${API.USER}/${userId}`, user);
   }
-
 }

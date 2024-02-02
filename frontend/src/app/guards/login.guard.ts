@@ -6,17 +6,17 @@ import { AuthService } from '../services/auth.service';
 @Injectable({
   providedIn: 'root'
 })
-export class AuthGuard implements CanActivate {
+export class LoginGuard implements CanActivate {
 
   constructor(private router: Router,
     private authService: AuthService) { }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | UrlTree | Observable<boolean | UrlTree> | Promise<boolean | UrlTree> {
-    if(this.authService.getToken()) {
+    if (this.authService.getToken() === false) {
       return true;
     }
-    else{
-      return this.router.navigate(['connexion']);
+    else {
+      return this.router.navigate(['']);
     }
   }
 }

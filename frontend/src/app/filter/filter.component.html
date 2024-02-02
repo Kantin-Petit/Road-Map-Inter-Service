@@ -8,18 +8,27 @@
         </summary>
         <ul class="menu-item" >
           <li class="input_wrapper" *ngFor="let thematic of filterService.thematics">
-            <input name="input_{{thematic.name}}" id="input_{{thematic.id}}" type="checkbox"  (change)="onCheckboxChange($event, thematic.id, true)"/>
-            <label>{{ thematic.name }}</label>
+            <div class="thematic">
+              <input name="input_{{thematic.name}}" id="input_{{thematic.id}}" type="checkbox"  (change)="onCheckboxChange($event, thematic.id, true)" />
+              <label for="input_{{thematic.id}}" >{{ thematic.name }}</label>
+            </div>
+            <div [style.background-color]="thematic.color" class="puce"></div>
           </li>
         </ul>
       </details>
 
-      <ul class="menu-item" *ngFor="let service of filterService.servicesFilter">
-        <li class="input_wrapper">
-          <input name="input_{{service.name}}" id="input_{{service.id}}" type="checkbox"  (change)="onCheckboxChange($event, service.id, false)"/>
-          <label>{{ service.name }}</label>
-        </li>
-      </ul>
+      <details open>
+        <summary>
+          <span>Services</span>
+          <i class="fas fa-chevron-down arrow-icon"></i>
+        </summary>
+        <ul class="menu-item">
+          <li class="input_wrapper" *ngFor="let service of filterService.servicesFilter">
+            <input name="services_{{service.name}}" id="services_{{service.id}}" type="checkbox"  (change)="onCheckboxChange($event, service.id, false)"/>
+            <label for="services_{{service.id}}">{{ service.name }}</label>
+          </li>
+        </ul>
+    </details>
     </div>
 
     <div class="toggle-sidebar" (click)="toggleSidebarMenu()">

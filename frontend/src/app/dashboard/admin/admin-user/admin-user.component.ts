@@ -113,6 +113,9 @@ export class AdminUserComponent implements OnInit {
 
       if (this.utilisateur.id) {
         this.utilisateurs[this.findIndexById(String(this.utilisateur.id))] = this.utilisateur;
+        if(this.utilisateur.id == this.authService.getUser().id) {
+          this.authService.setUser(this.utilisateur);
+        }
         this.userService.modifyUser(this.utilisateur.id, this.utilisateur).subscribe(() => {
           this.messageService.add({ severity: 'success', summary: 'Réussite', detail: 'Utilisateur Modifier', life: 3000 });
         });
