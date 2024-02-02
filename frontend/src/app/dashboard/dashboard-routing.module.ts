@@ -3,12 +3,13 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { AdminUserComponent } from './admin/admin-user/admin-user.component';
 import { AdminServiceComponent } from './admin/admin-service/admin-service.component';
-import { AdminThematicComponent } from './admin/admin-thematic/admin-thematic.component';
 import { ProfilComponent } from './profil/profil.component';
 import { DashboardComponent } from './dashboard.component';
 import { AdminTimelineComponent } from './admin/admin-timeline/admin-timeline.component';
 import { ServiceAdminGuard } from '../_utils/service-admin-guard.guard';
 import { AdminGuard } from '../_utils/admin-guard.guard';
+import { AdminThematicComponent } from './admin/admin-thematic/admin-thematic.component';
+import { OptionThematicComponent } from './admin/option-thematic/option-thematic.component';
 
 
 const routes: Routes = [
@@ -30,6 +31,7 @@ const routes: Routes = [
       { path: 'timelines', component: AdminTimelineComponent,
         canActivate: [AdminGuard]
       },
+      { path: 'timelines/option_thematic', component: OptionThematicComponent },
     ]},
 ];
 

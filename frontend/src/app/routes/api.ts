@@ -9,4 +9,5 @@ export const API = {
     TIMELINE: 'timeline',
     TIMELINE_FILTERED: 'timeline/filter',
     TIMELINE_LIST: 'timeline/list',
+    ASSOCIATION: 'association',
 };
