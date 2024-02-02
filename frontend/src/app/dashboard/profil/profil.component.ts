@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { User } from 'src/app/models/user-model';
+import { UserModel } from 'src/app/models/user-model';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({
@@ -10,13 +10,13 @@ import { UserService } from 'src/app/services/user.service';
 export class ProfilComponent {
 
   utilisateurDialog: boolean = false;
-  utilisateur: User = this.userService.getUser();
+  utilisateur: UserModel = this.userService.getUser();
 
   constructor(
     private userService: UserService
   ) { }
 
-  editUser(utilisateur: User) {
+  editUser(utilisateur: UserModel) {
     this.utilisateurDialog = true;
   }
 

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ServiceModel } from '../models/service-model';
 import { TimelineModel, TimelineModelWithService } from '../models/timeline-model';
-import { Thematic } from '../models/thematic-model';
+import { ThematicModel } from '../models/thematic-model';
 import { Subject, Observable } from 'rxjs';
 
 @Injectable({
@@ -11,7 +11,7 @@ export class FilterService {
 
   services!: TimelineModelWithService[];
   servicesFilter!: TimelineModelWithService[];
-  thematics!: Thematic[];
+  thematics!: ThematicModel[];
 
   checkedServices: number[] = [];
   checkedServicesInit: number[] = [];

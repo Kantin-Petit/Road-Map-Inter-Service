@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
-import { TimelineModelWithService } from '../models/timeline-model';
+import { TimelineModel, TimelineModelWithService } from '../models/timeline-model';
 import { API } from '../routes/api';
 import { Observable } from 'rxjs';
+import { Timeline } from 'vis-timeline';
 
 
 @Injectable({
@@ -19,7 +20,28 @@ export class TimelineService {
     return this.http.get<TimelineModelWithService[]>(`${this.apiUrl}/${API.TIMELINE}`);
   }
 
-  getfilteredTiemline(data: any): Observable<TimelineModelWithService[]> {
+  getFilteredTimeline(data: any): Observable<TimelineModelWithService[]> {
     return this.http.post<TimelineModelWithService[]>(`${this.apiUrl}/${API.TIMELINE_FILTERED}`, data);
   }
+
+  getListTimeline(data: string): Observable<TimelineModel[]> {
+    return this.http.post<TimelineModel[]>(`${this.apiUrl}/${API.TIMELINE_LIST}`, data);
+  }
+
+  getTimelineById(id: number): Observable<TimelineModel> {
+    return this.http.get<TimelineModel>(`${this.apiUrl}/${API.TIMELINE}/${id}`);
+  }
+
+  createTimeline(data: any): Observable<TimelineModel> {
+    return this.http.post<TimelineModel>(`${this.apiUrl}/${API.TIMELINE}`, data);
+  }
+
+  updateTimeline(id: number, data: any): Observable<TimelineModel> {
+    return this.http.put<TimelineModel>(`${this.apiUrl}/${API.TIMELINE}/${id}`, data);
+  }
+
+  deleteTimeline(id: number): Observable<TimelineModel> {
+    return this.http.delete<TimelineModel>(`${this.apiUrl}/${API.THEMATIC}/${id}`);
+  }
+
 }

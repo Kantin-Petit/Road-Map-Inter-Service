@@ -5,7 +5,8 @@ export const API = {
     TOKEN: 'auth/token',
     USER: 'user',
     SERVICE: 'service',
-    TIMELINE_FILTERED: 'timeline/filter',
     THEMATIC: 'thematic',
     TIMELINE: 'timeline',
+    TIMELINE_FILTERED: 'timeline/filter',
+    TIMELINE_LIST: 'timeline/list',
 };

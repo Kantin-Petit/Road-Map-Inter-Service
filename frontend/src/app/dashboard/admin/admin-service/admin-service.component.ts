@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { ServiceService } from '../../../services/service.service';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { ConfirmationService, MessageService } from 'primeng/api';
+import { Table } from 'primeng/table';
+import { ServiceService } from '../../../services/service.service'
 import { ServiceModel } from '../../../models/service-model';
-import { TimelineModel, TimelineModelWithService } from '../../../models/timeline-model';
+import { of, map } from 'rxjs';
 
 @Component({
   selector: 'app-admin-service',
@@ -10,67 +12,139 @@ import { TimelineModel, TimelineModelWithService } from '../../../models/timelin
 })
 export class AdminServiceComponent implements OnInit {
 
-  services!: ServiceModel[];
-  selectedService!: string;
-  selectedServiceDetails!: ServiceModel;
-  selectedTimelineId: number | null = null;
-  selectedTimeline: any = null;
-  timelineSearchTerm: string = '';
-  filteredTimelines: any[] = [];
 
-  constructor(private serviceService: ServiceService) { }
+  @ViewChild('dt') dt!: Table;
+
+  services!: ServiceModel[];
+  service!: ServiceModel;
+  serviceDialog: boolean = false;
+  selectedServices!: ServiceModel[] | null;
+  submitted: boolean = false;
+  Delete!: string;
+  createThematic: boolean = false
+
+
+  constructor(
+    private serviceService: ServiceService,
+    private messageService: MessageService,
+    private confirmationService: ConfirmationService) { }
 
   ngOnInit() {
-      this.getService();
-  }
-
- getService() {
-    this.serviceService.getAllService().subscribe(service => {
-        this.services = service;
+    this.serviceService.getAllService().subscribe(response => {
+      this.services = response;
     });
   }
 
-  onServiceChange() {
-    this.selectedServiceDetails = new ServiceModel();
-    this.selectedTimelineId = null;
-    this.selectedTimeline = null;
-
-    // this.serviceService.getService(this.selectedService, null).subscribe(service => {
-    //   this.selectedServiceDetails = service[this.selectedService];
-    //   this.filterTimelines();
-    // });
-  }
-    
-    createService() { 
-
-    }
-    
-    deleteService(id: number) { 
-
-    }
-
-    editService(id: number) { 
-
-    }
-
-  filterTimelines() {
-    // if (this.selectedServiceDetails && this.selectedServiceDetails.sujets) {
-    //   this.filteredTimelines = this.selectedServiceDetails.timelines.filter((timeline: { titre: string }) =>
-    //     timeline.titre.toLowerCase().includes(this.timelineSearchTerm.toLowerCase())
-    //   );
-
-    //   if (this.filteredTimelines.length === 1) {
-    //     this.selectedTimelineId = this.filteredTimelines[0].id;
-    //     this.onTimelineChange();
-    //   }
-    // }
-
+  filterGlobal(event: Event) {
+    const inputValue = (event.target as HTMLInputElement).value;
+    this.dt.filterGlobal(inputValue, 'contains');
   }
 
-  onTimelineChange() {
-    // if (this.selectedServiceDetails && this.selectedServiceDetails.timelines) {
-    //   this.selectedTimeline = this.selectedServiceDetails.timelines.find((timeline: { id: number | null; }) => timeline.id === Number(this.selectedTimelineId));
-    // }
+  openNew() {
+    this.createThematic = true;
+    this.service = new ServiceModel();
+    this.submitted = false;
+    this.serviceDialog = true;
+  }
+
+  onDialogHide() {
+    if (!this.serviceDialog) this.createThematic = false;
+  }
+
+  deleteSelectedServices() {
+    this.confirmationService.confirm({
+      message: 'Êtes-vous sûr de vouloir supprimer les produits sélectionnés ?',
+      header: 'Confirmation',
+      icon: 'pi pi-exclamation-triangle m-2',
+      accept: () => {
+        if (!this.selectedServices) return
+        this.selectedServices.forEach(service => {
+          this.serviceService.deleteservice(service['id']).subscribe();
+        });
+
+        this.services = this.services.filter((val) => !this.selectedServices?.includes(val));
+        this.selectedServices = null;
+        this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Service Supprimer', life: 3000 });
+
+      }
+    });
+  }
+
+  editService(service: ServiceModel) {
+    this.service = { ...service };
+    this.serviceDialog = true;
+  }
+
+  deleteService(thematic: ServiceModel) {
+    this.confirmationService.confirm({
+      message: 'Êtes-vous sûr de vouloir supprimer ' + thematic.name + '?',
+      header: 'Confirmation',
+      icon: 'pi pi-exclamation-triangle m-2',
+      accept: () => {
+        this.serviceService.deleteservice(thematic['id']).subscribe(() => {
+          this.services = this.services.filter((val) => val.id !== thematic['id']);
+          this.service = new ServiceModel();
+          this.messageService.add({ severity: 'success', summary: 'Réussite', detail: 'Service supprimé', life: 3000 });
+        },
+        );
+      }
+    });
+  }
+
+  hideDialog() {
+    this.serviceDialog = false;
+    this.createThematic = false;
+    this.submitted = false;
+  }
+
+
+  saveService() {
+    this.submitted = true;
+
+    if (this.service.name?.trim()) {
+
+      if (this.service.id) {
+        this.services[this.findIndexById(String(this.service.id))] = this.service;
+        this.serviceService.updateservice(this.service.id, this.service).subscribe(() => {
+          this.messageService.add({ severity: 'success', summary: 'Réussite', detail: 'Service Modifier', life: 3000 });
+        });
+      } else {
+
+        const formData: ServiceModel = {
+          id: this.service.id,
+          name: this.service.name,
+          image: this.service.image,
+          description: this.service.description,
+        };
+
+        console.log(formData)
+
+        this.services.push(this.service);
+        this.messageService.add({ severity: 'success', summary: 'Réussite', detail: 'Service Créer', life: 3000 });
+        this.serviceService.createservice(formData).subscribe(response => {
+          console.log(response);
+        });
+
+      }
+
+      this.services = [...this.services];
+      this.serviceDialog = false;
+      this.createThematic = false;
+      this.service = new ServiceModel();
+    }
+  }
+
+  findIndexById(id: string): number {
+    let index = -1;
+    const numericId = Number(id);
+    for (let i = 0; i < this.services.length; i++) {
+      if (this.services[i].id === numericId) {
+        index = i;
+        break;
+      }
+    }
+
+    return index;
   }
 
 }
