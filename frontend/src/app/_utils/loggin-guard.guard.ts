@@ -6,17 +6,18 @@ import { AuthService } from '../services/auth.service';
 @Injectable({
   providedIn: 'root'
 })
-export class DashboardGuard implements CanActivate {
+export class LoggedGuard implements CanActivate {
 
   constructor(private router: Router,
     private authService: AuthService) { }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | UrlTree | Observable<boolean | UrlTree> | Promise<boolean | UrlTree> {
-    if(this.authService.isLogged()) {
+    if(!this.authService.isLogged()) {
+      console.log('logged');
       return true;
     }
     else{
-      return this.router.navigate(['/connexion']);
+      return this.router.navigate(['dashboard']);
     }
   }
 }

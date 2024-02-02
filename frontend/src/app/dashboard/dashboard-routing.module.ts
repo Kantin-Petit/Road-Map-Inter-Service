@@ -7,6 +7,8 @@ import { AdminThematicComponent } from './admin/admin-thematic/admin-thematic.co
 import { ProfilComponent } from './profil/profil.component';
 import { DashboardComponent } from './dashboard.component';
 import { AdminTimelineComponent } from './admin/admin-timeline/admin-timeline.component';
+import { ServiceAdminGuard } from '../_utils/service-admin-guard.guard';
+import { AdminGuard } from '../_utils/admin-guard.guard';
 
 
 const routes: Routes = [
@@ -16,10 +18,18 @@ const routes: Routes = [
     children: [
       { path: '', redirectTo: 'profil', pathMatch: 'full'},
       { path: 'profil', component: ProfilComponent },
-      { path: 'services', component: AdminServiceComponent },
-      { path: 'thematiques', component: AdminThematicComponent },
-      { path: 'utilisateurs', component: AdminUserComponent },
-      { path: 'timelines', component: AdminTimelineComponent },
+      { path: 'services', component: AdminServiceComponent,
+        canActivate: [ServiceAdminGuard] 
+      },
+      { path: 'thematiques', component: AdminThematicComponent,
+        canActivate: [AdminGuard] 
+      },
+      { path: 'utilisateurs', component: AdminUserComponent,
+        canActivate: [AdminGuard] 
+      },
+      { path: 'timelines', component: AdminTimelineComponent,
+        canActivate: [AdminGuard]
+      },
     ]},
 ];
 

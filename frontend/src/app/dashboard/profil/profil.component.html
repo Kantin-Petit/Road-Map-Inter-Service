@@ -1,18 +1,55 @@
 <div class="profile container">
 
-  <div class="wrapper">
-     <div class="profile">
-        <h1>Information personnel</h1>
-        <h2>Nom complet</h2>
-        <p>Julie Park</p>
-        <h2>Email</h2>
-        <p>example&#64;</p>
-        <h2>Rôle</h2>
-        <p>Admin</p>
-        <h2>Service</h2>
-        <p>Service 1</p>
-    </div>
-    <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editUser(utilisateur)"></button>
-  </div>
+    <h1>Information personnel</h1>
+    <h2>Nom complet</h2>
+    <p>{{ utilisateur.first_name }} {{ utilisateur.last_name }}</p>
+    <h2>Email</h2>
+    <p>{{ utilisateur.email }}</p>
+    <h2>Rôle</h2>
+    <p>{{ utilisateur.role }}</p>
+    <h2>Service</h2>
+    <p>{{ utilisateur.serviceId }}</p>
+  <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2 editButton" (click)="editUser(utilisateur)"></button>
+  <p-dialog [(visible)]="utilisateurDialog" [style]="{ width: '450px' }" header="Utilisateur" [modal]="true" styleClass="p-fluid">
+    <ng-template pTemplate="content">
+        <p-accordion [activeIndex]="0">
+            <p-accordionTab header="Information">
+                <div class="field flex flex-column">
+                    <label for="last_name">Nom</label>
+                    <input  class="h-2rem" type="text" pInputText id="last_name" [(ngModel)]="utilisateur.last_name" required autofocus />
+                    <small class="p-error" *ngIf="submitted && !utilisateur.last_name">Le Nom est requis.</small>
+                </div>
+                <div class="field flex flex-column">
+                    <label for="first_name">Prénom</label>
+                    <input class="h-2rem" type="text" pInputText id="first_name" [(ngModel)]="utilisateur.first_name" required autofocus />
+                    <small class="p-error" *ngIf="submitted && !utilisateur.first_name">Le Prénom est requis.</small>
+                </div>
+                <div class="field flex flex-column">
+                    <label for="first_name">E-mail</label>
+                    <input class="h-2rem" type="email" pInputText id="email" [(ngModel)]="utilisateur.email" required autofocus />
+                    <small class="p-error" *ngIf="submitted && !utilisateur.email">L'E-mail est requis.</small>
+                </div>
+            </p-accordionTab>
+            <p-accordionTab header="Mot de Passe">
+                <div class="field flex flex-column">
+                    <label for="password">Nouveau Mot de Passe</label>
+                    <input class="h-2rem" type="password" pInputText id="password" [(ngModel)]="utilisateur.password" required autofocus />
+                    <small class="p-error" *ngIf="submitted && !utilisateur.password">Le nouveau mot de passe.</small>
+                </div>
+                <div class="field flex flex-column">
+                    <label for="first_name">Confirmer le nouveau Mot de Passe</label>
+                    <input class="h-2rem" type="password" pInputText id="confirmpassword" autofocus />
+                    <small class="p-error" *ngIf="submitted && !utilisateur.password">Confirmer le nouveau mot de passe.</small>
+                </div>
+            </p-accordionTab>
+        </p-accordion>
+
+    </ng-template>
+
+    <ng-template pTemplate="footer">
+        <button pButton pRipple label="Annuler" icon="pi pi-times mr-2" class="p-button-text"></button>
+        <button pButton pRipple label="Enregistrer" icon="pi pi-check mr-2" class="p-button-text" (click)="saveUser()"></button>
+    </ng-template>
+</p-dialog>
 
 </div>
