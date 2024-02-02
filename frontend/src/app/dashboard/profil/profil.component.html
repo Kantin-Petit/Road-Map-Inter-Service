@@ -25,7 +25,7 @@
                     <small class="p-error" *ngIf="submitted && !utilisateur.first_name">Le Prénom est requis.</small>
                 </div>
                 <div class="field flex flex-column">
-                    <label for="first_name">E-mail</label>
+                    <label for="email">E-mail</label>
                     <input class="h-2rem" type="email" pInputText id="email" [(ngModel)]="utilisateur.email" required autofocus />
                     <small class="p-error" *ngIf="submitted && !utilisateur.email">L'E-mail est requis.</small>
                 </div>
@@ -37,7 +37,7 @@
                     <small class="p-error" *ngIf="submitted && !utilisateur.password">Le nouveau mot de passe.</small>
                 </div>
                 <div class="field flex flex-column">
-                    <label for="first_name">Confirmer le nouveau Mot de Passe</label>
+                    <label for="confirmpassword">Confirmer le nouveau Mot de Passe</label>
                     <input class="h-2rem" type="password" pInputText id="confirmpassword" autofocus />
                     <small class="p-error" *ngIf="submitted && !utilisateur.password">Confirmer le nouveau mot de passe.</small>
                 </div>
