@@ -83,7 +83,6 @@ export class AdminUserComponent implements OnInit {
   }
 
   deleteUser(utilisateur: UserModel) {
-    console.log(utilisateur['id'])
     this.confirmationService.confirm({
       message: 'Êtes-vous sûr de vouloir supprimer ' + utilisateur.last_name + '?',
       header: 'Confirmation',

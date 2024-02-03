@@ -35,7 +35,6 @@ export class AuthService {
   }
 
   setHasToken(token: boolean) {
-    console.log('setHasToken', token);
     this.hasTokenSubject.next(token);
   }
 
