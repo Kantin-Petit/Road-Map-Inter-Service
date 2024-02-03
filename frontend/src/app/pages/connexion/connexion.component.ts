@@ -28,7 +28,7 @@ export class ConnexionComponent {
 
     this.loginObserver$ = this.loginForm.valueChanges.pipe(
       map(formValue => ({
-          ...formValue,
+        ...formValue,
       }))
     );
   }
@@ -38,24 +38,16 @@ export class ConnexionComponent {
 
     if (this.loginForm.valid) {
       const formData: UserLogin = this.loginForm.value;
-        this.authService.login(formData).subscribe({
-          next: (reponse) => {
-            this.userService.getOneUser(reponse.id).subscribe(userData => {
-              this.authService.setToken(true);
-              this.authService.setUser(userData);
-              this.router.navigate(['/dashboard']);
-            });
+      this.authService.login(formData).subscribe(
+        reponse => {
+          this.userService.getOneUser(reponse.id).subscribe(userData => {
+            this.authService.setHasToken(true);
+            this.authService.setUser(userData);
+            this.router.navigate(['/dashboard']);
+          });
+        },
 
-
-
-          },
-          error: (error: any) => {
-            console.error('Erreur lors de la connexion:', error);
-          },
-          complete: () => {
-
-          }
-        });
+      );
     }
 
   }

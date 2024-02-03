@@ -14,8 +14,8 @@ exports.createToken = (id) => {
 };
 
 exports.verifCookie = (Token, req, res) => {
-   return jwt.verify(Token, SECRETKEY, (err, user) => {
-      if (err) return res.sendStatus(403)
+   return jwt.verify(Token, SECRETKEY, (err) => {
+      if (err) return res.status(200).json({ Message: 'Pas de Token' })
       res.setHeader('Authorization', 'Bearer ' + Token)
       res.status(200).json({ Message: 'Got your token back', accessToken: Token })
    })
