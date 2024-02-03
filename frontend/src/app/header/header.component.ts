@@ -8,15 +8,18 @@ import { AuthService } from '../services/auth.service';
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent {
-  constructor(private router: Router,
-    private authService: AuthService) { }
 
-  isLogged() {
-      return this.authService.getToken();
-    }
+  hasToken: boolean = false;
+
+  constructor(private authService: AuthService) { }
+
+  ngOnInit() {
+    this.authService.hasToken$.subscribe(hasOne => {
+      this.hasToken = hasOne;
+    });
+  }
 
   logout() {
     this.authService.logout();
-    this.router.navigate(['/']);
   }
 }

@@ -75,7 +75,7 @@ registerLocaleData(localeFr);
   providers: [
     [{ provide: LOCALE_ID, useValue: 'fr' }],
     MessageService,
-    ConfirmationService
+    ConfirmationService,
   ],
   bootstrap: [AppComponent]
 })
