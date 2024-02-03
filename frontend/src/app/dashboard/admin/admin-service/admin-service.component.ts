@@ -117,8 +117,6 @@ export class AdminServiceComponent implements OnInit {
           description: this.service.description,
         };
 
-        console.log(formData)
-
         this.services.push(this.service);
         this.messageService.add({ severity: 'success', summary: 'Réussite', detail: 'Service Créer', life: 3000 });
         this.serviceService.createservice(formData).subscribe(response => {

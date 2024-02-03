@@ -123,8 +123,6 @@ export class AdminTimelineComponent {
           Thematics: this.timeline.Thematics
         };
 
-        console.log(formData)
-
         this.timelines.push(this.timeline);
         this.messageService.add({ severity: 'success', summary: 'Réussite', detail: 'Timeline Créer', life: 3000 });
         this.timelineService.createTimeline(formData).subscribe(response => {

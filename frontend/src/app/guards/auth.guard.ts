@@ -13,7 +13,6 @@ export const authGuard: CanActivateFn = (route: ActivatedRouteSnapshot,
 
   return authService.hasToken$.pipe(
     map(hasOne => {
-      console.log('hasToken', hasOne);
       if (!hasOne) {
         router.createUrlTree(['connexion']);
         return false;
