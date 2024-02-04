@@ -3,14 +3,11 @@
 .side_menu {
   height: 100vh;
   overflow-y: auto;
-
   position: fixed;
   top: 0;
   left: 0;
   z-index: 100;
-
   background-color: $nav-color;
-
   display: flex;
   align-items: flex-start;
 
@@ -39,7 +36,7 @@
     }
 
     .toggle-sidebar {
-      transform: translateX(-150px) rotate(180deg);
+      transform: translateX(-248px) rotate(180deg);
       transition: transform .3s;
     }
 
@@ -152,7 +149,7 @@
     display: flex;
     align-items: center;
     position: fixed;
-    left: calc(200px - 15px);
+    left: calc(296px - 15px);
     top: 20%;
     height: 30px;
     width: 30px;

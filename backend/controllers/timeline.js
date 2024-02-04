@@ -67,7 +67,7 @@ exports.getListTimelines = (req, res, next) => {
             {
                 model: Service,
                 where: serviceName,
-                attributes: ['id'],
+                attributes: ['name'],
             },
             {
                 model: Thematic,

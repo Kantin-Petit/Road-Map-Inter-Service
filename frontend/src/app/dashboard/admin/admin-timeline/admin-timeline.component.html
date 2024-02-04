@@ -63,7 +63,7 @@
             </ng-template>
         </p-table>
     </div>
-    <p-dialog [(visible)]="timelineDialog" (onHide)="onDialogHide()" [style]="{ width: '450px' }" header="Timeline" [modal]="true" styleClass="p-fluid">
+    <p-dialog [(visible)]="timelineDialog" (onHide)="onDialogHide()" [style]="{ width: '50vw'}" header="Timeline" [modal]="true" styleClass="p-fluid">
         <ng-template pTemplate="content">
              <div class="field flex flex-column">
                         <label for="name">Titre</label>
@@ -75,9 +75,17 @@
                         <input class="h-2rem" type="text" pInputText id="texte" [(ngModel)]="timeline.text" required autofocus />
                         <small class="p-error" *ngIf="submitted && !timeline.text">La text est requis.</small>
                     </div>
-                    <div class="field flex">
-                       <a (click)="updateOptionThematic(timeline.id)" [routerLink]="'/dashboard/timelines/option_thematic'">Thématique</a>
-                    </div>
+                    <div class="thematicList">
+                      <span for="thematicList">Thématiques</span>
+                      <div class="thematicList-wrapper">
+                        <ng-container *ngFor="let thematicItem of thematicList">
+                          <div class="thematicList-wrapper__item">
+                            <input type="checkbox" class="form-check-input" id="thematic_{{thematicItem.id}}" name="thematic_{{thematicItem.id}}" (click)="updateThematic($event, timeline.id, thematicItem.id)" [checked]="isChecked(timeline.Thematics, thematicItem.id)">
+                            <label class="form-check-label" for="thematic_{{thematicItem.id}}">{{thematicItem.name}}</label>
+                          </div>
+                        </ng-container>
+                      </div>
+                  </div>
         </ng-template>
         <ng-template pTemplate="footer">
             <button pButton pRipple label="Annuler" icon="pi pi-times mr-2" class="p-button-text" (click)="hideDialog()"></button>

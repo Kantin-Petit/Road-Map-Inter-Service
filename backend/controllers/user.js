@@ -5,6 +5,9 @@ const fs = require('fs');
 const path = require('path');
 
 exports.getAllUsers = (req, res, next) => {
+    console.log(req)
+  
+
     User.findAll({
         include: [{
             model: Service,
@@ -17,11 +20,12 @@ exports.getAllUsers = (req, res, next) => {
 
 
 exports.getOneUser = (req, res, next) => {
-    User.findOne({ where: { id: req.params.id },
+    User.findOne({
+        where: { id: req.params.id },
         include: [{
             model: Service,
             attributes: ['name']
-        }] 
+        }]
     })
         .then(user => res.send(user))
         .catch(error => res.status(500).json({ error }));

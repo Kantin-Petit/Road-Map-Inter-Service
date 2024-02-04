@@ -22,7 +22,7 @@ export class AppComponent implements OnInit {
     this.authService.verifyToken().subscribe(
       reponse => {
         if (!reponse.accessToken) return
-        this.authService.setHasToken(true);
+        this.authService.setToken(reponse.accessToken);
         const decodeToken: any = jwtDecode(reponse.accessToken);
         this.userService.getOneUser(decodeToken.id).subscribe(
           userData => {

@@ -13,14 +13,22 @@ import { Router } from '@angular/router';
 export class AuthService {
 
   private apiUrl = environment.apiUrl;
-
+  private token: string | null = null;
   private User!: UserModel;
-  private hasTokenSubject = new BehaviorSubject<boolean>(false);
-  hasToken$ = this.hasTokenSubject.asObservable();
+  private tokenSubject = new BehaviorSubject<string | null>(null);
 
   constructor(
     private http: HttpClient,
     private router: Router) { }
+
+
+  setToken(token: string | null): void {
+    this.tokenSubject.next(token);
+  }
+
+  getToken(): Observable<string | null> {
+    return this.tokenSubject.asObservable();
+  }
 
   register(userData: UserRegistration): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/${API.REGISTER}`, userData);
@@ -34,10 +42,6 @@ export class AuthService {
     return this.http.get(`${this.apiUrl}/${API.TOKEN}`, { withCredentials: true });
   }
 
-  setHasToken(token: boolean) {
-    this.hasTokenSubject.next(token);
-  }
-
   setUser(user: UserModel) {
     this.User = user;
   }
@@ -48,7 +52,7 @@ export class AuthService {
 
   logout() {
     this.http.get(`${this.apiUrl}/${API.SIGNOUT}`, { withCredentials: true }).subscribe(() => {
-      this.setHasToken(false);
+      this.setToken(null);
       this.User = new UserModel();
       this.router.navigate(['/']);
     });

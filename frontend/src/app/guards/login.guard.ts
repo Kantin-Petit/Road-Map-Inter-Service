@@ -2,7 +2,7 @@ import { ActivatedRouteSnapshot, CanActivateFn, RouterStateSnapshot, UrlTree } f
 import { AuthService } from '../services/auth.service';
 import { inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable, map, startWith, } from 'rxjs';
+import { Observable, map, } from 'rxjs';
 
 export const loginGuard: CanActivateFn = (route: ActivatedRouteSnapshot,
   state: RouterStateSnapshot
@@ -13,7 +13,7 @@ export const loginGuard: CanActivateFn = (route: ActivatedRouteSnapshot,
 
   return authService.verifyToken().pipe(
     map((res) => {
-      if (res) {
+      if (res.accessToken) {
         router.navigate(['']);
         return false
       }

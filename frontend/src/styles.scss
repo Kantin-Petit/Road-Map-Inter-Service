@@ -28,20 +28,21 @@ $seventh-color: #c48e33;
 $nav-color: #0c1e35;
 
 :root {
-	--primary-color: #{$primary-color};
-	--secondary-color: #{$secondary-color};
-	--third-color: #{$third-color};
-	--fourth-color: #{$fourth-color};
-	--fifth-color: #{$fifth-color};
-	--sixth-color: #{$sixth-color};
-	--nav-color: #{$nav-color};
+  --primary-color: #{$primary-color};
+  --secondary-color: #{$secondary-color};
+  --third-color: #{$third-color};
+  --fourth-color: #{$fourth-color};
+  --fifth-color: #{$fifth-color};
+  --sixth-color: #{$sixth-color};
+  --nav-color: #{$nav-color};
 }
 
 // Font //
 
 @import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
 
-$primary-font : 'Lato', sans-serif;
+$primary-font : 'Lato',
+sans-serif;
 
 // Mixins //
 
@@ -107,6 +108,7 @@ a {
 ul {
   margin: 0;
   padding-left: 0;
+
   li {
     list-style: none;
   }
@@ -114,26 +116,29 @@ ul {
 
 
 .container {
-    margin: 0 auto;
-    max-width: $container;
-    width: 100%;
-    padding-left: 60px;
-    padding-right: 60px;
-    @media only screen and (max-width: $tablet) {
-      padding-left: 45px;
-      padding-right: 45px;
-    }
-    @media only screen and (max-width: $mobile) {
-      padding-left: 25px;
-      padding-right: 25px;
-    }
+  margin: 0 auto;
+  max-width: $container;
+  width: 100%;
+  padding-left: 60px;
+  padding-right: 60px;
+
+  @media only screen and (max-width: $tablet) {
+    padding-left: 45px;
+    padding-right: 45px;
   }
 
-  .custom_item {
-    color: rgb(20, 0, 98) !important;
+  @media only screen and (max-width: $mobile) {
+    padding-left: 25px;
+    padding-right: 25px;
+  }
+}
 
-    &.active {
-      filter: brightness(0.5);
-    }
-    cursor: pointer;
+.custom_item {
+  color: rgb(20, 0, 98) !important;
+
+  &.active {
+    filter: brightness(0.5);
+  }
+
+  cursor: pointer;
 }

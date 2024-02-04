@@ -9,12 +9,12 @@ import { AuthService } from '../services/auth.service';
 })
 export class HeaderComponent {
 
-  hasToken: boolean = false;
+  hasToken: String | null = null;
 
   constructor(private authService: AuthService) { }
 
   ngOnInit() {
-    this.authService.hasToken$.subscribe(hasOne => {
+    this.authService.getToken().subscribe(hasOne => {
       this.hasToken = hasOne;
     });
   }

@@ -5,4 +5,10 @@
     &.collapsed {
         margin-left: 0px;
     }
+
+            margin-left: 300px;
+
+            &.collapsed {
+              margin-left: 40px;
+            }
 }

@@ -3,9 +3,11 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
 import { ServiceService } from '../../../services/service.service'
 import { TimelineModel } from '../../../models/timeline-model';
-import { AuthService } from '../../../services/auth.service';
 import { TimelineService } from '../../../services/timeline.service';
-import { of, map } from 'rxjs';
+import { AssociationModel } from 'src/app/models/association-model';
+import { ThematicModel } from 'src/app/models/thematic-model';
+import { ThematicService } from 'src/app/services/thematic.service';
+import { AssociationService } from '../../../services/association.service';
 
 @Component({
   selector: 'app-admin-timeline',
@@ -25,15 +27,22 @@ export class AdminTimelineComponent {
   Delete!: string;
   createTimeline: boolean = false
   serviceName: string = '';
+  thematicList: ThematicModel[] = [];
 
   constructor(
     private timelineService: TimelineService,
     private messageService: MessageService,
+    private thematicService: ThematicService,
+    private AssociationService: AssociationService,
     private confirmationService: ConfirmationService) { }
 
   ngOnInit() {
     this.timelineService.getListTimeline(this.serviceName).subscribe(response => {
       this.timelines = response;
+    });
+
+    this.thematicService.getAllthematic().subscribe(response => {
+      this.thematicList = response;
     });
   }
 
@@ -151,8 +160,28 @@ export class AdminTimelineComponent {
     return index;
   }
 
-  updateOptionThematic(option_thematic: number): void {
-    this.timelineService.setOptionThematic(option_thematic);
+  isChecked(thematics: any[], thematicId: number) {
+    return thematics.some(thematic => thematic.id === thematicId);
+  }
+
+  updateThematic(event: any, timelineId: number, thematId: number) {
+
+    if (event.target.checked) {
+
+      const data = {
+        timeline_id: timelineId,
+        thematic_id: thematId
+      };
+
+      this.AssociationService.createAssociation(data).subscribe(response => {
+        console.log(response);
+      });
+
+    } else {
+      this.AssociationService.deleteAssociation(timelineId, thematId).subscribe(response => {
+        console.log(response);
+      });
+    }
   }
 
 }
