@@ -8,7 +8,6 @@ import { DashboardComponent } from './dashboard.component';
 import { AdminTimelineComponent } from './admin/admin-timeline/admin-timeline.component';
 import { adminGuard } from '../guards/admin.guard';
 import { AdminThematicComponent } from './admin/admin-thematic/admin-thematic.component';
-import { OptionThematicComponent } from './admin/option-thematic/option-thematic.component';
 
 const routes: Routes = [
   {
@@ -32,7 +31,6 @@ const routes: Routes = [
       {
         path: 'timelines', component: AdminTimelineComponent,
       },
-      { path: 'timelines/option_thematic', component: OptionThematicComponent },
     ]
   },
 ];

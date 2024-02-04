@@ -41,7 +41,7 @@ export class ConnexionComponent {
       this.authService.login(formData).subscribe(
         reponse => {
           this.userService.getOneUser(reponse.id).subscribe(userData => {
-            this.authService.setHasToken(true);
+            this.authService.setToken(reponse.accessToken);
             this.authService.setUser(userData);
             this.router.navigate(['/dashboard']);
           });

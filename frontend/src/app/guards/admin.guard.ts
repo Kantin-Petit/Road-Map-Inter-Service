@@ -11,7 +11,7 @@ export const adminGuard: CanActivateFn = (route: ActivatedRouteSnapshot,
   const authService = inject(AuthService);
   const router = inject(Router);
 
-  return authService.hasToken$.pipe(
+  return authService.getToken().pipe(
     map(hasOne => {
       if (hasOne && (authService.getRole() === 'admin') || authService.getRole() === 'admin_service') {
         return true;
