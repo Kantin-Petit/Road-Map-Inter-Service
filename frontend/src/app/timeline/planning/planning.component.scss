@@ -1,8 +1,8 @@
 .planning {
-    margin-left: 150px;
+    margin-left: 300px;
     transition: all .3s ease-in-out;
 
     &.collapsed {
-        margin-left: 0px;
-    }
+        margin-left: 50px;
+    }   
 }

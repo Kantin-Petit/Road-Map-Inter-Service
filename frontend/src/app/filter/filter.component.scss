@@ -39,16 +39,16 @@
     }
 
     .toggle-sidebar {
-      transform: translateX(-150px) rotate(180deg);
-      transition: transform .3s;
+      transform: translateX(-250px) rotate(180deg);
+      transition: transform .3s ease-in;
     }
 
     width: 50px;
-    transition: width .3s;
+    transition: all .3s ease-in;
   }
 
   width: 300px;
-  transition: width .3s;
+  transition: width .3s ease-in, transform .3s ease-in;
 
   .menu {
     width: 100%;
@@ -70,7 +70,7 @@
         justify-content: space-between;
 
         i {
-          transition: transform .3s;
+          transition: transform .3s ease-in;
         }
 
         span {
@@ -84,6 +84,7 @@
           display: flex;
           .thematic{
             display: flex;
+            margin-right: auto;
           }
           .puce{
             width: 10px;
@@ -107,7 +108,7 @@
     details[open] {
       i {
         transform: rotate(180deg);
-        transition: transform .3s;
+        transition: transform .3s ease-in;
       }
     }
 
@@ -152,14 +153,14 @@
     display: flex;
     align-items: center;
     position: fixed;
-    left: calc(200px - 15px);
-    top: 20%;
+    left: calc(300px - 15px);
+    top: 170px;
     height: 30px;
     width: 30px;
     background: color(primary-color);
     border-radius: 50%;
 
-    transition: transform .3s;
+    transition: transform .3s ease-in;
 
     .arrow-icon {
       margin-right: 5px;
