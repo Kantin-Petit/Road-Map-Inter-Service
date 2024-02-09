@@ -25,6 +25,8 @@ export class AppComponent implements OnInit{
   ngOnInit(){
       this.authService.verifyToken().subscribe({
           next: (reponse: any) => {
+            if (!reponse.accessToken) return
+            this.authService.setToken(reponse.accessToken);
             const decodeToken: any = jwtDecode(reponse.accessToken);
             this.userService.getOneUser(decodeToken.id).subscribe(
               userData => {

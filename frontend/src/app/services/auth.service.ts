@@ -16,7 +16,7 @@ export class AuthService {
 
   private apiUrl = environment.apiUrl;
   private User!: UserModel;
-  private accessToken!: string;
+  private accessToken!: string | null;
 
 
   constructor(private http: HttpClient,
@@ -61,16 +61,22 @@ export class AuthService {
   }
 
   isLogged() {
-    if(this.accessToken === ''){
-      return false;
+    if(this.accessToken != null){
+      return true;
     }
-    return true;
+    return false;
   }
 
   logout() {
-    this.accessToken = '';
-    this.User = new UserModel();
-    this.http.get(`${this.apiUrl}/${API.SIGNOUT}`, { withCredentials: true }).subscribe();
+    this.http.get(`${this.apiUrl}/${API.SIGNOUT}`, { withCredentials: true }).subscribe({
+      next: () => {
+        this.accessToken = null;
+        this.User = new UserModel();
+      },
+      error: (error) => {
+        console.error(error);
+      }
+    });
   }
 
   getRole(){

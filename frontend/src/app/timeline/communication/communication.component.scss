@@ -7,7 +7,7 @@
 .side_menu {
   width: 200px;
   height: 100vh;
-  transition: all .5s ease-in-out;
+  transition: all .5s linear;
   position: fixed;
   top: 0;
   left: 0;
@@ -19,7 +19,7 @@
   ul {
     width: 100%;
     opacity: 1;
-    transition: all .8s ease-in-out;
+    transition: all .5s linear;
     overflow: hidden;
 
 
@@ -120,18 +120,19 @@
 
 .communication {
   position: relative;
-  transition: all .5s ease-in-out;
+  transition: all .5s linear;
 
   .timeline_wrapper {
     padding: 20px;
     overflow: auto;
-    transition: all .5s ease-in-out;
-    width: calc(100% - 200px);
+    transition: all .5s linear;
+    width: calc(100% - 300px);
 
     margin-left: 300px;
 
     &.collapsed {
-      margin-left: 20px;
+      width: calc(100% - 50px);
+      margin-left: 50px;
     }
   }
 }
@@ -249,7 +250,7 @@ img {
   ol {
     font-size: 0;
     padding: 250px 0;
-    transition: all 1s;
+    transition: all .5s linear;
     overflow-x: scroll;
     scroll-snap-type: x mandatory;
     scrollbar-color: color(primary-color) color(third-color);
@@ -311,8 +312,12 @@ img {
       &:nth-child(odd) {
         div {
           top: -16px;
-          transform: translateY(-100%);
           border-radius: 10px 10px 10px 0;
+          &:not(.puces) {
+            &:not(.puce) {
+            transform: translateY(-100%);
+            }
+          }
 
           &::before {
             top: 100%;
