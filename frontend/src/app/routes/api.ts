@@ -4,6 +4,7 @@ export const API = {
     SIGNOUT: 'auth/signout',
     TOKEN: 'auth/token',
     USER: 'user',
+    USER_SERVICE: 'user/service',
     SERVICE: 'service',
     THEMATIC: 'thematic',
     TIMELINE: 'timeline',

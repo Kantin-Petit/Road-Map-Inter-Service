@@ -5,11 +5,11 @@ export class UserModel {
     last_name!: string;
     password!: string;
     role!: UserRole;
-    serviceId!: number;
-    service!: {
+    service_id!: number;
+    Service!: {
         name: string;
     };
-    
+
 }
 
 export enum UserRole {
