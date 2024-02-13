@@ -13,7 +13,6 @@ import { Router } from '@angular/router';
 export class AuthService {
 
   private apiUrl = environment.apiUrl;
-  private token: string | null = null;
   private User!: UserModel;
   private tokenSubject = new BehaviorSubject<string | null>(null);
 

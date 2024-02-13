@@ -51,7 +51,7 @@ export class PlanningComponent implements OnInit, AfterViewInit {
 
         this.data.add({
           id: timelineId,
-          content: timeline, 
+          content: timeline,
           start: dateStart,
           end: dateEnd,
           className: itemClassName,
@@ -66,7 +66,7 @@ export class PlanningComponent implements OnInit, AfterViewInit {
 
       let cssStyles = '';
 
-      this.filterService.thematics.forEach((thematic) => { 
+      this.filterService.thematics.forEach((thematic) => {
           let color = thematic.color;
           cssStyles += `.${thematic.name} { background-color: ${color}; }\n`;
       });
@@ -90,8 +90,10 @@ export class PlanningComponent implements OnInit, AfterViewInit {
     this.timeline.setGroups(this.groups);
     this.timeline.setItems(this.data);
     this.timeline.on('click', (properties) => {
+      console.log(properties.event.target)
       if (!properties.event.target.parentNode['vis-item']?.data.content) return
       const content = properties.event.target.parentNode['vis-item'];
+      console.log(content)
       this.toggleSidebar(content)
     });
   }
@@ -132,6 +134,12 @@ export class PlanningComponent implements OnInit, AfterViewInit {
       selectable: false,
       locale: 'fr',
       template: function (item: any, element: any, data: any) { },
+      timeAxis: {
+        scale: 'day',
+        step: 7
+      },
+      horizontalScroll: true,
+      orientation: 'top',
     };
 
   }

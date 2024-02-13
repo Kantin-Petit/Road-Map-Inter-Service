@@ -12,7 +12,6 @@ exports.getAssociation = (req, res, next) => {
 };
 
 exports.createAssociation = (req, res, next) => {
-    console.log(req.body);
     ThematicTimeline.create({
         timeline_id: req.body.timeline_id,
         thematic_id: req.body.thematic_id

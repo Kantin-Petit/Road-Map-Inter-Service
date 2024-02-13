@@ -29,7 +29,7 @@
                     <h5 class="m-0">Utilisateurs</h5>
                     <span class="p-input-icon-left">
                         <i class="pi pi-search"></i>
-                        <input class="p-inputtext p-component p-element" pInputText type="text" (input)="filterGlobal($event)" placeholder="Recherce" />
+                        <input class="p-inputtext p-component p-element" pInputText type="text" (input)="filterGlobal($event)" placeholder="Recherche" />
                     </span>
                 </div>
             </ng-template>
@@ -41,7 +41,7 @@
                     <th pSortableColumn="last_name" style="min-width:15rem">Nom <p-sortIcon field="last_name"></p-sortIcon></th>
                     <th pSortableColumn="first_name" style="min-width:15rem">Prénom <p-sortIcon field="first_name"></p-sortIcon></th>
                     <th pSortableColumn="role">Role <p-sortIcon field="role"></p-sortIcon></th>
-                    <th pSortableColumn="service" style="min-width:10rem">Service <p-sortIcon field="service"></p-sortIcon></th>
+                    <th pSortableColumn="service_id" style="min-width:10rem">Service <p-sortIcon field="service_id"></p-sortIcon></th>
                     <th></th>
                 </tr>
             </ng-template>
@@ -98,16 +98,20 @@
                     </div>
                 </p-accordionTab>
                 <p-accordionTab header="Option admin">
-                    <div class="field flex flex-column">
-                        <label for="role">Role</label>
-                        <input class="h-2rem" type="text" pInputText id="role" [(ngModel)]="utilisateur.role" required autofocus />
-                        <small class="p-error" *ngIf="submitted && !utilisateur.role">Le role est requis.</small>
-                    </div>
-                    <div class="field flex flex-column">
-                        <label for="service">Service</label>
-                        <input class="h-2rem" type="text" pInputText id="service" [(ngModel)]="utilisateur.serviceId" required autofocus />
-                        <small class="p-error" *ngIf="submitted && !utilisateur.serviceId">Le service est requis.</small>
-                    </div>
+                   <div class="field flex flex-column">
+                    <label for="role">Role</label>
+                    <select class="h-2rem" id="role" [(ngModel)]="utilisateur.role" required autofocus>
+                        <option *ngFor="let role of roleList" value="{{role}}">{{role | titlecase }}</option>
+                    </select>
+                    <small class="p-error" *ngIf="submitted && !utilisateur.role">Le rôle est requis.</small>
+                  </div>
+                  <div class="field flex flex-column">
+                    <label for="service">Service</label>
+                    <select class="h-2rem" id="service" [(ngModel)]="utilisateur.service_id" required autofocus>
+                        <option *ngFor="let service of serviceList" [value]="service.id">{{service.name | titlecase}}</option>
+                    </select>
+                    <small class="p-error" *ngIf="submitted && !utilisateur.service_id">Le service est requis.</small>
+                </div>
                 </p-accordionTab>
                 <!-- <p-accordionTab *ngIf="createUser" header="Option admin 2">
                     <div class="field flex flex-column">

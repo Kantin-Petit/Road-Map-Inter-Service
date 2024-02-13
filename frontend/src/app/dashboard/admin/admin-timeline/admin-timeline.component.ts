@@ -1,10 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
-import { ServiceService } from '../../../services/service.service'
 import { TimelineModel } from '../../../models/timeline-model';
 import { TimelineService } from '../../../services/timeline.service';
-import { AssociationModel } from 'src/app/models/association-model';
 import { ThematicModel } from 'src/app/models/thematic-model';
 import { ThematicService } from 'src/app/services/thematic.service';
 import { AssociationService } from '../../../services/association.service';
@@ -28,6 +26,10 @@ export class AdminTimelineComponent {
   createTimeline: boolean = false
   serviceName: string = '';
   thematicList: ThematicModel[] = [];
+  currentDate!: Date;
+
+  thematicAssociationsToCreate: { timeline_id: number, thematic: ThematicModel }[] = [];
+  thematicAssociationsToDelete: { timeline_id: number, thematic: ThematicModel }[] = [];
 
   constructor(
     private timelineService: TimelineService,
@@ -37,6 +39,7 @@ export class AdminTimelineComponent {
     private confirmationService: ConfirmationService) { }
 
   ngOnInit() {
+    this.currentDate = new Date();
     this.timelineService.getListTimeline(this.serviceName).subscribe(response => {
       this.timelines = response;
     });
@@ -133,12 +136,35 @@ export class AdminTimelineComponent {
         };
 
         this.timelines.push(this.timeline);
-        this.messageService.add({ severity: 'success', summary: 'Réussite', detail: 'Timeline Créer', life: 3000 });
         this.timelineService.createTimeline(formData).subscribe(response => {
-          console.log(response);
+          this.messageService.add({ severity: 'success', summary: 'Réussite', detail: 'Timeline Créer', life: 3000 });
         });
 
       }
+
+      this.thematicAssociationsToCreate.forEach(element => {
+
+        this.timeline.Thematics.push(element.thematic);
+
+        const data = {
+          timeline_id: element.timeline_id,
+          thematic_id: element.thematic.id
+        };
+
+        this.AssociationService.createAssociation(data).subscribe(() => {
+          this.thematicAssociationsToCreate = [];
+        });
+      });
+
+      this.thematicAssociationsToDelete.forEach(element => {
+
+        const valueToDelete = element.thematic.id;
+        const index = this.timeline.Thematics.findIndex(element => element.id === valueToDelete);
+        if (index !== -1) { this.timeline.Thematics.splice(index, 1) }
+        this.AssociationService.deleteAssociation(element.timeline_id, element.thematic.id).subscribe(response => {
+          this.thematicAssociationsToDelete = [];
+        });
+      });
 
       this.timelines = [...this.timelines];
       this.timelineDialog = false;
@@ -164,23 +190,17 @@ export class AdminTimelineComponent {
     return thematics.some(thematic => thematic.id === thematicId);
   }
 
-  updateThematic(event: any, timelineId: number, thematId: number) {
+  updateThematic(event: any, timelineId: number, thematic: ThematicModel) {
+
+    const data = {
+      timeline_id: timelineId,
+      thematic: thematic
+    };
 
     if (event.target.checked) {
-
-      const data = {
-        timeline_id: timelineId,
-        thematic_id: thematId
-      };
-
-      this.AssociationService.createAssociation(data).subscribe(response => {
-        console.log(response);
-      });
-
+      this.thematicAssociationsToCreate.push(data);
     } else {
-      this.AssociationService.deleteAssociation(timelineId, thematId).subscribe(response => {
-        console.log(response);
-      });
+      this.thematicAssociationsToDelete.push(data);
     }
   }
 

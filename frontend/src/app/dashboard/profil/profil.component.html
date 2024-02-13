@@ -8,7 +8,7 @@
     <h2>Rôle</h2>
     <p>{{ utilisateur.role }}</p>
     <h2>Service</h2>
-    <p>{{ utilisateur.serviceId }}</p>
+    <p>{{ utilisateur.service_id }}</p>
   <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2 editButton" (click)="editUser(utilisateur)"></button>
   <p-dialog [(visible)]="utilisateurDialog" [style]="{ width: '450px' }" header="Utilisateur" [modal]="true" styleClass="p-fluid">
     <ng-template pTemplate="content">

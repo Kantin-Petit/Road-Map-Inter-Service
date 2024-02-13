@@ -20,6 +20,8 @@ import { DashboardComponent } from './dashboard.component';
 import { ColorPickerModule } from 'primeng/colorpicker';
 import { ProfilComponent } from './profil/profil.component';
 import { AdminTimelineComponent } from './admin/admin-timeline/admin-timeline.component';
+import { FileUploadModule } from 'primeng/fileupload';
+import { CalendarModule } from 'primeng/calendar';
 
 @NgModule({
   declarations: [
@@ -34,10 +36,12 @@ import { AdminTimelineComponent } from './admin/admin-timeline/admin-timeline.co
   imports: [
     CommonModule,
     AccordionModule,
+    FileUploadModule,
     TableModule,
     ToastModule,
     ColorPickerModule,
     ToolbarModule,
+    CalendarModule,
     RatingModule,
     AccordionModule,
     DialogModule,

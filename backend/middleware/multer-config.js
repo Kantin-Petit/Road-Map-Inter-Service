@@ -1,4 +1,4 @@
-const  multer = require('multer');
+const multer = require('multer');
 const fs = require('fs');
 
 const MIME_TYPES = {
@@ -9,22 +9,36 @@ const MIME_TYPES = {
 };
 
 const types = Object.values(MIME_TYPES);
+const servicesPath = 'images/services/';
 
 const storage = multer.diskStorage({
-    destination: (req, file, callback) => {
-        const userPath = `images/user_${req.body.user_id}`
-        if(!fs.existsSync(userPath)) fs.mkdirSync(userPath);
-        const imagePath = `images/user_${req.body.user_id}/${req.body.type}`
-        if(!fs.existsSync(imagePath)) fs.mkdirSync(imagePath);
-        callback(null, imagePath)
+    destination: function (req, file, cb) {
+
+        let serviceNamePath = servicesPath;
+
+        if (req.body.type === 'service' || req.body.type === 'timeline') {
+
+            if (req.body.type === 'timeline') {
+                serviceNamePath += `service${req.body.service_id}/timeline${req.body.id}/`;
+            }
+
+            if (req.body.type === 'service') {
+                serviceNamePath += `service${req.body.id}/`;
+            }
+
+            if (!fs.existsSync(serviceNamePath)) {
+                fs.mkdirSync(serviceNamePath, { recursive: true });
+            }
+        }
+
+        cb(null, serviceNamePath)
     },
-    filename: (req, file, callback) => {
-        // Remove space and the extension file and then transform everything into lowercase
+    filename: function (req, file, cb) {
         const name = file.originalname.split(' ').join('_').replace(/\.[^/.]+$/, "").toLowerCase();
         const extension = MIME_TYPES[file.mimetype];
         const isValid = types.some((type) => type === extension)
-        if(isValid) callback(null, Date.now() + name + "." + extension);
+        if (isValid) cb(null, Date.now() + name + "." + extension);
     }
-});
+})
 
-module.exports = multer ({ storage }).single('image');
+module.exports = multer({ storage }).single('image');

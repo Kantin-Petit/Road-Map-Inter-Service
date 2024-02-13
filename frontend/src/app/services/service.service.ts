@@ -30,7 +30,7 @@ export class ServiceService {
     return this.http.post<ServiceModel>(`${this.apiUrl}/${API.SERVICE}`, service);
   }
 
-  updateservice(id: number, service: ServiceModel): Observable<ServiceModel> {
+  updateservice(id: number, service: ServiceModel | FormData): Observable<ServiceModel> {
     return this.http.put<ServiceModel>(`${this.apiUrl}/${API.SERVICE}/${id}`, service);
   }
 

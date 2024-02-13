@@ -5,9 +5,9 @@ import { UserService } from '../../../services/user.service';
 import { Table } from 'primeng/table';
 import { ServiceService } from '../../../services/service.service'
 import { ThematicModel } from '../../../models/thematic-model';
-import { Observable } from 'rxjs';
 import { UserRegistration, UserRole } from '../../../interfaces/auth';
 import { AuthService } from '../../../services/auth.service';
+import { ServiceModel } from 'src/app/models/service-model';
 
 @Component({
   selector: 'app-admin-user',
@@ -28,6 +28,8 @@ export class AdminUserComponent implements OnInit {
   Delete!: string;
   service!: ThematicModel[];
   createUser: boolean = false
+  serviceList!: ServiceModel[];
+  roleList!: string[];
 
   constructor(
     private userService: UserService,
@@ -37,9 +39,24 @@ export class AdminUserComponent implements OnInit {
     private confirmationService: ConfirmationService) { }
 
   ngOnInit() {
-    this.userService.getAllUser().subscribe(users => {
-      this.utilisateurs = users;
-    });
+
+    if (this.authService.getUser().role === 'admin') {
+
+      this.userService.getAllUser().subscribe(users => {
+        this.utilisateurs = users;
+      });
+
+      this.ServiceService.getAllService().subscribe(services => {
+        this.serviceList = services;
+      });
+
+      this.roleList = ['admin', 'admin_service', 'user'];
+    } else {
+      this.userService.getAllUserByService(this.authService.getUser().service_id).subscribe(users => {
+        this.utilisateurs = users;
+      });
+    }
+
   }
 
   filterGlobal(event: Event) {
@@ -126,7 +143,7 @@ export class AdminUserComponent implements OnInit {
           lastName: this.utilisateur.last_name,
           email: this.utilisateur.email,
           password: this.utilisateur.password,
-          service: this.utilisateur.serviceId,
+          service: this.utilisateur.service_id,
           role: UserRole.ADMIN
         };
 

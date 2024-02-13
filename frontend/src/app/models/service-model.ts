@@ -1,6 +1,6 @@
 export class ServiceModel {
-    id!: number;
-    name!: string;
-    image!: string;
-    description!: string;
+  id!: number;
+  name!: string;
+  image!: any;
+  description!: string;
 }
