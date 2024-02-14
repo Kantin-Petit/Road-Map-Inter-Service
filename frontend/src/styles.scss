@@ -63,18 +63,6 @@ $primary-font : 'Lato', sans-serif;
 }
 
 // class vis
-@mixin month-styles($start, $end) {
-  @for $i from $start through $end {
-    .vis-day#{$i} {
-      border: none !important;
-      z-index: 1 !important;
-    }
-    // .vis-minor .vis-month#{$i}:nth-of-type(2) {
-    //    display: none !important;
-    // }
-  }
-}
-
 @mixin vis-item-styles($start, $end) {
   $r : 0;
   $g : 0;
@@ -190,9 +178,7 @@ app-profil{
   }
 }
 
-@include month-styles(1, 366);
-
-@include vis-item-styles(1, 3);
+// @include vis-item-styles(1, 3);
 
 .vis-item.vis-range {
   border: none !important;
