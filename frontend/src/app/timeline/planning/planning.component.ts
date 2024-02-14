@@ -41,7 +41,7 @@ export class PlanningComponent implements OnInit, AfterViewInit {
       this.groups.add({
         id: id,
         content: name,
-        className: "custom_group",
+        className: "custom_group_"+service.id,
       });
 
       sujets.forEach((timeline) => {
@@ -61,45 +61,6 @@ export class PlanningComponent implements OnInit, AfterViewInit {
       });
     });
 
-    this.setStyle();
-
-  }
-
-  setStyle() {
-    let cssStyles = '';
-
-    let custom_group = '.custom_group {';
-    // custom_group += 'height: 100px !important;';
-    custom_group += 'border: 1px solid #e5e5e5;';
-    custom_group += ' }';
-
-    let vis_label = '.vis-label {';
-    vis_label += 'text-align: center;';
-    vis_label += 'font-size: 1.3rem;';
-    vis_label += 'font-weight: bold;';
-    vis_label += ' }';
-
-    let timeline_title = '.timeline-title {';
-    timeline_title += 'margin: 0;';
-    timeline_title += '}';
-
-    let vis_content = '.vis-content { ';
-    vis_content += 'top: 0 !important;';
-    vis_content += 'transform: translateY(0) !important;';
-    vis_content += '';
-    vis_content += ' }';
-
-    let vis_item_content = '.vis-item-content { ';
-    vis_item_content += 'display: flex !important;';
-    vis_item_content += 'justify-content: space-between;';
-    vis_item_content += '}';
-
-    //let thematic_div = '.thematics div { width: 10px; height: 10px; margin: 0 5px; }';
-
-    cssStyles += custom_group + '\n' + vis_label + '\n'+ timeline_title + '\n' + vis_content + '\n' + vis_item_content + '\n'  + '\n';
-    let styleTag = document.createElement('style');
-    styleTag.textContent = cssStyles;
-    document.head.appendChild(styleTag);
   }
 
   setThematics() {
@@ -130,9 +91,12 @@ export class PlanningComponent implements OnInit, AfterViewInit {
     this.timeline.setGroups(this.groups);
     this.timeline.setItems(this.data);
     this.timeline.on('click', (properties) => {
+      console.log(properties, "properties")
       if (!properties.event.target.parentNode['vis-item']?.data.content) return
       const content = properties.event.target.parentNode['vis-item'];
+      console.log(content)
       this.toggleSidebar(content)
+      
     });
   }
 
@@ -172,14 +136,20 @@ export class PlanningComponent implements OnInit, AfterViewInit {
       selectable: false,
       locale: 'fr',
       template: function (item: any, element: any, data: any) { 
-        return `
-        <div class="vis-item-content">
-          <div class="vis-label">${item.content.title}</div>
-        </div>
-        <style>
-          .vis-item-content { display: flex; justify-content: space-between; }
-        </style>`;
-       },
+        return '<div>' + item.content.title + '</div>';
+      },
+      timeAxis: {
+        scale: 'month',
+      },
+      horizontalScroll: true,
+      orientation: 'top',
+      zoomable: false,
+      groupHeightMode: 'fixed',
+      format: {
+        majorLabels: {
+          week: 'MMM',
+        }
+      },
     };
 
   }

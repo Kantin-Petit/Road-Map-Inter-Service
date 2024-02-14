@@ -17,13 +17,9 @@ body {
 
 .profile{
         background: white;
-          width: 540px;
           height: 420px;
-          margin: 0 auto;
           position: relative;
-          margin-top: 5%;
           box-shadow: 2px 5px 20px rgba($fifth-color, .5);
-
 }
 
 h1 {
@@ -54,7 +50,7 @@ p {
 }
 
 .editButton{
-  position: relative;
-  right: 200px;
-  top: -10px
+  position: absolute;
+  left: 10px;
+  bottom: 10px
 }
