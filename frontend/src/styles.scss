@@ -144,6 +144,10 @@ ul {
   }
 }
 
+app-profil{
+  width: 100%;
+}
+
 
 .container {
     margin: 0 auto;
@@ -209,4 +213,7 @@ ul {
     width: 100%;
     text-align: center;
   }
+}
+.vis-item-content {
+  pointer-events: none;
 }

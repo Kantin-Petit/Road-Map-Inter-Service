@@ -17,9 +17,13 @@ body {
 
 .profile{
         background: white;
-          height: 420px;
-          position: relative;
-          box-shadow: 2px 5px 20px rgba($fifth-color, .5);
+        height: 420px;
+        position: relative;
+        box-shadow: 2px 5px 20px rgba($fifth-color, .5);
+
+        width: 100%;
+        max-width: 699px;
+        padding: 0 20px;
 }
 
 h1 {
