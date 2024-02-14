@@ -3,6 +3,7 @@ import { TimelineModel } from 'src/app/models/timeline-model';
 import { DataSet, Timeline } from "vis-timeline/standalone";
 import { FilterService } from 'src/app/services/filter.service';
 import vis from 'vis-network/declarations/index-legacy-bundle';
+import { style } from '@angular/animations';
 
 @Component({
   selector: 'app-planning',
@@ -35,6 +36,10 @@ export class PlanningComponent implements OnInit, AfterViewInit {
   }
 
   addDataIntoDom() {
+    var $r = 0;
+    var $g = 0;
+    var $b = 0;
+    var $step = 50;
     this.filterService.services.forEach((service) => {
       const { id, name, sujets } = service;
 
@@ -43,6 +48,16 @@ export class PlanningComponent implements OnInit, AfterViewInit {
         content: name,
         className: "custom_group_"+service.id,
       });
+
+      let cssStyles = `.custom_group_${service.id} .vis-item-overflow .vis-item-content { background-color: rgb(${$r}, ${$g}, ${$b}); color: rgb(${255-$r},${255-$g},${255-$b}) }\n`;
+      cssStyles += `.custom_group_${service.id} .vis-item-overflow { background-color: rgb(${$r}, ${$g}, ${$b}, .7) }`;
+      let styleTag = document.createElement('style');
+      styleTag.textContent += cssStyles;
+      document.head.appendChild(styleTag);
+
+      $r += $step;
+      $g += $step + 50;
+      $b += $step + 100;
 
       sujets.forEach((timeline) => {
         const { id: timeeline_id, date_start: dateStart, date_end: dateEnd, Thematics } = timeline;
