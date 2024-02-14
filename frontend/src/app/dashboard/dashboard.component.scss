@@ -8,8 +8,9 @@
     }
     
     .wrapper-component{
-        width: calc(100% - 180px);
-        padding: 60px 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
     }
 }
-
