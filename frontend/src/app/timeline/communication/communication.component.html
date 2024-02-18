@@ -1,27 +1,23 @@
-<div class="communication">
-
-  <div class="timeline_wrapper container" [ngClass]="{ 'collapsed': filterService.isCollapsed }">
-
-    <ng-container *ngFor="let service of filterService.services">
-    <section class="timeline">
-      <div class="info">
-        <img width="50" height="50" src="https://assets.codepen.io/210284/face.svg" alt=""/>
-        <h2>{{service.name | uppercase }}</h2>
-        <p>{{ service.description }}</p>
-      </div>
-      <ol>
-        <li *ngFor="let timeline of service.sujets; let i = index">
-          <div  [class.card_selected]="filterService.sidebarVisible && filterService.selectedItemIndex === service.name" (click)="toggleSidebar(i, service.name, timeline)">
-            <app-sidebar *ngIf="timeline" [sidebarData]="timeline"></app-sidebar>
-          </div>
-        </li>
-      </ol>
-    </section>
-    </ng-container>
-
+<section class="timeline-communication" *ngFor="let service of filterService.services">
+  <div class="info">
+    <div class="image-wrapper">
+      <img [src]="socketUrl + '/images/services/service'+ service.id + '/' + service.image" alt="image_service"/>
+    </div>
+    <h2>{{service.name | uppercase }}</h2>
+    <p>{{ service.description }}</p>
   </div>
-
-</div>
+  <ol>
+    <li *ngFor="let timeline of service.sujets">
+      <div  [class.card_selected]="filterService.sidebarVisible && filterService.selectedItemIndex === service.name + timeline.id" (click)="toggleSidebar(service.name, timeline)">
+          <p class="puces">
+            <span *ngFor="let thematic of timeline.Thematics" [style.background-color]="thematic.color" class="puce"></span>
+          </p>
+          <h2>{{ timeline.title }}</h2>
+          <p>{{ timeline.text }}</p>
+      </div>
+    </li>
+  </ol>
+</section>
 
 <p-sidebar [(visible)]="filterService.sidebarVisible" position="right">
   <app-sidebar *ngIf="filterService.sidebarData" [sidebarData]="filterService.sidebarData"></app-sidebar>

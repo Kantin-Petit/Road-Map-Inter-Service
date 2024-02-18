@@ -14,7 +14,7 @@ const routes: Routes = [
     path: '',
     component: DashboardComponent,
     children: [
-      { path: '', redirectTo: 'profil', pathMatch: 'full' },
+      { path: '', component: ProfilComponent },
       { path: 'profil', component: ProfilComponent },
       {
         path: 'services', component: AdminServiceComponent,

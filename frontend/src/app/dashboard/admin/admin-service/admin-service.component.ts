@@ -23,8 +23,8 @@ export class AdminServiceComponent implements OnInit {
   Delete!: string;
   createService: boolean = false
   socketUrl: string = environment.socketUrl;
-  imageData!: any;
-  imageData2!: any;
+  imageUrl!: any;
+  imageFile!: any;
 
   constructor(
     private serviceService: ServiceService,
@@ -97,16 +97,16 @@ export class AdminServiceComponent implements OnInit {
     this.serviceDialog = false;
     this.createService = false;
     this.submitted = false;
-    this.imageData = null;
-    this.imageData2 = null;
+    this.imageUrl = null;
+    this.imageFile = null;
   }
 
 
   onFileSelected(event: any) {
     const file: File = event.target.files[0];
     if (file) {
-      this.imageData2 = file;
-      this.imageData = URL.createObjectURL(file);
+      this.imageFile = file;
+      this.imageUrl = URL.createObjectURL(file);
     }
   }
 
@@ -115,18 +115,20 @@ export class AdminServiceComponent implements OnInit {
 
     if (this.service.name?.trim()) {
 
-      const formData = new FormData();
-      formData.append('id', this.service.id.toString());
-      formData.append('name', this.service.name);
-      formData.append('description', this.service.description);
-      formData.append('type', 'service');
-      formData.append('image', this.imageData2, this.imageData2.name);
-
-
       if (this.service.id) {
+
+        const formDataWithImage = new FormData();
+        formDataWithImage.append('id', String(this.service.id));
+        formDataWithImage.append('name', this.service.name);
+        formDataWithImage.append('description', this.service.description);
+        formDataWithImage.append('type', 'service');
+        formDataWithImage.append('image', this.imageFile, this.imageFile.name);
+
+        const DATA = this.imageFile ? formDataWithImage : this.service;
+        
         const index = this.findIndexById(String(this.service.id));
         this.services[index] = this.service;
-        this.serviceService.updateservice(this.service.id, formData).subscribe(reponse => {
+        this.serviceService.updateservice(this.service.id, DATA).subscribe(reponse => {
           this.services[index].image = reponse.image;
           this.messageService.add({ severity: 'success', summary: 'Réussite', detail: 'Service Modifié', life: 3000 });
         });
@@ -151,8 +153,8 @@ export class AdminServiceComponent implements OnInit {
       this.serviceDialog = false;
       this.createService = false;
       this.service = new ServiceModel();
-      this.imageData = null;
-      this.imageData2 = null;
+      this.imageUrl = null;
+      this.imageFile = null;
     }
   }
 

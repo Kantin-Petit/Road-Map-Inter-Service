@@ -1,34 +1,57 @@
-@import '../../../styles.scss';
+@import '../../../assets/scss/variables';
+@import '../../../assets/scss/mixins';
 
 .home {
+  display: flex;
 
+  &.collapsed {
 
-    section {
-        margin-top: 40px;
-        margin-bottom: 40px;
+      app-filter {
+        width: 50px;
+      }
+
+      .timeline {
+        max-width: 1500px;
+      }
+
     }
+
+  app-filter {
+    width: 300px;
+    position: relative;
+    transition: width .5s ease-in-out;
+
+  }
+
+  .timeline {
+    width: 100%;
+    max-width: 1200px;
+    padding: 0 40px;
+    margin: 40px 0;
+    transition: max-width .5s ease-in-out;
 
     .choice {
-        ul {
-            display: flex;
-            justify-content: center;
-            gap: 30px;
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      margin: 40px 0 80px 0;
 
-            a {
-                color: color(primary-color);
-                transition: all 0.3s ease-in-out;
-                padding: 8px 12px;
-                border-radius: 5px;
-                cursor: pointer;
-            
-                &:hover {
-                  background-color: color(primary-color);
-                  color: white;
-                }
-            }
+        a {
+          color: color(primary-color);
+          font-size: 1rem;
+          text-transform: capitalize;
+          transition: all 0.3s ease-in-out;
+          padding: 8px 12px;
+          border-radius: 5px;
+          cursor: pointer;
 
-           
+          &:hover {
+            background-color: color(primary-color);
+            color: white;
+          }
         }
-    }
+
+      }
+  }
 
 }

@@ -35,7 +35,7 @@
             <ng-template pTemplate="header">
                 <tr>
                     <th style="width: 4rem">
-                        <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                        <!-- <p-tableHeaderCheckbox></p-tableHeaderCheckbox> -->
                     </th>
                     <th pSortableColumn="name" style="min-width:15rem">Nom <p-sortIcon field="name"></p-sortIcon></th>
                     <th pSortableColumn="image" style="min-width:15rem">Image <p-sortIcon field="image"></p-sortIcon></th>
@@ -74,9 +74,9 @@
                   <input class="h-2rem" type="text" pInputText id="description" [(ngModel)]="service.description" required autofocus />
                   <small class="p-error" *ngIf="submitted && !service.description">La description est requise.</small>
               </div>
-              <div class="field flex flex-column">
+              <div *ngIf="!createService" class="field flex flex-column">
                 <input type="file" (change)="onFileSelected($event)" accept="image/*">
-                <img *ngIf="imageData" [src]="imageData" width="200" height="200" />
+                <img *ngIf="imageUrl" [src]="imageUrl" width="200" height="200" />
               </div>
         </ng-template>
         <ng-template pTemplate="footer">

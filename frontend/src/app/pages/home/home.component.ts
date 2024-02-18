@@ -11,7 +11,7 @@ export class HomeComponent implements OnInit {
   constructor(public filterService: FilterService) { }
 
   ngOnInit() {
-    
+
   }
 
   displayCommunication: boolean = true;

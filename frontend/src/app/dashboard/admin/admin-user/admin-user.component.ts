@@ -30,6 +30,7 @@ export class AdminUserComponent implements OnInit {
   createUser: boolean = false
   serviceList!: ServiceModel[];
   roleList!: string[];
+  myRole!: string;
 
   constructor(
     private userService: UserService,
@@ -52,10 +53,16 @@ export class AdminUserComponent implements OnInit {
 
       this.roleList = ['admin', 'admin_service', 'user'];
     } else {
-      this.userService.getAllUserByService(this.authService.getUser().service_id).subscribe(users => {
+
+      const userServiceId = this.authService.getUser().service_id;
+
+      this.userService.getAllUserByService(userServiceId).subscribe(users => {
         this.utilisateurs = users;
       });
+
     }
+
+    this.myRole = this.authService.getUser().role;
 
   }
 
@@ -69,6 +76,15 @@ export class AdminUserComponent implements OnInit {
     this.utilisateur = new UserModel();
     this.submitted = false;
     this.utilisateurDialog = true;
+  }
+
+  updateServiceName(serviceId: number) {
+    const selectedService = this.serviceList.find(service => service.id === serviceId);
+
+    if (selectedService) {
+      if (!this.utilisateur.Service) this.utilisateur.Service = { name: '' };
+      this.utilisateur.Service.name = selectedService.name;
+    }
   }
 
   onDialogHide() {
@@ -127,16 +143,27 @@ export class AdminUserComponent implements OnInit {
 
     if (this.utilisateur.last_name?.trim()) {
 
+      if (this.utilisateur.role === 'admin') {
+        if (!this.utilisateur.Service) this.utilisateur.Service = { name: '' };
+        this.utilisateur.Service.name = 'Aucun';
+        this.utilisateur.service_id = 0;
+      } else {
+        this.updateServiceName(Number(this.utilisateur.service_id));
+
+      }
+
       if (this.utilisateur.id) {
         this.utilisateurs[this.findIndexById(String(this.utilisateur.id))] = this.utilisateur;
-        if(this.utilisateur.id == this.authService.getUser().id) {
+        if (this.utilisateur.id == this.authService.getUser().id) {
           this.authService.setUser(this.utilisateur);
         }
+
         this.userService.modifyUser(this.utilisateur.id, this.utilisateur).subscribe(() => {
           this.messageService.add({ severity: 'success', summary: 'Réussite', detail: 'Utilisateur Modifier', life: 3000 });
         });
 
       } else {
+
 
         const formData: UserRegistration = {
           firstName: this.utilisateur.first_name,
@@ -144,13 +171,14 @@ export class AdminUserComponent implements OnInit {
           email: this.utilisateur.email,
           password: this.utilisateur.password,
           service: this.utilisateur.service_id,
-          role: UserRole.ADMIN
+          role: this.utilisateur.role as UserRole
         };
+
+        console.log(this.utilisateur)
 
         this.utilisateurs.push(this.utilisateur);
         this.messageService.add({ severity: 'success', summary: 'Réussite', detail: 'Utilisateur Créer', life: 3000 });
         this.authService.register(formData).subscribe(response => {
-          console.log(response);
         }
         );
 

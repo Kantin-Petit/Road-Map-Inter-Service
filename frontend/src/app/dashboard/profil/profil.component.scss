@@ -1,29 +1,25 @@
-@import '../../../styles.scss';
+@import '../../../assets/scss/variables';
+@import '../../../assets/scss/mixins';
 
 $black: #070707;
 
-@import url('https://fonts.googleapis.com/css?family=Nunito:400,900|Montserrat|Roboto');
 
 body {
   background: linear-gradient(to right, $fourth-color, $fifth-color);
 }
 
 .container {
-      display: flex;
-        flex-direction: column;
-        align-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 
 }
 
-.profile{
-        background: white;
-          width: 540px;
-          height: 420px;
-          margin: 0 auto;
-          position: relative;
-          margin-top: 5%;
-          box-shadow: 2px 5px 20px rgba($fifth-color, .5);
-
+.profile {
+  background: white;
+  height: 450px;
+  position: relative;
+  box-shadow: 2px 5px 20px rgba($fifth-color, .5);
 }
 
 h1 {
@@ -45,7 +41,7 @@ h2 {
 p {
   border-width: 1px;
   border-style: solid;
-  border-image: linear-gradient(to right, $secondary-color, rgba($primary-color,.5)) 1 0%;
+  border-image: linear-gradient(to right, $secondary-color, rgba($primary-color, .5)) 1 0%;
   border-top: 0;
   width: 80%;
   font-size: .7em;
@@ -53,8 +49,8 @@ p {
   color: $black;
 }
 
-.editButton{
-  position: relative;
-  right: 200px;
-  top: -10px
+.editButton {
+  position: absolute;
+  left: 10px;
+  bottom: 10px
 }

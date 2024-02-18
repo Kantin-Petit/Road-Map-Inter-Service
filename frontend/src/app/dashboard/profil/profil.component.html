@@ -6,10 +6,11 @@
     <h2>Email</h2>
     <p>{{ utilisateur.email }}</p>
     <h2>Rôle</h2>
-    <p>{{ utilisateur.role }}</p>
-    <h2>Service</h2>
-    <p>{{ utilisateur.service_id }}</p>
-  <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2 editButton" (click)="editUser(utilisateur)"></button>
+    <p>{{ utilisateur.role | titlecase}}</p>
+      <h2>Service</h2>
+    <p *ngIf="utilisateur.service_id">{{ utilisateur.service_id }}</p>
+    <p *ngIf="!utilisateur.service_id">Aucun</p>
+  <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2 editButton" (click)="editUser()"></button>
   <p-dialog [(visible)]="utilisateurDialog" [style]="{ width: '450px' }" header="Utilisateur" [modal]="true" styleClass="p-fluid">
     <ng-template pTemplate="content">
         <p-accordion [activeIndex]="0">

@@ -6,6 +6,7 @@ import { TimelineService } from '../../../services/timeline.service';
 import { ThematicModel } from 'src/app/models/thematic-model';
 import { ThematicService } from 'src/app/services/thematic.service';
 import { AssociationService } from '../../../services/association.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-admin-timeline',
@@ -27,6 +28,7 @@ export class AdminTimelineComponent {
   serviceName: string = '';
   thematicList: ThematicModel[] = [];
   currentDate!: Date;
+  timelineForm!: FormGroup;
 
   thematicAssociationsToCreate: { timeline_id: number, thematic: ThematicModel }[] = [];
   thematicAssociationsToDelete: { timeline_id: number, thematic: ThematicModel }[] = [];
@@ -36,7 +38,19 @@ export class AdminTimelineComponent {
     private messageService: MessageService,
     private thematicService: ThematicService,
     private AssociationService: AssociationService,
-    private confirmationService: ConfirmationService) { }
+    private formBuilder: FormBuilder,
+    private confirmationService: ConfirmationService) {
+      this.timelineForm = this.formBuilder.group({
+        id: ['', Validators.required],
+        title: ['', Validators.required],
+        text: ['', Validators.required],
+        image: ['', Validators.required],
+        date_start: ['', Validators.required],
+        date_end: ['', Validators.required],
+        serviceId: ['', Validators.required],
+        Thematics: ['', Validators.required]
+      });
+    }
 
   ngOnInit() {
     this.currentDate = new Date();
