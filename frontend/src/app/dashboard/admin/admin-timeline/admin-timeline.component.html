@@ -34,7 +34,7 @@
             <ng-template pTemplate="header">
                 <tr>
                     <th style="width: 4rem">
-                        <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                        <!-- <p-tableHeaderCheckbox></p-tableHeaderCheckbox> -->
                     </th>
                     <th pSortableColumn="title" style="min-width:15rem">Titre <p-sortIcon field="title"></p-sortIcon></th>
                     <th pSortableColumn="date_start" style="min-width:15rem">Date de début <p-sortIcon field="date_start"></p-sortIcon></th>
@@ -46,7 +46,6 @@
             <ng-template pTemplate="body" let-timeline>
                 <tr>
                     <td>
-                        <p-tableCheckbox [value]="timeline"></p-tableCheckbox>
                     </td>
                     <td>{{ timeline.title }}</td>
                     <td>{{ timeline.date_start }}</td>
@@ -87,7 +86,7 @@
                         <label for="date_end">Date de fin</label>
                         <input type="date" id="date_end" name="date_end"  [value]="timeline.date_end" [(ngModel)]="timeline.date_end" />
                     </div>
-                    
+
                     <div class="thematicList">
                       <span for="thematicList">Thématiques</span>
                       <div class="thematicList-wrapper">

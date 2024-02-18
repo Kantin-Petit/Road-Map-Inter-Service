@@ -18,15 +18,11 @@ export class ServiceService {
     return this.http.get<ServiceModel[]>(`${this.apiUrl}/${API.SERVICE}`);
   }
 
-  getService(serviceName: string): Observable<ServiceModel> {
-    return this.http.get<ServiceModel>(`${this.apiUrl}/${API.SERVICE}/${serviceName}`);
-  }
-
-  getServiceName(serviceId: number): Observable<ServiceModel> {
+  getOneService(serviceId: number): Observable<ServiceModel> {
     return this.http.get<ServiceModel>(`${this.apiUrl}/${API.SERVICE}/${serviceId}`);
   }
 
-  createservice(service: ServiceModel): Observable<ServiceModel> {
+  createservice(service: ServiceModel | FormData): Observable<ServiceModel> {
     return this.http.post<ServiceModel>(`${this.apiUrl}/${API.SERVICE}`, service);
   }
 

@@ -5,7 +5,7 @@ export class UserModel {
     last_name!: string;
     password!: string;
     role!: UserRole;
-    service_id!: number;
+    service_id!: number
     Service!: {
         name: string;
     };

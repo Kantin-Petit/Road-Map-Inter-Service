@@ -1,14 +1,7 @@
-.planning {
-    margin-left: 150px;
-    transition: all .3s ease-in-out;
+@import './../../../assets/scss/variables';
+@import './../../../assets/scss/mixins';
 
-    &.collapsed {
-        margin-left: 0px;
-    }
+.timeline-planning {
 
-            margin-left: 300px;
 
-            &.collapsed {
-              margin-left: 40px;
-            }
 }
