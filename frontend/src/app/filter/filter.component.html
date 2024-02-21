@@ -1,12 +1,12 @@
-<aside>
+
   <div id="side_menu" class="side_menu" [ngClass]="{ 'collapsed': filterService.isCollapsed }">
     <div class="menu">
       <details>
         <summary>
           <span>Thematiques</span>
-          <i class="fas fa-chevron-down arrow-icon"></i>
+          <i class="pi pi-chevron-down"></i>
         </summary>
-        <ul class="menu-item" >
+        <ul class="menu-item thematic_container" >
           <li class="input_wrapper" *ngFor="let thematic of filterService.thematics">
             <div class="thematic">
               <input name="input_{{thematic.name}}" id="input_{{thematic.id}}" type="checkbox"  (change)="onCheckboxChange($event, thematic.id, true)" />
@@ -20,7 +20,7 @@
       <details open>
         <summary>
           <span>Services</span>
-          <i class="fas fa-chevron-down arrow-icon"></i>
+          <i class="pi pi-chevron-down"></i>
         </summary>
         <ul class="menu-item">
           <li class="input_wrapper" *ngFor="let service of filterService.servicesFilter">
@@ -32,8 +32,7 @@
     </div>
 
     <div class="toggle-sidebar" (click)="toggleSidebarMenu()">
-        <i class="fas fa-chevron-right arrow-icon"></i>
+        <i class="pi pi-chevron-left arrow-icon"></i>
     </div>
 
   </div>
-</aside>

@@ -17,9 +17,12 @@ export class UserService {
   private apiUrl = environment.apiUrl;
 
 
-  // Ajouter le widthcredentials: true
   getAllUser(): Observable<UserModel[]> {
     return this.http.get<UserModel[]>(`${this.apiUrl}/${API.USER}`);
+  }
+
+  getAllUserByService(serviceId: number): Observable<UserModel[]> {
+    return this.http.get<UserModel[]>(`${this.apiUrl}/${API.USER_SERVICE}/${serviceId}`);
   }
 
   getOneUser(userId: number): Observable<UserModel> {

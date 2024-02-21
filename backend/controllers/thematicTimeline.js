@@ -10,3 +10,27 @@ exports.getAssociation = (req, res, next) => {
             res.status(500).json({ error: 'Internal Server Error' });
         });
 };
+
+exports.createAssociation = (req, res, next) => {
+    ThematicTimeline.create({
+        timeline_id: req.body.timeline_id,
+        thematic_id: req.body.thematic_id
+    })
+        .then(result => res.json({ message: 'Association created successfully' }))
+        .catch(error => {
+            res.status(500).json({ error: 'Internal Server Error' });
+        });
+};
+
+exports.deleteAssociation = (req, res, next) => {
+    ThematicTimeline.destroy({
+        where: {
+            timeline_id: req.params.timelineId,
+            thematic_id: req.params.thematicId
+        }
+    })
+        .then(() => res.json({ message: 'Association deleted successfully' }))
+        .catch(error => {
+            res.status(500).json({ error: 'Internal Server Error' });
+        });
+};

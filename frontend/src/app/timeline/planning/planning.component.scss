@@ -1,8 +1,7 @@
-.planning {
-    margin-left: 300px;
-    transition: all .3s ease-in-out;
+@import './../../../assets/scss/variables';
+@import './../../../assets/scss/mixins';
 
-    &.collapsed {
-        margin-left: 50px;
-    }   
+.timeline-planning {
+
+
 }

@@ -3,7 +3,7 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
 import { ServiceService } from '../../../services/service.service'
 import { ServiceModel } from '../../../models/service-model';
-import { of, map } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-admin-service',
@@ -21,8 +21,10 @@ export class AdminServiceComponent implements OnInit {
   selectedServices!: ServiceModel[] | null;
   submitted: boolean = false;
   Delete!: string;
-  createThematic: boolean = false
-
+  createService: boolean = false
+  socketUrl: string = environment.socketUrl;
+  imageUrl!: any;
+  imageFile!: any;
 
   constructor(
     private serviceService: ServiceService,
@@ -41,14 +43,14 @@ export class AdminServiceComponent implements OnInit {
   }
 
   openNew() {
-    this.createThematic = true;
+    this.createService = true;
     this.service = new ServiceModel();
     this.submitted = false;
     this.serviceDialog = true;
   }
 
   onDialogHide() {
-    if (!this.serviceDialog) this.createThematic = false;
+    if (!this.serviceDialog) this.createService = false;
   }
 
   deleteSelectedServices() {
@@ -93,10 +95,20 @@ export class AdminServiceComponent implements OnInit {
 
   hideDialog() {
     this.serviceDialog = false;
-    this.createThematic = false;
+    this.createService = false;
     this.submitted = false;
+    this.imageUrl = null;
+    this.imageFile = null;
   }
 
+
+  onFileSelected(event: any) {
+    const file: File = event.target.files[0];
+    if (file) {
+      this.imageFile = file;
+      this.imageUrl = URL.createObjectURL(file);
+    }
+  }
 
   saveService() {
     this.submitted = true;
@@ -104,9 +116,21 @@ export class AdminServiceComponent implements OnInit {
     if (this.service.name?.trim()) {
 
       if (this.service.id) {
-        this.services[this.findIndexById(String(this.service.id))] = this.service;
-        this.serviceService.updateservice(this.service.id, this.service).subscribe(() => {
-          this.messageService.add({ severity: 'success', summary: 'Réussite', detail: 'Service Modifier', life: 3000 });
+
+        const formDataWithImage = new FormData();
+        formDataWithImage.append('id', String(this.service.id));
+        formDataWithImage.append('name', this.service.name);
+        formDataWithImage.append('description', this.service.description);
+        formDataWithImage.append('type', 'service');
+        formDataWithImage.append('image', this.imageFile, this.imageFile.name);
+
+        const DATA = this.imageFile ? formDataWithImage : this.service;
+        
+        const index = this.findIndexById(String(this.service.id));
+        this.services[index] = this.service;
+        this.serviceService.updateservice(this.service.id, DATA).subscribe(reponse => {
+          this.services[index].image = reponse.image;
+          this.messageService.add({ severity: 'success', summary: 'Réussite', detail: 'Service Modifié', life: 3000 });
         });
       } else {
 
@@ -116,8 +140,6 @@ export class AdminServiceComponent implements OnInit {
           image: this.service.image,
           description: this.service.description,
         };
-
-        console.log(formData)
 
         this.services.push(this.service);
         this.messageService.add({ severity: 'success', summary: 'Réussite', detail: 'Service Créer', life: 3000 });
@@ -129,8 +151,10 @@ export class AdminServiceComponent implements OnInit {
 
       this.services = [...this.services];
       this.serviceDialog = false;
-      this.createThematic = false;
+      this.createService = false;
       this.service = new ServiceModel();
+      this.imageUrl = null;
+      this.imageFile = null;
     }
   }
 

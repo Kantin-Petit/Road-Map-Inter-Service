@@ -2,14 +2,14 @@
     <div class="container">
         <nav>
             <ul>
-                <li class="logo-header"><a [routerLink]="['']"><img src="../../assets/iTEAM.png" alt="i-TEAM"></a></li>
-                <li *ngIf="isLogged()">
+                <li class="logo-header"><a [routerLink]="['']"><img src="../../assets/iTEAM.jpg" alt="i-TEAM"></a></li>
+                <li *ngIf="hasToken">
                     <a [routerLink]="['/dashboard/profil']">Dashboard</a>
                 </li>
-                <li *ngIf="isLogged()">
+                <li *ngIf="hasToken">
                     <a (click)="logout()">Déconnexion</a>
                 </li>
-                <li *ngIf="!isLogged()"><a [routerLink]="['connexion']">Connexion</a></li>
+                <li *ngIf="!hasToken"><a [routerLink]="['connexion']">Connexion</a></li>
             </ul>
         </nav>
     </div>

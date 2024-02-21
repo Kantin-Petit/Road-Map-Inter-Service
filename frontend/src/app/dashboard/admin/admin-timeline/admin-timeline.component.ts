@@ -1,11 +1,12 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
-import { ServiceService } from '../../../services/service.service'
 import { TimelineModel } from '../../../models/timeline-model';
-import { AuthService } from '../../../services/auth.service';
 import { TimelineService } from '../../../services/timeline.service';
-import { of, map } from 'rxjs';
+import { ThematicModel } from 'src/app/models/thematic-model';
+import { ThematicService } from 'src/app/services/thematic.service';
+import { AssociationService } from '../../../services/association.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-admin-timeline',
@@ -25,15 +26,40 @@ export class AdminTimelineComponent {
   Delete!: string;
   createTimeline: boolean = false
   serviceName: string = '';
+  thematicList: ThematicModel[] = [];
+  currentDate!: Date;
+  timelineForm!: FormGroup;
+
+  thematicAssociationsToCreate: { timeline_id: number, thematic: ThematicModel }[] = [];
+  thematicAssociationsToDelete: { timeline_id: number, thematic: ThematicModel }[] = [];
 
   constructor(
     private timelineService: TimelineService,
     private messageService: MessageService,
-    private confirmationService: ConfirmationService) { }
+    private thematicService: ThematicService,
+    private AssociationService: AssociationService,
+    private formBuilder: FormBuilder,
+    private confirmationService: ConfirmationService) {
+      this.timelineForm = this.formBuilder.group({
+        id: ['', Validators.required],
+        title: ['', Validators.required],
+        text: ['', Validators.required],
+        image: ['', Validators.required],
+        date_start: ['', Validators.required],
+        date_end: ['', Validators.required],
+        serviceId: ['', Validators.required],
+        Thematics: ['', Validators.required]
+      });
+    }
 
   ngOnInit() {
+    this.currentDate = new Date();
     this.timelineService.getListTimeline(this.serviceName).subscribe(response => {
       this.timelines = response;
+    });
+
+    this.thematicService.getAllthematic().subscribe(response => {
+      this.thematicList = response;
     });
   }
 
@@ -123,15 +149,36 @@ export class AdminTimelineComponent {
           Thematics: this.timeline.Thematics
         };
 
-        console.log(formData)
-
         this.timelines.push(this.timeline);
-        this.messageService.add({ severity: 'success', summary: 'Réussite', detail: 'Timeline Créer', life: 3000 });
         this.timelineService.createTimeline(formData).subscribe(response => {
-          console.log(response);
+          this.messageService.add({ severity: 'success', summary: 'Réussite', detail: 'Timeline Créer', life: 3000 });
         });
 
       }
+
+      this.thematicAssociationsToCreate.forEach(element => {
+
+        this.timeline.Thematics.push(element.thematic);
+
+        const data = {
+          timeline_id: element.timeline_id,
+          thematic_id: element.thematic.id
+        };
+
+        this.AssociationService.createAssociation(data).subscribe(() => {
+          this.thematicAssociationsToCreate = [];
+        });
+      });
+
+      this.thematicAssociationsToDelete.forEach(element => {
+
+        const valueToDelete = element.thematic.id;
+        const index = this.timeline.Thematics.findIndex(element => element.id === valueToDelete);
+        if (index !== -1) { this.timeline.Thematics.splice(index, 1) }
+        this.AssociationService.deleteAssociation(element.timeline_id, element.thematic.id).subscribe(response => {
+          this.thematicAssociationsToDelete = [];
+        });
+      });
 
       this.timelines = [...this.timelines];
       this.timelineDialog = false;
@@ -153,8 +200,22 @@ export class AdminTimelineComponent {
     return index;
   }
 
-  updateOptionThematic(option_thematic: number): void {
-    this.timelineService.setOptionThematic(option_thematic);
+  isChecked(thematics: any[], thematicId: number) {
+    return thematics.some(thematic => thematic.id === thematicId);
+  }
+
+  updateThematic(event: any, timelineId: number, thematic: ThematicModel) {
+
+    const data = {
+      timeline_id: timelineId,
+      thematic: thematic
+    };
+
+    if (event.target.checked) {
+      this.thematicAssociationsToCreate.push(data);
+    } else {
+      this.thematicAssociationsToDelete.push(data);
+    }
   }
 
 }

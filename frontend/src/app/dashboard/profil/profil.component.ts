@@ -11,7 +11,7 @@ import { UserService } from 'src/app/services/user.service';
 })
 export class ProfilComponent implements OnInit{
 
-  utilisateurDialog: boolean = false; 
+  utilisateurDialog: boolean = false;
   submitted: boolean = false;
   utilisateur!: UserModel;
 
@@ -25,7 +25,7 @@ export class ProfilComponent implements OnInit{
     this.utilisateur = this.authService.getUser();
   }
 
-  editUser(utilisateur: UserModel) {
+  editUser() {
     this.utilisateurDialog = true;
   }
 

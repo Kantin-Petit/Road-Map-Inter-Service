@@ -5,9 +5,9 @@ import { UserService } from '../../../services/user.service';
 import { Table } from 'primeng/table';
 import { ServiceService } from '../../../services/service.service'
 import { ThematicModel } from '../../../models/thematic-model';
-import { Observable } from 'rxjs';
 import { UserRegistration, UserRole } from '../../../interfaces/auth';
 import { AuthService } from '../../../services/auth.service';
+import { ServiceModel } from 'src/app/models/service-model';
 
 @Component({
   selector: 'app-admin-user',
@@ -28,6 +28,9 @@ export class AdminUserComponent implements OnInit {
   Delete!: string;
   service!: ThematicModel[];
   createUser: boolean = false
+  serviceList!: ServiceModel[];
+  roleList!: string[];
+  myRole!: string;
 
   constructor(
     private userService: UserService,
@@ -37,9 +40,30 @@ export class AdminUserComponent implements OnInit {
     private confirmationService: ConfirmationService) { }
 
   ngOnInit() {
-    this.userService.getAllUser().subscribe(users => {
-      this.utilisateurs = users;
-    });
+
+    if (this.authService.getUser().role === 'admin') {
+
+      this.userService.getAllUser().subscribe(users => {
+        this.utilisateurs = users;
+      });
+
+      this.ServiceService.getAllService().subscribe(services => {
+        this.serviceList = services;
+      });
+
+      this.roleList = ['admin', 'admin_service', 'user'];
+    } else {
+
+      const userServiceId = this.authService.getUser().service_id;
+
+      this.userService.getAllUserByService(userServiceId).subscribe(users => {
+        this.utilisateurs = users;
+      });
+
+    }
+
+    this.myRole = this.authService.getUser().role;
+
   }
 
   filterGlobal(event: Event) {
@@ -52,6 +76,15 @@ export class AdminUserComponent implements OnInit {
     this.utilisateur = new UserModel();
     this.submitted = false;
     this.utilisateurDialog = true;
+  }
+
+  updateServiceName(serviceId: number) {
+    const selectedService = this.serviceList.find(service => service.id === serviceId);
+
+    if (selectedService) {
+      if (!this.utilisateur.Service) this.utilisateur.Service = { name: '' };
+      this.utilisateur.Service.name = selectedService.name;
+    }
   }
 
   onDialogHide() {
@@ -83,7 +116,6 @@ export class AdminUserComponent implements OnInit {
   }
 
   deleteUser(utilisateur: UserModel) {
-    console.log(utilisateur['id'])
     this.confirmationService.confirm({
       message: 'Êtes-vous sûr de vouloir supprimer ' + utilisateur.last_name + '?',
       header: 'Confirmation',
@@ -111,30 +143,42 @@ export class AdminUserComponent implements OnInit {
 
     if (this.utilisateur.last_name?.trim()) {
 
+      if (this.utilisateur.role === 'admin') {
+        if (!this.utilisateur.Service) this.utilisateur.Service = { name: '' };
+        this.utilisateur.Service.name = 'Aucun';
+        this.utilisateur.service_id = 0;
+      } else {
+        this.updateServiceName(Number(this.utilisateur.service_id));
+
+      }
+
       if (this.utilisateur.id) {
         this.utilisateurs[this.findIndexById(String(this.utilisateur.id))] = this.utilisateur;
-        if(this.utilisateur.id == this.authService.getId()){
+        if (this.utilisateur.id == this.authService.getUser().id) {
           this.authService.setUser(this.utilisateur);
         }
+
         this.userService.modifyUser(this.utilisateur.id, this.utilisateur).subscribe(() => {
           this.messageService.add({ severity: 'success', summary: 'Réussite', detail: 'Utilisateur Modifier', life: 3000 });
         });
 
       } else {
 
+
         const formData: UserRegistration = {
           firstName: this.utilisateur.first_name,
           lastName: this.utilisateur.last_name,
           email: this.utilisateur.email,
           password: this.utilisateur.password,
-          service: this.utilisateur.serviceId,
-          role: UserRole.ADMIN
+          service: this.utilisateur.service_id,
+          role: this.utilisateur.role as UserRole
         };
+
+        console.log(this.utilisateur)
 
         this.utilisateurs.push(this.utilisateur);
         this.messageService.add({ severity: 'success', summary: 'Réussite', detail: 'Utilisateur Créer', life: 3000 });
         this.authService.register(formData).subscribe(response => {
-          console.log(response);
         }
         );
 

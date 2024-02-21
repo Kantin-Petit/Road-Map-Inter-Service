@@ -34,7 +34,7 @@
             <ng-template pTemplate="header">
                 <tr>
                     <th style="width: 4rem">
-                        <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                        <!-- <p-tableHeaderCheckbox></p-tableHeaderCheckbox> -->
                     </th>
                     <th pSortableColumn="title" style="min-width:15rem">Titre <p-sortIcon field="title"></p-sortIcon></th>
                     <th pSortableColumn="date_start" style="min-width:15rem">Date de début <p-sortIcon field="date_start"></p-sortIcon></th>
@@ -46,7 +46,6 @@
             <ng-template pTemplate="body" let-timeline>
                 <tr>
                     <td>
-                        <p-tableCheckbox [value]="timeline"></p-tableCheckbox>
                     </td>
                     <td>{{ timeline.title }}</td>
                     <td>{{ timeline.date_start }}</td>
@@ -63,21 +62,46 @@
             </ng-template>
         </p-table>
     </div>
-    <p-dialog [(visible)]="timelineDialog" (onHide)="onDialogHide()" [style]="{ width: '450px' }" header="Timeline" [modal]="true" styleClass="p-fluid">
+    <p-dialog [(visible)]="timelineDialog" (onHide)="onDialogHide()" [style]="{ width: '50vw'}" header="Timeline" [modal]="true" styleClass="p-fluid">
         <ng-template pTemplate="content">
-             <div class="field flex flex-column">
+
+                    <div class="field flex flex-column">
                         <label for="name">Titre</label>
                         <input  class="h-2rem" type="text" pInputText id="name" [(ngModel)]="timeline.title" required autofocus />
                         <small class="p-error" *ngIf="submitted && !timeline.title">Le Titre est requis.</small>
                     </div>
+
                     <div class="field flex flex-column">
-                        <label for="texte">Texte</label>
-                        <input class="h-2rem" type="text" pInputText id="texte" [(ngModel)]="timeline.text" required autofocus />
-                        <small class="p-error" *ngIf="submitted && !timeline.text">La text est requis.</small>
+                      <label for="texte">Texte</label>
+                      <input class="h-2rem" type="text" pInputText id="texte" [(ngModel)]="timeline.text" required autofocus />
+                      <small class="p-error" *ngIf="submitted && !timeline.text">La text est requis.</small>
                     </div>
-                    <div class="field flex">
-                       <a (click)="updateOptionThematic(timeline.id)" [routerLink]="'/dashboard/timelines/option_thematic'">Thématique</a>
+
+                   <div class="card flex flex-column justify-content-center">
+                        <label for="date_start">Date de Début</label>
+                        <input type="date" id="date_start" name="date_start" [value]="timeline.date_start" [(ngModel)]="timeline.date_start" />
                     </div>
+
+                    <div class="card flex flex-column justify-content-center">
+                        <label for="date_end">Date de fin</label>
+                        <input type="date" id="date_end" name="date_end"  [value]="timeline.date_end" [(ngModel)]="timeline.date_end" />
+                    </div>
+
+                    <div class="thematicList">
+                      <span for="thematicList">Thématiques</span>
+                      <div class="thematicList-wrapper">
+
+                        <ng-container *ngFor="let thematicItem of thematicList">
+                          <div class="thematicList-wrapper__item">
+                            <input type="checkbox" class="form-check-input" id="thematic_{{thematicItem.id}}" name="thematic_{{thematicItem.id}}" (click)="updateThematic($event, timeline.id, thematicItem)" [checked]="isChecked(timeline.Thematics, thematicItem.id)">
+                            <label class="form-check-label" for="thematic_{{thematicItem.id}}">{{thematicItem.name}}</label>
+                          </div>
+                        </ng-container>
+
+                      </div>
+                  </div>
+
+
         </ng-template>
         <ng-template pTemplate="footer">
             <button pButton pRipple label="Annuler" icon="pi pi-times mr-2" class="p-button-text" (click)="hideDialog()"></button>

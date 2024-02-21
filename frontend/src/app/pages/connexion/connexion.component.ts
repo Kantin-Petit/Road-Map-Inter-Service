@@ -16,11 +16,11 @@ export class ConnexionComponent {
 
   loginForm!: FormGroup;
   loginObserver$!: Observable<UserLogin>;
-  
-  constructor(private formBuilder: FormBuilder, 
+
+  constructor(private formBuilder: FormBuilder,
     private authService: AuthService,
     private router: Router,
-    private userService: UserService) { 
+    private userService: UserService) {
     this.loginForm = this.formBuilder.group({
       email: [null, [Validators.required, Validators.email]],
       password: [null, [Validators.required]],
@@ -28,35 +28,27 @@ export class ConnexionComponent {
 
     this.loginObserver$ = this.loginForm.valueChanges.pipe(
       map(formValue => ({
-          ...formValue,
+        ...formValue,
       }))
     );
   }
 
-  
+
   onSubmit() {
 
     if (this.loginForm.valid) {
       const formData: UserLogin = this.loginForm.value;
-        this.authService.login(formData).subscribe({
-          next: (reponse) => {
-            this.userService.getOneUser(reponse.id).subscribe(userData => {
-              this.authService.setToken(reponse.accessToken);
-              this.authService.setUser(userData);  
-              this.router.navigate(['/dashboard']);
-            });
+      this.authService.login(formData).subscribe(
+        reponse => {
+          this.userService.getOneUser(reponse.id).subscribe(userData => {
+            this.authService.setToken(reponse.accessToken);
+            this.authService.setUser(userData);
+            this.router.navigate(['/dashboard']);
+          });
+        },
 
-            
-            
-          },
-          error: (error: any) => {
-            console.error('Erreur lors de la connexion:', error);
-          },
-          complete: () => {
-            
-          }
-        });
+      );
     }
-            
+
   }
 }

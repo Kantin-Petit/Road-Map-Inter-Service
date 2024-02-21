@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FilterService } from '../../services/filter.service';
 import { TimelineModel } from '../../models/timeline-model';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-communication',
@@ -9,17 +10,22 @@ import { TimelineModel } from '../../models/timeline-model';
 })
 export class CommunicationComponent {
 
+  socketUrl: string = environment.socketUrl;
+
   constructor(public filterService: FilterService) { }
 
-  toggleSidebar(index: number, service: string, timelineData: TimelineModel): void {
-    if (!this.filterService.sidebarVisible || this.filterService.selectedItemIndex !== service[index]) {
-      this.filterService.selectedItemIndex = service[index];
-      this.filterService.sidebarData = timelineData;
-      this.filterService.sidebarVisible = true;
+  toggleSidebar(service: string, timelineData: TimelineModel): void {
+    const filterService = this.filterService;
+
+    if (!filterService.sidebarVisible || filterService.selectedItemIndex !== service + timelineData.id) {
+
+      filterService.selectedItemIndex = service + timelineData.id;
+      filterService.sidebarData = timelineData;
+      filterService.sidebarVisible = true;
     } else {
-      this.filterService.selectedItemIndex = null;
-      this.filterService.sidebarVisible = false;
-      this.filterService.sidebarData = new TimelineModel();
+      filterService.selectedItemIndex = null;
+      filterService.sidebarVisible = false;
+      filterService.sidebarData = new TimelineModel();
     }
   }
 
