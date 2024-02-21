@@ -19,7 +19,7 @@ const User = connection.define('User', {
     password: {
         type: DataTypes.STRING(255),
         allowNull: false,
-        is: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/
+        is: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])([a-zA-Z0-9\S]){8,}$/,
     },
     first_name: {
         type: DataTypes.STRING(50),
