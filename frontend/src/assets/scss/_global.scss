@@ -1,0 +1,63 @@
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  position: relative;
+  background-color: #f7f8fa;
+
+  main {
+    overflow-x: hidden;
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  word-break: break-word;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+ul {
+  margin: 0;
+  padding-left: 0;
+
+  li {
+    list-style: none;
+  }
+}
+
+.container {
+  margin: 0 auto;
+  max-width: $container;
+  width: 100%;
+  padding-left: 60px;
+  padding-right: 60px;
+
+  @media only screen and (max-width: $tablet) {
+    padding-left: 45px;
+    padding-right: 45px;
+  }
+
+  @media only screen and (max-width: $mobile) {
+    padding-left: 25px;
+    padding-right: 25px;
+  }
+}
+
+:root {
+  --primary-color: #{$primary-color};
+  --secondary-color: #{$secondary-color};
+  --third-color: #{$third-color};
+  --fourth-color: #{$fourth-color};
+  --fifth-color: #{$fifth-color};
+  --sixth-color: #{$sixth-color};
+  --nav-color: #{$nav-color};
+}

@@ -5,6 +5,7 @@ const multer = require('../middleware/multer-config')
 const auth = require('../middleware/auth')
 
 // router.get('/:id',auth, userCtrl.getOneUser);
+router.get('/service/:id', userCtrl.getAllUsersFromService);
 router.get('/:id', userCtrl.getOneUser);
 // router.get('/',auth, userCtrl.getAllUsers);
 router.get('/', userCtrl.getAllUsers);

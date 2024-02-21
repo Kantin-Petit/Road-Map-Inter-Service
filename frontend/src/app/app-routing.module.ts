@@ -2,19 +2,21 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './pages/home/home.component';
 import { ConnexionComponent } from './pages/connexion/connexion.component';
-import { DashboardGuard } from './_utils/auth.guard';
-import { LoggedGuard } from './_utils/loggin-guard.guard';
+import { authGuard } from './guards/auth.guard';
+import { loginGuard } from './guards/login.guard';
+import { AuthService } from './services/auth.service';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
-  { 
-    path: 'dashboard', 
-    loadChildren: () => import('./dashboard/dashboard.module').then(res => res.DashboardModule),
-    canActivate: [DashboardGuard],
-  },
-  { path: 'connexion', 
+  {
+    path: 'connexion',
     component: ConnexionComponent,
-    canActivate: [LoggedGuard],
+    canActivate: [loginGuard],
+  },
+  {
+    path: 'dashboard',
+    loadChildren: () => import('./dashboard/dashboard.module').then(res => res.DashboardModule),
+    canActivate: [authGuard],
   },
   { path: '**', redirectTo: '/', pathMatch: 'full' }
 ];
@@ -23,4 +25,6 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {
+
+}

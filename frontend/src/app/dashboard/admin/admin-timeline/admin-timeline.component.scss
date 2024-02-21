@@ -1,0 +1,15 @@
+.thematicList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  &-wrapper {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    &__item {
+
+      display: flex;
+    }
+  }
+}

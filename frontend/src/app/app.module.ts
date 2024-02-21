@@ -33,7 +33,8 @@ import { ConnexionComponent } from './pages/connexion/connexion.component';
 import { DialogModule } from 'primeng/dialog';
 import { AccordionModule } from 'primeng/accordion';
 import { FilterComponent } from './filter/filter.component';
-import { OptionThematicComponent } from './dashboard/admin/option-thematic/option-thematic.component';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { InterceptorService } from './services/interceptor.service';
 
 registerLocaleData(localeFr);
 
@@ -47,9 +48,10 @@ registerLocaleData(localeFr);
     SidebarComponent,
     ConnexionComponent,
     FilterComponent,
-    OptionThematicComponent
     ],
   imports: [
+    HttpClientModule,
+    AppRoutingModule,
     BrowserModule,
     AppRoutingModule,
     MatListModule,
@@ -73,9 +75,14 @@ registerLocaleData(localeFr);
     FileUploadModule,
   ],
   providers: [
-    [{ provide: LOCALE_ID, useValue: 'fr' }],
+    { provide: LOCALE_ID, useValue: 'fr' },
     MessageService,
-    ConfirmationService
+    ConfirmationService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: InterceptorService,
+      multi: true,
+    },
   ],
   bootstrap: [AppComponent]
 })

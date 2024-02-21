@@ -6,33 +6,33 @@ import { AdminServiceComponent } from './admin/admin-service/admin-service.compo
 import { ProfilComponent } from './profil/profil.component';
 import { DashboardComponent } from './dashboard.component';
 import { AdminTimelineComponent } from './admin/admin-timeline/admin-timeline.component';
-import { ServiceAdminGuard } from '../_utils/service-admin-guard.guard';
-import { AdminGuard } from '../_utils/admin-guard.guard';
+import { adminGuard } from '../guards/admin.guard';
 import { AdminThematicComponent } from './admin/admin-thematic/admin-thematic.component';
-import { OptionThematicComponent } from './admin/option-thematic/option-thematic.component';
-
 
 const routes: Routes = [
   {
     path: '',
     component: DashboardComponent,
     children: [
-      { path: '', redirectTo: 'profil', pathMatch: 'full'},
+      { path: '', component: ProfilComponent },
       { path: 'profil', component: ProfilComponent },
-      { path: 'services', component: AdminServiceComponent,
-        canActivate: [ServiceAdminGuard] 
+      {
+        path: 'services', component: AdminServiceComponent,
+        canActivate: [adminGuard]
       },
-      { path: 'thematiques', component: AdminThematicComponent,
-        canActivate: [AdminGuard] 
+      {
+        path: 'thematiques', component: AdminThematicComponent,
+        canActivate: [adminGuard]
       },
-      { path: 'utilisateurs', component: AdminUserComponent,
-        canActivate: [AdminGuard] 
+      {
+        path: 'utilisateurs', component: AdminUserComponent,
+        canActivate: [adminGuard]
       },
-      { path: 'timelines', component: AdminTimelineComponent,
-        canActivate: [AdminGuard]
+      {
+        path: 'timelines', component: AdminTimelineComponent,
       },
-      { path: 'timelines/option_thematic', component: OptionThematicComponent },
-    ]},
+    ]
+  },
 ];
 
 @NgModule({

@@ -1,6 +1,4 @@
-import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { environment } from 'src/environments/environment';
 import { AuthService } from './services/auth.service';
 import { Router } from '@angular/router';
 import { jwtDecode } from 'jwt-decode';
@@ -11,37 +9,27 @@ import { UserService } from './services/user.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit{
-  private apiUrl = environment.apiUrl;
+export class AppComponent implements OnInit {
 
   title = 'Inter-Service';
 
   constructor(
     private authService: AuthService,
-    private router: Router,
     private userService: UserService
-  ) {}
+  ) { }
 
-  ngOnInit(){
-      this.authService.verifyToken().subscribe({
-          next: (reponse: any) => {
-            if (!reponse.accessToken) return
-            this.authService.setToken(reponse.accessToken);
-            const decodeToken: any = jwtDecode(reponse.accessToken);
-            this.userService.getOneUser(decodeToken.id).subscribe(
-              userData => {
-              this.authService.setUser(userData);
-              console.log("User:", this.authService.getUser());
-            });
-            
-          },
-          error: (error: any) => {
-          },
-          complete: () => {
-            this.router.navigate(['']);
-          }
-        }
-      );
+  ngOnInit() {
+    this.authService.verifyToken().subscribe(
+      reponse => {
+        if (!reponse.accessToken) return
+        this.authService.setToken(reponse.accessToken);
+        const decodeToken: any = jwtDecode(reponse.accessToken);
+        this.userService.getOneUser(decodeToken.id).subscribe(
+          userData => {
+            this.authService.setUser(userData);
+          });
+      },
+    );
   }
 }
 
