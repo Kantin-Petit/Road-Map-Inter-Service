@@ -25,7 +25,7 @@ exports.createThematic = (req, res, next) => {
   })
 
   thematic.save()
-    .then(() => res.status(201).json({ message: 'Thématique créé !' }))
+    .then((response) => res.status(201).json({ message: 'Thématique créé !', thematic: response }))
     .catch(error => res.status(400).json({ error }));
 
 }
@@ -54,13 +54,13 @@ exports.updateThematic = (req, res, next) => {
 
   Thematic.findOne({ where: { id: id } })
     .then(thematic => {
-        thematic.update({
-          name: name,
-          description: description,
-          color: color
-        })
-          .then(() => res.status(201).json({ message: 'Thématique modifié !' }))
-          .catch(error => res.status(400).json({ error }));
+      thematic.update({
+        name: name,
+        description: description,
+        color: color
       })
+        .then(() => res.status(201).json({ message: 'Thématique modifié !'}))
+        .catch(error => res.status(400).json({ error }));
+    })
     .catch(error => res.status(500).json({ error }));
 }

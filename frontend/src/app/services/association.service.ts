@@ -26,4 +26,8 @@ export class AssociationService {
     return this.http.delete<AssociationModel>(`${this.apiUrl}/${API.ASSOCIATION}/${timelineId}/${thematicId}`);
   }
 
+  deleteAllAssociation(type: string, id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${API.ASSOCIATION_ALL}/${type}/${id}`);
+  }
+
 }

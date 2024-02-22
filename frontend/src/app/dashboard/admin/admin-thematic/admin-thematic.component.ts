@@ -6,6 +6,7 @@ import { ThematicModel } from '../../../models/thematic-model';
 import { AuthService } from '../../../services/auth.service';
 import { ThematicService } from '../../../services/thematic.service';
 import { of, map } from 'rxjs';
+import { AssociationService } from '../../../services/association.service';
 
 @Component({
   selector: 'app-admin-thematic',
@@ -31,6 +32,7 @@ export class AdminThematicComponent implements OnInit {
   constructor(
     private thematicService: ThematicService,
     private messageService: MessageService,
+    private AssociationService: AssociationService,
     private confirmationService: ConfirmationService) { }
 
   ngOnInit() {
@@ -57,13 +59,15 @@ export class AdminThematicComponent implements OnInit {
 
   deleteSelectedThematics() {
     this.confirmationService.confirm({
-      message: 'Êtes-vous sûr de vouloir supprimer les produits sélectionnés ?',
+      message: 'Êtes-vous sûr de vouloir supprimer les Thémaitques sélectionnés ? Attention Une Timeline sans thématique ne sera pas visible.',
       header: 'Confirmation',
       icon: 'pi pi-exclamation-triangle m-2',
       accept: () => {
         if (!this.selectedThematics) return
         this.selectedThematics.forEach(thematic => {
-          this.thematicService.deletethematic(thematic['id']).subscribe();
+          this.thematicService.deletethematic(thematic['id']).subscribe(() => {
+            this.AssociationService.deleteAllAssociation('thematic_id', thematic['id']).subscribe();
+          });
         });
 
         this.thematics = this.thematics.filter((val) => !this.selectedThematics?.includes(val));
@@ -81,11 +85,12 @@ export class AdminThematicComponent implements OnInit {
 
   deleteThematic(thematic: ThematicModel) {
     this.confirmationService.confirm({
-      message: 'Êtes-vous sûr de vouloir supprimer ' + thematic.name + '?',
+      message: 'Êtes-vous sûr de vouloir supprimer ' + thematic.name + '? Attention Une Timeline sans thématique ne sera pas visible.',
       header: 'Confirmation',
       icon: 'pi pi-exclamation-triangle m-2',
       accept: () => {
         this.thematicService.deletethematic(thematic['id']).subscribe(() => {
+          this.AssociationService.deleteAllAssociation('thematic_id', thematic['id']).subscribe();
           this.thematics = this.thematics.filter((val) => val.id !== thematic['id']);
           this.thematic = new ThematicModel();
           this.messageService.add({ severity: 'success', summary: 'Réussite', detail: 'Thématique supprimé', life: 3000 });
@@ -110,6 +115,8 @@ export class AdminThematicComponent implements OnInit {
       if (this.thematic.id) {
           this.thematics[this.findIndexById(String(this.thematic.id))] = this.thematic;
           this.thematicService.updatethematic(this.thematic.id, this.thematic).subscribe(() => {
+          this.thematics = [...this.thematics];
+          this.thematic = new ThematicModel();
             this.messageService.add({ severity: 'success', summary: 'Réussite', detail: 'Thématique Modifier', life: 3000 });
           });
       } else {
@@ -121,18 +128,19 @@ export class AdminThematicComponent implements OnInit {
           color: this.thematic.color,
         };
 
-        this.thematics.push(this.thematic);
-        this.messageService.add({ severity: 'success', summary: 'Réussite', detail: 'Thématique Créer', life: 3000 });
+
         this.thematicService.createthematic(formData).subscribe(response => {
-          console.log(response);
+          this.thematic = response.thematic;
+          this.thematics.push(this.thematic);
+          this.thematics = [...this.thematics];
+          this.thematic = new ThematicModel();
+          this.messageService.add({ severity: 'success', summary: 'Réussite', detail: 'Thématique Créer', life: 3000 });
         });
 
       }
 
-      this.thematics = [...this.thematics];
       this.thematicDialog = false;
       this.createThematic = false;
-      this.thematic = new ThematicModel();
     }
   }
 
