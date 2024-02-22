@@ -47,8 +47,6 @@ export class AdminUserComponent implements OnInit {
 
       this.userService.getAllUser().subscribe(users => {
         this.utilisateurs = users;
-        console.log(this.utilisateurs)
-
       });
 
       this.ServiceService.getAllService().subscribe(services => {
@@ -166,9 +164,6 @@ export class AdminUserComponent implements OnInit {
   saveUser() {
     this.submitted = true;
 
-    console.log(this.utilisateur)
-
-
     if (this.utilisateur.email && !this.validateEmail(this.utilisateur.email)) {
       this.messageService.add({ severity: 'error', summary: 'Erreur', detail: 'Veuillez saissir un email valide', life: 3000 });
       return;
@@ -187,10 +182,6 @@ export class AdminUserComponent implements OnInit {
       if (this.utilisateur.id) {
 
         if (this.utilisateur.password && this.utilisateur.password.length > 0) {
-
-          console.log('tu es la')
-
-          console.log(this.utilisateur)
 
           if (this.utilisateur.password && !this.validatePassword(this.utilisateur.password)) {
             this.messageService.add({ severity: 'error', summary: 'Erreur', detail: 'Le mot de passe exige au moins 8 caractères et doit comporter au moins : 1 chiffre, 1 lettre majuscule, 1 lettre minuscule et un caractère special', life: 3000 });
@@ -248,9 +239,6 @@ export class AdminUserComponent implements OnInit {
             this.newPassword = '';
             this.utilisateur.role === 'admin' ? response.user.Service = null : response.user.Service = this.utilisateur.Service
             this.utilisateurs.push(response.user);
-            console.log(this.utilisateur)
-            console.log(response.user);
-            console.log(this.utilisateurs);
             this.messageService.add({ severity: 'success', summary: 'Réussite', detail: 'Utilisateur Créé', life: 3000 });
             this.utilisateurs = [...this.utilisateurs];
             this.utilisateur = new UserModel();
