@@ -43,7 +43,7 @@ import { FileUploadModule } from 'primeng/fileupload';
     DialogModule,
     ConfirmDialogModule,
     FormsModule,
-    DashboardRoutingModule
+    DashboardRoutingModule,
   ]
 })
 export class DashboardModule { }

@@ -118,6 +118,16 @@ export class AdminServiceComponent implements OnInit {
     this.fileInput.nativeElement.value = '';
   }
 
+  createFormData() {
+    const formDataWithImage = new FormData();
+    if(this.service.id) formDataWithImage.append('id', String(this.service.id));
+    formDataWithImage.append('name', this.service.name);
+    formDataWithImage.append('description', this.service.description);
+    formDataWithImage.append('type', 'service');
+    formDataWithImage.append('image', this.imageFile, this.imageFile.name);
+    return formDataWithImage;
+  }
+
   saveService() {
     this.submitted = true;
 
@@ -125,14 +135,7 @@ export class AdminServiceComponent implements OnInit {
 
       if (this.service.id) {
 
-        const formDataWithImage = new FormData();
-        formDataWithImage.append('id', String(this.service.id));
-        formDataWithImage.append('name', this.service.name);
-        formDataWithImage.append('description', this.service.description);
-        formDataWithImage.append('type', 'service');
-        formDataWithImage.append('image', this.imageFile, this.imageFile.name);
-
-        const DATA = this.imageFile ? formDataWithImage : this.service;
+        const DATA = this.imageFile ? this.createFormData() : this.service;
 
         const index = this.findIndexById(String(this.service.id));
         this.serviceService.updateservice(this.service.id, DATA).subscribe(reponse => {
@@ -147,24 +150,40 @@ export class AdminServiceComponent implements OnInit {
         const formData: ServiceModel = {
           id: this.service.id,
           name: this.service.name,
-          image: this.service.image,
           description: this.service.description,
         };
 
         this.serviceService.createservice(formData).subscribe(response => {
-          this.services.push(this.service);
-          this.messageService.add({ severity: 'success', summary: 'Réussite', detail: 'Service Créer', life: 3000 });
-          this.services = [...this.services];
-          this.service = new ServiceModel();
+
+          this.service = response.service;
+
+          if (this.imageFile) {
+            this.serviceService.updateservice(this.service.id, this.createFormData()).subscribe(reponse => {
+              this.service.image = reponse.image;
+              this.endOfSubmitService();
+            });
+          } else {
+            if (!this.service.image) this.service.image = null;
+            this.endOfSubmitService();
+          }
+
         });
 
       }
 
       this.serviceDialog = false;
       this.createService = false;
-      this.imageUrl = null;
-      this.imageFile = null;
+
     }
+  }
+
+  endOfSubmitService() {
+    this.messageService.add({ severity: 'success', summary: 'Réussite', detail: 'Service Créer', life: 3000 });
+    this.services.push(this.service);
+    this.services = [...this.services];
+    this.service = new ServiceModel();
+    this.imageUrl = null;
+    this.imageFile = null;
   }
 
   findIndexById(id: string): number {

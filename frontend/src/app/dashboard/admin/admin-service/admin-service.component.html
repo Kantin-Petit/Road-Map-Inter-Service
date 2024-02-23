@@ -49,7 +49,7 @@
                         <p-tableCheckbox [value]="service"></p-tableCheckbox>
                     </td>
                     <td>{{ service.name }}</td>
-                    <td><img [src]="socketUrl + '/images/services/service'+ service.id + '/' + service.image" [alt]="'service_image'" width="50" class="shadow-4" /></td>
+                    <td><img *ngIf="service.image" [src]="socketUrl + '/images/services/service'+ service.id + '/' + service.image" [alt]="'service_image'" width="50" class="shadow-4" /></td>
                     <td>{{ service.description }}</td>
                     <td>
                         <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editService(service)"></button>
@@ -81,7 +81,7 @@
                 </div>
                 <input #fileInput id="myImage" type="file" (change)="onFileSelected($event)" accept="image/*">
                 <img *ngIf="imageUrl" [src]="imageUrl" width="200" height="200" />
-                <img *ngIf="!imageUrl && !createService" [src]="socketUrl + '/images/services/service'+ service.id + '/' + service.image" width="200" height="200" />
+                <img *ngIf="!imageUrl && !createService && service.image" [src]="socketUrl + '/images/services/service'+ service.id + '/' + service.image" width="200" height="200" />
               </div>
         </ng-template>
         <ng-template pTemplate="footer">

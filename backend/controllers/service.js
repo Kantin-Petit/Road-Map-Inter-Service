@@ -22,17 +22,15 @@ exports.getOneService = (req, res, next) => {
 exports.createService = (req, res, next) => {
 
   const name = req.body.name;
-  const image = req.body.image;
   const description = req.body.description;
 
   const service = new Service({
     name: name,
-    image: image,
     description: description
   })
 
   service.save()
-    .then(() => res.status(201).json({ message: 'Service créé !' }))
+    .then((response) => res.status(201).json({ message: 'Service créé !', service: response }))
     .catch(error => res.status(400).json({ error }));
 
 }
@@ -44,6 +42,8 @@ exports.deleteService = (req, res, next) => {
     await User.destroy({ where: { service_id: id }, transaction });
     await Timeline.destroy({ where: { service_id: id }, transaction });
     await Service.destroy({ where: { id: id }, transaction });
+
+    fs.rmdirSync(`images/services/service${id}`, { recursive: true });
 
     res.status(201).json({ message: 'Service supprimé !' });
   })
@@ -69,7 +69,7 @@ exports.updateService = (req, res, next) => {
       if (req.file) {
         const newImage = req.file.filename;
         service.image = newImage;
-        fs.unlink(`images/services/service${id}/${oldImage}`, (err) => {
+        fs.unlink(`images / services / service${ id } / ${ oldImage }`, (err) => {
           if (err) {
             console.error("Erreur lors de la suppression de l'image précédente :", err);
           }
