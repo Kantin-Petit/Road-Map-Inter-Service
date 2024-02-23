@@ -15,11 +15,11 @@ import { AdminTimelineComponent } from './admin/admin-timeline/admin-timeline.co
 import { TableModule } from 'primeng/table';
 import { ToastModule } from 'primeng/toast';
 import { ToolbarModule } from 'primeng/toolbar';
-import { DialogModule } from 'primeng/dialog';
-import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { AccordionModule } from 'primeng/accordion';
 import { ColorPickerModule } from 'primeng/colorpicker';
 import { FileUploadModule } from 'primeng/fileupload';
+import { DialogModule } from 'primeng/dialog';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 
 @NgModule({
   declarations: [
@@ -40,9 +40,9 @@ import { FileUploadModule } from 'primeng/fileupload';
     ColorPickerModule,
     ToolbarModule,
     AccordionModule,
+    FormsModule,
     DialogModule,
     ConfirmDialogModule,
-    FormsModule,
     DashboardRoutingModule,
   ]
 })

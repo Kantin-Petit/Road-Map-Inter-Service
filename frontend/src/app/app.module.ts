@@ -22,6 +22,7 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { MessageModule } from 'primeng/message';
 import { SidebarModule } from 'primeng/sidebar';
+import { DialogModule } from 'primeng/dialog';
 
 
 registerLocaleData(localeFr);
@@ -45,6 +46,7 @@ registerLocaleData(localeFr);
     BrowserAnimationsModule,
     ReactiveFormsModule,
     FormsModule,
+    DialogModule,
     ConfirmDialogModule,
     MessageModule,
     SidebarModule,
