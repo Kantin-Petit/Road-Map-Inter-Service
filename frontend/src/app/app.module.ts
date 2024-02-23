@@ -4,6 +4,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http'
 import localeFr from '@angular/common/locales/fr';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppRoutingModule } from './app-routing.module';
 import { InterceptorService } from './services/interceptor.service';
@@ -41,6 +42,7 @@ registerLocaleData(localeFr);
     CommonModule,
     HttpClientModule,
     AppRoutingModule,
+    BrowserAnimationsModule,
     ReactiveFormsModule,
     FormsModule,
     ConfirmDialogModule,

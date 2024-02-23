@@ -22,7 +22,7 @@ export class ServiceService {
     return this.http.get<ServiceModel>(`${this.apiUrl}/${API.SERVICE}/${serviceId}`);
   }
 
-  createservice(service: ServiceModel | FormData): Observable<ServiceModel> {
+  createservice(service: ServiceModel | FormData): Observable<any> {
     return this.http.post<ServiceModel>(`${this.apiUrl}/${API.SERVICE}`, service);
   }
 
