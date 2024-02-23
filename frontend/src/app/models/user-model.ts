@@ -3,9 +3,9 @@ export class UserModel {
     email!: string;
     first_name!: string;
     last_name!: string;
-    password!: string;
+    password?: string;
     role!: UserRole;
-    service_id!: number
+    service_id!: number | null;
     Service!: {
         name: string;
     };

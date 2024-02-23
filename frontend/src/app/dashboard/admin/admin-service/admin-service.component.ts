@@ -14,6 +14,7 @@ export class AdminServiceComponent implements OnInit {
 
 
   @ViewChild('dt') dt!: Table;
+  @ViewChild('fileInput') fileInput: any;
 
   services!: ServiceModel[];
   service!: ServiceModel;
@@ -23,8 +24,8 @@ export class AdminServiceComponent implements OnInit {
   Delete!: string;
   createService: boolean = false
   socketUrl: string = environment.socketUrl;
-  imageUrl!: any;
-  imageFile!: any;
+  imageUrl: any = null;
+  imageFile: any = null;
 
   constructor(
     private serviceService: ServiceService,
@@ -55,7 +56,7 @@ export class AdminServiceComponent implements OnInit {
 
   deleteSelectedServices() {
     this.confirmationService.confirm({
-      message: 'Êtes-vous sûr de vouloir supprimer les produits sélectionnés ?',
+      message: 'Êtes-vous sûr de vouloir supprimer les services sélectionnés ? Attention, cette action est irréversible et entraînera la suppression des Timelines ainsi que des utilisateurs associés.',
       header: 'Confirmation',
       icon: 'pi pi-exclamation-triangle m-2',
       accept: () => {
@@ -79,7 +80,7 @@ export class AdminServiceComponent implements OnInit {
 
   deleteService(thematic: ServiceModel) {
     this.confirmationService.confirm({
-      message: 'Êtes-vous sûr de vouloir supprimer ' + thematic.name + '?',
+      message: 'Êtes-vous sûr de vouloir supprimer ' + thematic.name + '? Attention, cette action est irréversible et entraînera la suppression des Timelines ainsi que des utilisateurs associés.',
       header: 'Confirmation',
       icon: 'pi pi-exclamation-triangle m-2',
       accept: () => {
@@ -103,11 +104,28 @@ export class AdminServiceComponent implements OnInit {
 
 
   onFileSelected(event: any) {
+    console.log(event.target.files[0]);
     const file: File = event.target.files[0];
     if (file) {
       this.imageFile = file;
       this.imageUrl = URL.createObjectURL(file);
     }
+  }
+
+  resetImage() {
+    this.imageUrl = null;
+    this.imageFile = null;
+    this.fileInput.nativeElement.value = '';
+  }
+
+  createFormData() {
+    const formDataWithImage = new FormData();
+    if(this.service.id) formDataWithImage.append('id', String(this.service.id));
+    formDataWithImage.append('name', this.service.name);
+    formDataWithImage.append('description', this.service.description);
+    formDataWithImage.append('type', 'service');
+    formDataWithImage.append('image', this.imageFile, this.imageFile.name);
+    return formDataWithImage;
   }
 
   saveService() {
@@ -117,45 +135,55 @@ export class AdminServiceComponent implements OnInit {
 
       if (this.service.id) {
 
-        const formDataWithImage = new FormData();
-        formDataWithImage.append('id', String(this.service.id));
-        formDataWithImage.append('name', this.service.name);
-        formDataWithImage.append('description', this.service.description);
-        formDataWithImage.append('type', 'service');
-        formDataWithImage.append('image', this.imageFile, this.imageFile.name);
+        const DATA = this.imageFile ? this.createFormData() : this.service;
 
-        const DATA = this.imageFile ? formDataWithImage : this.service;
-        
         const index = this.findIndexById(String(this.service.id));
-        this.services[index] = this.service;
         this.serviceService.updateservice(this.service.id, DATA).subscribe(reponse => {
+          this.services[index] = this.service;
           this.services[index].image = reponse.image;
           this.messageService.add({ severity: 'success', summary: 'Réussite', detail: 'Service Modifié', life: 3000 });
+          this.services = [...this.services];
+          this.service = new ServiceModel();
         });
       } else {
 
         const formData: ServiceModel = {
           id: this.service.id,
           name: this.service.name,
-          image: this.service.image,
           description: this.service.description,
         };
 
-        this.services.push(this.service);
-        this.messageService.add({ severity: 'success', summary: 'Réussite', detail: 'Service Créer', life: 3000 });
         this.serviceService.createservice(formData).subscribe(response => {
-          console.log(response);
+
+          this.service = response.service;
+
+          if (this.imageFile) {
+            this.serviceService.updateservice(this.service.id, this.createFormData()).subscribe(reponse => {
+              this.service.image = reponse.image;
+              this.endOfSubmitService();
+            });
+          } else {
+            if (!this.service.image) this.service.image = null;
+            this.endOfSubmitService();
+          }
+
         });
 
       }
 
-      this.services = [...this.services];
       this.serviceDialog = false;
       this.createService = false;
-      this.service = new ServiceModel();
-      this.imageUrl = null;
-      this.imageFile = null;
+
     }
+  }
+
+  endOfSubmitService() {
+    this.messageService.add({ severity: 'success', summary: 'Réussite', detail: 'Service Créer', life: 3000 });
+    this.services.push(this.service);
+    this.services = [...this.services];
+    this.service = new ServiceModel();
+    this.imageUrl = null;
+    this.imageFile = null;
   }
 
   findIndexById(id: string): number {

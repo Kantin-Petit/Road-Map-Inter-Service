@@ -10,11 +10,11 @@ describe('PlanningComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ SidebarModule ],
+      imports: [SidebarModule],
       declarations: [PlanningComponent],
-      providers: [ FilterService ]
+      providers: [FilterService]
     })
-    .compileComponents();
+      .compileComponents();
   });
 
   beforeEach(() => {
@@ -40,22 +40,26 @@ describe('PlanningComponent', () => {
   });
 
   it('should toggle sidebar', () => {
-    const fakeElt = { data: { content: {
-      "id": 9,
-      "title": "Timeline9",
-      "text": "Texte de la timeline 9",
-      "image": "image9.jpg",
-      "date_start": new Date(2023-11-6),
-      "date_end": new Date(2024-2-10),
-      "serviceId": 3,
-      "Thematics": [
-          {
+    const fakeElt = {
+      data: {
+        content: {
+          "id": 9,
+          "title": "Timeline9",
+          "text": "Texte de la timeline 9",
+          "image": "image9.jpg",
+          "date_start": new Date(2023 - 11 - 6),
+          "date_end": new Date(2024 - 2 - 10),
+          "serviceId": 3,
+          "Thematics": [
+            {
               "name": "Thematic4",
               "id": 4,
               "color": "#FFA500"
-          }
-      ]
-  } }, id: 'fakeId' };
+            }
+          ]
+        }
+      }, id: 'fakeId'
+    };
     component.toggleSidebar(fakeElt);
     //Cannot read properties of undefined (reading 'sidebarData')
     expect(filterService.sidebarData).toEqual({
@@ -63,17 +67,17 @@ describe('PlanningComponent', () => {
       "title": "Timeline9",
       "text": "Texte de la timeline 9",
       "image": "image9.jpg",
-      "date_start": new Date(2023-11-6),
-      "date_end": new Date(2024-2-10),
+      "date_start": new Date(2023 - 11 - 6),
+      "date_end": new Date(2024 - 2 - 10),
       "serviceId": 3,
       "Thematics": [
-          {
-              "name": "Thematic4",
-              "id": 4,
-              "color": "#FFA500"
-          }
+        {
+          "name": "Thematic4",
+          "id": 4,
+          "color": "#FFA500"
+        }
       ]
-  });
+    });
     expect(filterService.sidebarVisible).toBeTrue();
     expect(filterService.selectTimeline).toEqual('fakeId');
   });

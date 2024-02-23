@@ -22,9 +22,9 @@ describe('FilterService', () => {
   it('should set services filter and emit change', () => {
     const status = true;
     const spy = spyOn(filterChangeSubject, 'next').and.callThrough();
-  
+
     service.setServicesFilter(status);
-  
+
     expect(service.isFullLoad).toBe(status);
     // Expected spy next to have been called.
     expect(spy).toHaveBeenCalled();

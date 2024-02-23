@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { UserModel } from '../../../models/user-model';
+import { Validators } from '@angular/forms';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { UserService } from '../../../services/user.service';
 import { Table } from 'primeng/table';
@@ -31,6 +32,7 @@ export class AdminUserComponent implements OnInit {
   serviceList!: ServiceModel[];
   roleList!: string[];
   myRole!: string;
+  newPassword!: string;
 
   constructor(
     private userService: UserService,
@@ -64,6 +66,7 @@ export class AdminUserComponent implements OnInit {
 
     this.myRole = this.authService.getUser().role;
 
+
   }
 
   filterGlobal(event: Event) {
@@ -93,7 +96,7 @@ export class AdminUserComponent implements OnInit {
 
   deleteSelectedUsers() {
     this.confirmationService.confirm({
-      message: 'Êtes-vous sûr de vouloir supprimer les produits sélectionnés ?',
+      message: 'Êtes-vous sûr de vouloir supprimer les Utilisateurs sélectionnés ?',
       header: 'Confirmation',
       icon: 'pi pi-exclamation-triangle m-2',
       accept: () => {
@@ -137,33 +140,85 @@ export class AdminUserComponent implements OnInit {
     this.submitted = false;
   }
 
+  validateUser(): boolean {
+    return (
+      Boolean(this.utilisateur.first_name) &&
+      Boolean(this.utilisateur.last_name) &&
+      Boolean(this.utilisateur.email) &&
+      Boolean(this.utilisateur.password) &&
+      Boolean(this.utilisateur.service_id || this.utilisateur.role === 'admin') &&
+      Boolean(this.utilisateur.role)
+    );
+  }
+
+  validatePassword(password: string): boolean {
+    const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])([a-zA-Z0-9\S]){8,}$/;
+    return passwordRegex.test(password);
+  }
+
+  validateEmail(email: string): boolean {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  }
 
   saveUser() {
     this.submitted = true;
 
+    if (this.utilisateur.email && !this.validateEmail(this.utilisateur.email)) {
+      this.messageService.add({ severity: 'error', summary: 'Erreur', detail: 'Veuillez saissir un email valide', life: 3000 });
+      return;
+    }
+
     if (this.utilisateur.last_name?.trim()) {
+
 
       if (this.utilisateur.role === 'admin') {
         if (!this.utilisateur.Service) this.utilisateur.Service = { name: '' };
-        this.utilisateur.Service.name = 'Aucun';
-        this.utilisateur.service_id = 0;
+        this.utilisateur.service_id = null;
       } else {
         this.updateServiceName(Number(this.utilisateur.service_id));
-
       }
 
       if (this.utilisateur.id) {
+
+        if (this.utilisateur.password && this.utilisateur.password.length > 0) {
+
+          if (this.utilisateur.password && !this.validatePassword(this.utilisateur.password)) {
+            this.messageService.add({ severity: 'error', summary: 'Erreur', detail: 'Le mot de passe exige au moins 8 caractères et doit comporter au moins : 1 chiffre, 1 lettre majuscule, 1 lettre minuscule et un caractère special', life: 3000 });
+            return;
+          }
+
+          if (this.utilisateur.password && this.utilisateur.password !== this.newPassword) {
+            this.messageService.add({ severity: 'error', summary: 'Erreur', detail: 'Les mots de passe ne correspondent pas', life: 3000 });
+            return;
+          }
+
+        }
+
         this.utilisateurs[this.findIndexById(String(this.utilisateur.id))] = this.utilisateur;
+
         if (this.utilisateur.id == this.authService.getUser().id) {
           this.authService.setUser(this.utilisateur);
         }
 
         this.userService.modifyUser(this.utilisateur.id, this.utilisateur).subscribe(() => {
+          this.newPassword = '';
           this.messageService.add({ severity: 'success', summary: 'Réussite', detail: 'Utilisateur Modifier', life: 3000 });
+          this.utilisateurs = [...this.utilisateurs];
+          this.utilisateur = new UserModel();
         });
 
       } else {
 
+        if (this.utilisateur.password && !this.validatePassword(this.utilisateur.password)) {
+          this.messageService.add({ severity: 'error', summary: 'Erreur', detail: 'Le mot de passe exige au moins 8 caractères et doit comporter au moins : 1 chiffre, 1 lettre majuscule, 1 lettre minuscule et un caractère special', life: 3000 });
+          return;
+        }
+
+        if (this.utilisateur.password !== this.newPassword) {
+          this.messageService.add({ severity: 'error', summary: 'Erreur', detail: 'Les mots de passe ne correspondent pas', life: 3000 });
+          return;
+        }
 
         const formData: UserRegistration = {
           firstName: this.utilisateur.first_name,
@@ -174,20 +229,32 @@ export class AdminUserComponent implements OnInit {
           role: this.utilisateur.role as UserRole
         };
 
-        console.log(this.utilisateur)
-
-        this.utilisateurs.push(this.utilisateur);
-        this.messageService.add({ severity: 'success', summary: 'Réussite', detail: 'Utilisateur Créer', life: 3000 });
-        this.authService.register(formData).subscribe(response => {
+        if (!this.validateUser()) {
+          this.messageService.add({ severity: 'error', summary: 'Erreur', detail: 'Veuillez remplir tous les champs', life: 3000 });
+          return;
         }
-        );
+
+        this.authService.register(formData).subscribe({
+          next: (response) => {
+            this.newPassword = '';
+            this.utilisateur.role === 'admin' ? response.user.Service = null : response.user.Service = this.utilisateur.Service
+            this.utilisateurs.push(response.user);
+            this.messageService.add({ severity: 'success', summary: 'Réussite', detail: 'Utilisateur Créé', life: 3000 });
+            this.utilisateurs = [...this.utilisateurs];
+            this.utilisateur = new UserModel();
+          },
+          error: (error) => {
+            this.newPassword = '';
+            this.utilisateur = new UserModel();
+            this.messageService.add({ severity: 'error', summary: 'Erreur', detail: 'Échec de la création de l\'utilisateur', life: 3000 });
+          }
+        });
 
       }
 
-      this.utilisateurs = [...this.utilisateurs];
       this.utilisateurDialog = false;
       this.createUser = false;
-      this.utilisateur = new UserModel();
+      this.submitted = false;
     }
   }
 
