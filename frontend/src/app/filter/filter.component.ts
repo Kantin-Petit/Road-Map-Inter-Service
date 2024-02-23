@@ -36,6 +36,10 @@ export class FilterComponent implements OnInit {
     this.setThematics();
   }
 
+  getRouter() {
+    return this.router;
+  }
+
   ngOnDestroy() {
     this.subscription.unsubscribe();
   }

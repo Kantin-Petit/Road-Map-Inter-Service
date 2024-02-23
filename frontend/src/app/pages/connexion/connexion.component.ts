@@ -33,6 +33,9 @@ export class ConnexionComponent {
     );
   }
 
+  getRouter() {
+    return this.router;
+  }
 
   onSubmit() {
 
