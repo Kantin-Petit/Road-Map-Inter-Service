@@ -1,6 +1,7 @@
 const Service = require('../models/Service');
+const User = require('../models/User');
+const Timeline = require('../models/Timeline');
 const fs = require('fs');
-const path = require('path');
 
 exports.getAllServices = (req, res, next) => {
 
@@ -36,20 +37,21 @@ exports.createService = (req, res, next) => {
 
 }
 
-
 exports.deleteService = (req, res, next) => {
-
   const id = req.params.id;
 
-  Service.findOne({ where: { id: id } })
-    .then(service => {
-      service.destroy()
-        .then(() => res.status(201).json({ message: 'Service supprimé !' }))
-        .catch(error => res.status(400).json({ error }));
-    })
-    .catch(error => res.status(500).json({ error }));
+  sequelize.transaction(async (transaction) => {
+    await User.destroy({ where: { service_id: id }, transaction });
+    await Timeline.destroy({ where: { service_id: id }, transaction });
+    await Service.destroy({ where: { id: id }, transaction });
 
-}
+    res.status(201).json({ message: 'Service supprimé !' });
+  })
+    .catch(error => {
+      console.error(error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    });
+};
 
 exports.updateService = (req, res, next) => {
   const id = req.params.id;
