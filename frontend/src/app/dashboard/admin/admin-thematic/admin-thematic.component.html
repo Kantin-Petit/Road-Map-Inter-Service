@@ -49,7 +49,7 @@
                     </td>
                     <td>{{ thematic.name }}</td>
                     <td>{{ thematic.description }}</td>
-                    <td>{{ thematic.color }}</td>
+                    <td><span [style.background-color]="thematic.color" class="puce"></span></td>
                     <td>
                         <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editThematic(thematic)"></button>
                         <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="deleteThematic(thematic)"></button>

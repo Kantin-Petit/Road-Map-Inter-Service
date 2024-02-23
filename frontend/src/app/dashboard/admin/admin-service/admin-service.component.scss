@@ -2,3 +2,46 @@
   margin-top: 50px;
   margin-bottom: 50px;
 }
+
+input[type="file"] {
+  color: transparent;
+  display: none;
+}
+
+.custom-file-upload {
+  border: 1px solid #bdbdbd;
+  display: inline-block;
+  padding: 6px 12px;
+  color: white;
+  cursor: pointer;
+  background-color: #626262;
+
+  &.show {
+    display: none;
+  }
+
+  &.reset {
+    background-color: #acacac;
+
+    &:hover {
+        background-color: #838383;
+      }
+
+  }
+
+  &:hover {
+    background-color: #3f3f3f;
+  }
+}
+
+.image-section {
+  img {
+    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
+  }
+}
+
+.file-upload-wrapper {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+}

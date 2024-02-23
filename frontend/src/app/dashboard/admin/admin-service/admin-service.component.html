@@ -74,9 +74,14 @@
                   <input class="h-2rem" type="text" pInputText id="description" [(ngModel)]="service.description" required autofocus />
                   <small class="p-error" *ngIf="submitted && !service.description">La description est requise.</small>
               </div>
-              <div *ngIf="!createService" class="field flex flex-column">
-                <input type="file" (change)="onFileSelected($event)" accept="image/*">
+              <div class="field flex flex-column image-section">
+                <div class="file-upload-wrapper">
+                  <label for="myImage" class="custom-file-upload">{{ createService ? 'Ajouter une image' : 'Modifier l\'image' }}</label>
+                  <span [ngClass]="{'show': !imageUrl}" class="custom-file-upload reset" (click)="resetImage()">Réinitialiser</span>
+                </div>
+                <input #fileInput id="myImage" type="file" (change)="onFileSelected($event)" accept="image/*">
                 <img *ngIf="imageUrl" [src]="imageUrl" width="200" height="200" />
+                <img *ngIf="!imageUrl && !createService" [src]="socketUrl + '/images/services/service'+ service.id + '/' + service.image" width="200" height="200" />
               </div>
         </ng-template>
         <ng-template pTemplate="footer">
