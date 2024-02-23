@@ -1,5 +1,7 @@
 <div class="profile container">
 
+    <p-toast></p-toast>
+
     <h1>Information personnel</h1>
     <h2>Nom complet</h2>
     <p>{{ utilisateur.first_name }} {{ utilisateur.last_name }}</p>
@@ -39,8 +41,8 @@
                 </div>
                 <div class="field flex flex-column">
                     <label for="confirmpassword">Confirmer le nouveau Mot de Passe</label>
-                    <input class="h-2rem" type="password" pInputText id="confirmpassword" autofocus />
-                    <small class="p-error" *ngIf="submitted && !utilisateur.password">Confirmer le nouveau mot de passe.</small>
+                    <input class="h-2rem" type="password" pInputText id="confirmpassword"  [(ngModel)]="newPassword" autofocus />
+                    <small class="p-error" *ngIf="submitted && !newPassword">Confirmer le nouveau mot de passe.</small>
                 </div>
             </p-accordionTab>
         </p-accordion>
@@ -48,7 +50,7 @@
     </ng-template>
 
     <ng-template pTemplate="footer">
-        <button pButton pRipple label="Annuler" icon="pi pi-times mr-2" class="p-button-text"></button>
+        <button pButton pRipple label="Annuler" icon="pi pi-times mr-2" class="p-button-text" (click)="hideDialog()"></button>
         <button pButton pRipple label="Enregistrer" icon="pi pi-check mr-2" class="p-button-text" (click)="saveUser()"></button>
     </ng-template>
 </p-dialog>

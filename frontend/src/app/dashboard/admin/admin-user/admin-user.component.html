@@ -90,15 +90,16 @@
                         <label *ngIf="createUser" for="password">Mot de Passe</label>
                         <label *ngIf="!createUser" for="password">Nouveau Mot de Passe</label>
                         <input class="h-2rem" type="password" pInputText id="password" [(ngModel)]="utilisateur.password" required autofocus />
-                        <small class="p-error" *ngIf="submitted && !utilisateur.password && createUser">Le mot de passe.</small>
-                        <small class="p-error" *ngIf="submitted && !utilisateur.password && !createUser ">Le Nouveau mot de passe.</small>
+                        <small class="p-error" *ngIf="submitted && !utilisateur.password && createUser">Le mot de passe est requis.</small>
+                        <small class="p-error" *ngIf="submitted && !utilisateur.password && !createUser ">Le Nouveau mot de passe est requis.</small>
                     </div>
                     <div class="field flex flex-column">
                         <label *ngIf="!createUser" for="confirmpassword">Confirmer le nouveau Mot de Passe</label>
                         <label *ngIf="createUser" for="confirmpassword">Confirmer le Mot de Passe</label>
-                        <input class="h-2rem" type="password" pInputText id="confirmpassword" required autofocus />
-                        <small class="p-error" *ngIf="submitted && !utilisateur.password && !createUser">Confirmer le nouveau  mot de passe.</small>
-                        <small class="p-error" *ngIf="submitted && !utilisateur.password && createUser">Confirmer le mot de passe.</small>
+                        <input class="h-2rem" *ngIf="!createUser" type="password" pInputText id="confirmpassword" [(ngModel)]="newPassword"/>
+                        <input class="h-2rem" *ngIf="createUser" type="password" pInputText id="confirmpassword" [(ngModel)]="newPassword" required autofocus />
+                        <small class="p-error" *ngIf="submitted && !newPassword && !createUser">Confirmer le nouveau  mot de passe est requis.</small>
+                        <small class="p-error" *ngIf="submitted && !newPassword && createUser">Confirmer le mot de passe est requis.</small>
                     </div>
                 </p-accordionTab>
                 <p-accordionTab *ngIf="myRole == 'admin'" header="Option admin">

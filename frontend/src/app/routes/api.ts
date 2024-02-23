@@ -11,4 +11,5 @@ export const API = {
     TIMELINE_FILTERED: 'timeline/filter',
     TIMELINE_LIST: 'timeline/list',
     ASSOCIATION: 'association',
+    ASSOCIATION_ALL: 'association/all',
 };

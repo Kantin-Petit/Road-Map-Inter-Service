@@ -58,28 +58,28 @@ describe('AuthService', () => {
 
   it('should login user', () => {
     const userData = { email: 'testuser', password: 'testpassword' };
-  
+
     service.login(userData).subscribe(response => {
       expect(response).toBeTruthy();
     });
-  
+
     const req = http.expectOne(`${environment.apiUrl}/${API.SIGNIN}`);
     expect(req.request.method).toBe('POST');
     req.flush({});
   });
-  
+
   it('should verify token', () => {
     service.verifyToken().subscribe(response => {
       expect(response).toBeTruthy();
     });
-  
+
     const req = http.expectOne(`${environment.apiUrl}/${API.TOKEN}`);
     expect(req.request.method).toBe('GET');
     req.flush({});
   });
-  
+
   it('should set and get user', () => {
-    const user: UserModel = { 
+    const user: UserModel = {
       id: 2,
       email: 'test2@example.com',
       first_name: 'User',
@@ -89,12 +89,12 @@ describe('AuthService', () => {
       service_id: 2,
       Service: { name: 'Service Two' }
     };
-  
+
     service.setUser(user);
     const retrievedUser = service.getUser();
     expect(retrievedUser).toEqual(user);
   });
-  
+
   it('should logout user', () => {
     service.logout();
     const req = http.expectOne(`${environment.apiUrl}/${API.SIGNOUT}`);
@@ -104,9 +104,9 @@ describe('AuthService', () => {
     expect(service.getToken()).toBeFalsy();
     expect(service.getUser()).toEqual(new UserModel());
   });
-  
+
   it('should get user role', () => {
-    const user: UserModel = { 
+    const user: UserModel = {
       id: 2,
       email: 'test2@example.com',
       first_name: 'User',
@@ -119,5 +119,5 @@ describe('AuthService', () => {
     service.setUser(user);
     expect(service.getRole()).toEqual('user');
   });
-  
+
 });

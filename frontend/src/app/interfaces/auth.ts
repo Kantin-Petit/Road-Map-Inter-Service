@@ -15,5 +15,5 @@ export interface UserRegistration {
     email: string;
     password: string;
     role: UserRole;
-    service: number;
+    service: number | null;
 }
