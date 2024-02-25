@@ -21,6 +21,8 @@ import { FileUploadModule } from 'primeng/fileupload';
 import { DialogModule } from 'primeng/dialog';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 
+import { MarkdownModule } from 'ngx-markdown';
+
 @NgModule({
   declarations: [
     SidemenuComponent,
@@ -44,6 +46,8 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
     DialogModule,
     ConfirmDialogModule,
     DashboardRoutingModule,
+    MarkdownModule.forRoot()
+
   ]
 })
 export class DashboardModule { }

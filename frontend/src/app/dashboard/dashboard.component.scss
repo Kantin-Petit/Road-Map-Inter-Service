@@ -1,16 +1,4 @@
 
-.dashboard {
+:host {
   display: flex;
-
-  app-sidemenu {
-    width: 180px;
-    min-height: calc(100vh - 100px);
-  }
-
-  .wrapper-component {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-  }
 }

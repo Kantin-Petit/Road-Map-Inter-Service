@@ -1,6 +1,7 @@
-.admin {
-  margin-top: 50px;
-  margin-bottom: 50px;
+:host {
+  width: calc(100% - 180px);
+  margin: 50px auto;
+  padding: 0 30px;
 }
 
 input[type="file"] {
@@ -44,4 +45,8 @@ input[type="file"] {
   display: flex;
   gap: 10px;
   margin-bottom: 15px;
+}
+
+textarea {
+  max-width: 100%;
 }

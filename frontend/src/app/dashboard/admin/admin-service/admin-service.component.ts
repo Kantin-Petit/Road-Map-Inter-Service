@@ -52,6 +52,9 @@ export class AdminServiceComponent implements OnInit {
 
   onDialogHide() {
     if (!this.serviceDialog) this.createService = false;
+    this.imageUrl = null;
+    this.imageFile = null;
+    this.fileInput.nativeElement.value = '';
   }
 
   deleteSelectedServices() {
@@ -100,6 +103,7 @@ export class AdminServiceComponent implements OnInit {
     this.submitted = false;
     this.imageUrl = null;
     this.imageFile = null;
+    this.fileInput.nativeElement.value = '';
   }
 
 

@@ -119,11 +119,11 @@ exports.deleteTimeline = (req, res, next) => {
 
 exports.updateTimeline = (req, res, next) => {
 
-    const { id, title, image, text } = req.body;
+    const { id, title, image, text, date_start, date_end, service_id } = req.body;
 
     Timeline.findOne({ where: { id: id } })
         .then(timeline => {
-            timeline.update({ title, image, text })
+            timeline.update({ title, image, text, date_start, date_end, service_id })
                 .then(() => res.status(201).json({ message: 'Timeline modifié !' }))
                 .catch(error => res.status(400).json({ error }));
         })

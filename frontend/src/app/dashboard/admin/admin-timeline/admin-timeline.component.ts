@@ -6,17 +6,21 @@ import { TimelineService } from '../../../services/timeline.service';
 import { ThematicModel } from 'src/app/models/thematic-model';
 import { ThematicService } from 'src/app/services/thematic.service';
 import { AssociationService } from '../../../services/association.service';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ShareService } from '../../../services/share.service';
+import { environment } from 'src/environments/environment';
+import { ServiceService } from '../../../services/service.service';
+import { ServiceModel } from 'src/app/models/service-model';
 
 @Component({
   selector: 'app-admin-timeline',
   templateUrl: './admin-timeline.component.html',
   styleUrls: ['./admin-timeline.component.scss']
 })
-export class AdminTimelineComponent {
-
+export class AdminTimelineComponent implements OnInit {
 
   @ViewChild('dt') dt!: Table;
+  @ViewChild('fileInput') fileInput: any;
+
 
   timelines!: TimelineModel[];
   timeline!: TimelineModel
@@ -27,8 +31,10 @@ export class AdminTimelineComponent {
   createTimeline: boolean = false
   serviceName: string = '';
   thematicList: ThematicModel[] = [];
-  currentDate!: Date;
-  timelineForm!: FormGroup;
+  serviceList!: ServiceModel[];
+  socketUrl: string = environment.socketUrl;
+  imageUrl: any = null;
+  imageFile: any = null;
 
   thematicAssociationsToCreate: { timeline_id: number, thematic: ThematicModel }[] = [];
   thematicAssociationsToDelete: { timeline_id: number, thematic: ThematicModel }[] = [];
@@ -37,29 +43,23 @@ export class AdminTimelineComponent {
     private timelineService: TimelineService,
     private messageService: MessageService,
     private thematicService: ThematicService,
+    private serviceService: ServiceService,
     private AssociationService: AssociationService,
-    private formBuilder: FormBuilder,
-    private confirmationService: ConfirmationService) {
-      this.timelineForm = this.formBuilder.group({
-        id: ['', Validators.required],
-        title: ['', Validators.required],
-        text: ['', Validators.required],
-        image: ['', Validators.required],
-        date_start: ['', Validators.required],
-        date_end: ['', Validators.required],
-        serviceId: ['', Validators.required],
-        Thematics: ['', Validators.required]
-      });
-    }
+    public shareService: ShareService,
+    private confirmationService: ConfirmationService) {}
 
   ngOnInit() {
-    this.currentDate = new Date();
+
     this.timelineService.getListTimeline(this.serviceName).subscribe(response => {
       this.timelines = response;
     });
 
     this.thematicService.getAllthematic().subscribe(response => {
       this.thematicList = response;
+    });
+
+    this.serviceService.getAllService().subscribe(services => {
+      this.serviceList = services;
     });
   }
 
@@ -77,6 +77,9 @@ export class AdminTimelineComponent {
 
   onDialogHide() {
     if (!this.timelineDialog) this.createTimeline = false;
+    this.imageUrl = null;
+    this.imageFile = null;
+    this.fileInput.nativeElement.value = '';
   }
 
   deleteSelectedTimelines() {
@@ -123,13 +126,32 @@ export class AdminTimelineComponent {
     this.timelineDialog = false;
     this.createTimeline = false;
     this.submitted = false;
+    this.imageUrl = null;
+    this.imageFile = null;
+    this.fileInput.nativeElement.value = '';
   }
 
+  onFileSelected(event: any) {
+    console.log(event.target.files[0]);
+    const file: File = event.target.files[0];
+    if (file) {
+      this.imageFile = file;
+      this.imageUrl = URL.createObjectURL(file);
+    }
+  }
+
+  resetImage() {
+    this.imageUrl = null;
+    this.imageFile = null;
+    this.fileInput.nativeElement.value = '';
+  }
 
   saveTimeline() {
     this.submitted = true;
 
     if (this.timeline.title?.trim()) {
+
+      console.log(this.timeline);
 
       if (this.timeline.id) {
         this.timelines[this.findIndexById(String(this.timeline.id))] = this.timeline;
@@ -142,10 +164,9 @@ export class AdminTimelineComponent {
           id: this.timeline.id,
           title: this.timeline.title,
           text: this.timeline.text,
-          image: this.timeline.image,
           date_start: this.timeline.date_start,
           date_end: this.timeline.date_end,
-          serviceId: this.timeline.serviceId,
+          service_id: this.timeline.service_id,
           Thematics: this.timeline.Thematics
         };
 
