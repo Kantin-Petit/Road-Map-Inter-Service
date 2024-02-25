@@ -1,5 +1,5 @@
 
-<div class="service container">
+<div class="service">
     <p-toast></p-toast>
 
     <div class="card">
@@ -71,7 +71,7 @@
               </div>
               <div class="field flex flex-column">
                   <label for="description">Description</label>
-                  <input class="h-2rem" type="text" pInputText id="description" [(ngModel)]="service.description" required autofocus />
+                  <textarea pInputText name="description" id="description" cols="30" rows="10" [(ngModel)]="service.description" required autofocus></textarea>
                   <small class="p-error" *ngIf="submitted && !service.description">La description est requise.</small>
               </div>
               <div class="field flex flex-column image-section">

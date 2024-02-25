@@ -1,4 +1,4 @@
-<div class="timeline container">
+<div class="timeline">
     <p-toast></p-toast>
 
     <div class="card">
@@ -73,18 +73,35 @@
 
                     <div class="field flex flex-column">
                       <label for="texte">Texte</label>
-                      <input class="h-2rem" type="text" pInputText id="texte" [(ngModel)]="timeline.text" required autofocus />
+                      <textarea pInputText name="texte" id="texte" cols="30" rows="10" [(ngModel)]="timeline.text"></textarea>
                       <small class="p-error" *ngIf="submitted && !timeline.text">La text est requis.</small>
                     </div>
 
-                   <div class="card flex flex-column justify-content-center">
-                        <label for="date_start">Date de Début</label>
-                        <input type="date" id="date_start" name="date_start" [value]="timeline.date_start" [(ngModel)]="timeline.date_start" />
+                    <div class="field flex-column markdown">
+                      <label for="excerpt">Extrait</label>
+                      <markdown [data]="shareService.truncateText(timeline.text)"></markdown>
                     </div>
 
-                    <div class="card flex flex-column justify-content-center">
-                        <label for="date_end">Date de fin</label>
-                        <input type="date" id="date_end" name="date_end"  [value]="timeline.date_end" [(ngModel)]="timeline.date_end" />
+                    <div class="field flex flex-column image-section">
+                      <div class="file-upload-wrapper">
+                        <label for="myImage" class="custom-file-upload">{{ createTimeline ? 'Ajouter une image' : 'Modifier l\'image' }}</label>
+                        <span [ngClass]="{'show': !imageUrl}" class="custom-file-upload reset" (click)="resetImage()">Réinitialiser</span>
+                      </div>
+                      <input #fileInput id="myImage" type="file" (change)="onFileSelected($event)" accept="image/*">
+                      <img *ngIf="imageUrl" [src]="imageUrl" width="200" height="200" />
+                      <img *ngIf="!imageUrl && !createTimeline && timeline.image" [src]="socketUrl + '/images/services/service'+ timeline.service_id + '/timeline' + timeline.id + '/' + timeline.image" width="200" height="200" />
+                    </div>
+
+                   <div class="field flex gap-5 date flex-wrap">
+                    <div class="flex gap-2 flex-wrap">
+                      <label for="date_start">Date de Début:</label>
+                      <input type="date" id="date_start" name="date_start" [(ngModel)]="timeline.date_start" />
+                    </div>
+                    <div class="flex gap-2 flex-wrap">
+                       <label for="date_end">Date de fin:</label>
+                        <input type="date" id="date_end" name="date_end" [(ngModel)]="timeline.date_end" />
+                    </div>
+
                     </div>
 
                     <div class="thematicList">
@@ -101,6 +118,13 @@
                       </div>
                   </div>
 
+                  <div class="field flex flex-column">
+                    <label for="service">Service</label>
+                    <select class="h-2rem" id="service" [(ngModel)]="timeline.service_id" required autofocus>
+                        <option *ngFor="let service of serviceList" value="{{service.id}}">{{service.name | titlecase}}</option>
+                    </select>
+                    <small class="p-error" *ngIf="submitted && !timeline.service_id">Le service est requis.</small>
+                  </div>
 
         </ng-template>
         <ng-template pTemplate="footer">

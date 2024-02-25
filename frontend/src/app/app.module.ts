@@ -9,6 +9,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { InterceptorService } from './services/interceptor.service';
 
+import { MarkdownModule } from 'ngx-markdown';
+
 import { AppComponent } from './app.component';
 import { HomeComponent } from './pages/home/home.component';
 import { PlanningComponent } from './timeline/planning/planning.component';
@@ -50,6 +52,7 @@ registerLocaleData(localeFr);
     ConfirmDialogModule,
     MessageModule,
     SidebarModule,
+    MarkdownModule.forRoot()
   ],
   providers: [
     { provide: LOCALE_ID, useValue: 'fr' },
