@@ -46,10 +46,11 @@
             <ng-template pTemplate="body" let-timeline>
                 <tr>
                     <td>
+                        <p-tableCheckbox [value]="timeline"></p-tableCheckbox>
                     </td>
                     <td>{{ timeline.title }}</td>
-                    <td>{{ timeline.date_start }}</td>
-                    <td>{{ timeline.date_end }}</td>
+                    <td>{{ timeline.date_start | date: 'dd-MM-YYY'}}</td>
+                    <td>{{ timeline.date_end | date: 'dd-MM-YYY'}}</td>
                     <td>{{ timeline.Service.name }}</td>
                     <td>
                         <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editTimeline(timeline)"></button>
@@ -77,7 +78,7 @@
                       <small class="p-error" *ngIf="submitted && !timeline.text">La text est requis.</small>
                     </div>
 
-                    <div class="field flex-column markdown">
+                    <div *ngIf="timeline.text" class="field flex-column markdown">
                       <label for="excerpt">Extrait</label>
                       <markdown [data]="shareService.truncateText(timeline.text)"></markdown>
                     </div>
@@ -89,19 +90,20 @@
                       </div>
                       <input #fileInput id="myImage" type="file" (change)="onFileSelected($event)" accept="image/*">
                       <img *ngIf="imageUrl" [src]="imageUrl" width="200" height="200" />
-                      <img *ngIf="!imageUrl && !createTimeline && timeline.image" [src]="socketUrl + '/images/services/service'+ timeline.service_id + '/timeline' + timeline.id + '/' + timeline.image" width="200" height="200" />
+                      <img *ngIf="!imageUrl && !createTimeline && timeline.image" [src]="editTimeline(timeline)" width="200" height="200" />
                     </div>
 
-                   <div class="field flex gap-5 date flex-wrap">
-                    <div class="flex gap-2 flex-wrap">
-                      <label for="date_start">Date de Début:</label>
-                      <input type="date" id="date_start" name="date_start" [(ngModel)]="timeline.date_start" />
-                    </div>
-                    <div class="flex gap-2 flex-wrap">
-                       <label for="date_end">Date de fin:</label>
-                        <input type="date" id="date_end" name="date_end" [(ngModel)]="timeline.date_end" />
-                    </div>
-
+                   <div class="field flex gap-5 date flex-wrap mt-5">
+                      <div class="flex gap-2 flex-wrap">
+                        <label for="date_start">Date de Début:</label>
+                        <input type="date" id="date_start" name="date_start" [(ngModel)]="timeline.date_start" required autofocus/>
+                        <small class="p-error" *ngIf="submitted && !timeline.date_start">Une date est requise.</small>
+                      </div>
+                      <div class="flex gap-2 flex-wrap">
+                        <label for="date_end">Date de fin:</label>
+                        <input type="date" id="date_end" name="date_end" [(ngModel)]="timeline.date_end" required autofocus/>
+                        <small class="p-error" *ngIf="submitted && !timeline.date_end">Une date est requise.</small>
+                      </div>
                     </div>
 
                     <div class="thematicList">
@@ -118,7 +120,7 @@
                       </div>
                   </div>
 
-                  <div class="field flex flex-column">
+                  <div class="field flex flex-column mt-5">
                     <label for="service">Service</label>
                     <select class="h-2rem" id="service" [(ngModel)]="timeline.service_id" required autofocus>
                         <option *ngFor="let service of serviceList" value="{{service.id}}">{{service.name | titlecase}}</option>

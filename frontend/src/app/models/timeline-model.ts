@@ -8,6 +8,7 @@ export class TimelineModel {
     date_start!: Date;
     date_end!: Date;
     service_id!: number;
+    Service?: ServiceModel;
     Thematics!: {
         color: string;
         name: string;

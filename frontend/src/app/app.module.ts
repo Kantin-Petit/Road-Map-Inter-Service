@@ -1,7 +1,7 @@
 import { NgModule, LOCALE_ID } from '@angular/core';
 import { registerLocaleData, CommonModule } from '@angular/common';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http'
-import localeFr from '@angular/common/locales/fr';
+import * as fr from '@angular/common/locales/fr';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -26,8 +26,6 @@ import { MessageModule } from 'primeng/message';
 import { SidebarModule } from 'primeng/sidebar';
 import { DialogModule } from 'primeng/dialog';
 
-
-registerLocaleData(localeFr);
 
 @NgModule({
   declarations: [
@@ -55,7 +53,7 @@ registerLocaleData(localeFr);
     MarkdownModule.forRoot()
   ],
   providers: [
-    { provide: LOCALE_ID, useValue: 'fr' },
+    { provide: LOCALE_ID, useValue: 'fr-FR' },
     MessageService,
     ConfirmationService,
     {
@@ -66,4 +64,8 @@ registerLocaleData(localeFr);
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+  constructor() {
+    registerLocaleData(fr.default);
+  }
+}

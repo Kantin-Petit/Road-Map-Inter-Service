@@ -12,3 +12,7 @@
     margin-top: 0;
   }
  }
+
+ .communication-markdown > *:not(p) {
+    display: none;
+ }

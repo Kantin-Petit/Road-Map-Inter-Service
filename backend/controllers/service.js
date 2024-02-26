@@ -21,8 +21,7 @@ exports.getOneService = (req, res, next) => {
 
 exports.createService = (req, res, next) => {
 
-  const name = req.body.name;
-  const description = req.body.description;
+  const { name, description } = req.body;
 
   const service = new Service({
     name: name,
@@ -43,7 +42,8 @@ exports.deleteService = (req, res, next) => {
     await Timeline.destroy({ where: { service_id: id }, transaction });
     await Service.destroy({ where: { id: id }, transaction });
 
-    fs.rmdirSync(`images/services/service${id}`, { recursive: true });
+    const folderPath = `images/services/service${id}`;
+    if (fs.existsSync(folderPath)) fs.rmdirSync(folderPath, { recursive: true });
 
     res.status(201).json({ message: 'Service supprimé !' });
   })
@@ -55,8 +55,7 @@ exports.deleteService = (req, res, next) => {
 
 exports.updateService = (req, res, next) => {
   const id = req.params.id;
-  const name = req.body.name;
-  const description = req.body.description;
+  const { name, description } = req.body;
 
   Service.findOne({ where: { id: id } })
     .then(service => {
@@ -69,11 +68,8 @@ exports.updateService = (req, res, next) => {
       if (req.file) {
         const newImage = req.file.filename;
         service.image = newImage;
-        fs.unlink(`images / services / service${ id } / ${ oldImage }`, (err) => {
-          if (err) {
-            console.error("Erreur lors de la suppression de l'image précédente :", err);
-          }
-        });
+        const folderPath = `images/services/service${id}/${oldImage}`;
+        if (fs.existsSync(folderPath)) fs.unlink(folderPath, (err) => { });
       }
 
       service.name = name;
