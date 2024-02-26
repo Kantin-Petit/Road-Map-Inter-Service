@@ -18,7 +18,7 @@ const Timeline = connection.define('Timeline', {
         allowNull: true,
     },
     image: {
-        type: DataTypes.STRING(100),
+        type: DataTypes.STRING(255),
         allowNull: true,
     },
     date_start: {
@@ -31,7 +31,7 @@ const Timeline = connection.define('Timeline', {
     },
     service_id: {
         type: DataTypes.INTEGER,
-        allowNull: true,
+        allowNull: false,
     }
 }, { timestamps: false, deletedAt: true, paranoid: true });
 

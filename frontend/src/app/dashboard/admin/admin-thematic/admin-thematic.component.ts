@@ -65,9 +65,7 @@ export class AdminThematicComponent implements OnInit {
       accept: () => {
         if (!this.selectedThematics) return
         this.selectedThematics.forEach(thematic => {
-          this.thematicService.deletethematic(thematic['id']).subscribe(() => {
-            this.AssociationService.deleteAllAssociation('thematic_id', thematic['id']).subscribe();
-          });
+          this.thematicService.deletethematic(thematic['id']).subscribe()
         });
 
         this.thematics = this.thematics.filter((val) => !this.selectedThematics?.includes(val));
@@ -90,7 +88,6 @@ export class AdminThematicComponent implements OnInit {
       icon: 'pi pi-exclamation-triangle m-2',
       accept: () => {
         this.thematicService.deletethematic(thematic['id']).subscribe(() => {
-          this.AssociationService.deleteAllAssociation('thematic_id', thematic['id']).subscribe();
           this.thematics = this.thematics.filter((val) => val.id !== thematic['id']);
           this.thematic = new ThematicModel();
           this.messageService.add({ severity: 'success', summary: 'Réussite', detail: 'Thématique supprimé', life: 3000 });

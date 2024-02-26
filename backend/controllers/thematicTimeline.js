@@ -34,16 +34,3 @@ exports.deleteAssociation = (req, res, next) => {
             res.status(500).json({ error: 'Internal Server Error' });
         });
 };
-
-exports.deleteAllAssociations = (req, res, next) => {
-
-    const { type, id } = req.params;
-
-    ThematicTimeline.destroy({
-        where: { [type]: id }
-    })
-        .then(() => res.json({ message: 'Association deleted successfully' }))
-        .catch(error => {
-            res.status(500).json({ error: 'Internal Server Error' });
-        });
-};

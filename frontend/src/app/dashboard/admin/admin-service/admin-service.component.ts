@@ -54,7 +54,7 @@ export class AdminServiceComponent implements OnInit {
     if (!this.serviceDialog) this.createService = false;
     this.imageUrl = null;
     this.imageFile = null;
-    this.fileInput.nativeElement.value = '';
+    if (this.fileInput) this.fileInput.nativeElement.value = '';
   }
 
   deleteSelectedServices() {
@@ -108,7 +108,6 @@ export class AdminServiceComponent implements OnInit {
 
 
   onFileSelected(event: any) {
-    console.log(event.target.files[0]);
     const file: File = event.target.files[0];
     if (file) {
       this.imageFile = file;

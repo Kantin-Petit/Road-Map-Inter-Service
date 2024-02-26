@@ -35,6 +35,7 @@ export class AdminTimelineComponent implements OnInit {
   socketUrl: string = environment.socketUrl;
   imageUrl: any = null;
   imageFile: any = null;
+  originalService!: string | number;
 
   thematicAssociationsToCreate: { timeline_id: number, thematic: ThematicModel }[] = [];
   thematicAssociationsToDelete: { timeline_id: number, thematic: ThematicModel }[] = [];
@@ -73,13 +74,15 @@ export class AdminTimelineComponent implements OnInit {
     this.timeline = new TimelineModel();
     this.submitted = false;
     this.timelineDialog = true;
+
   }
 
   onDialogHide() {
     if (!this.timelineDialog) this.createTimeline = false;
     this.imageUrl = null;
     this.imageFile = null;
-    this.fileInput.nativeElement.value = '';
+    if(this.fileInput) this.fileInput.nativeElement.value = '';
+
   }
 
   deleteSelectedTimelines() {
@@ -90,7 +93,7 @@ export class AdminTimelineComponent implements OnInit {
       accept: () => {
         if (!this.selectedTimelines) return
         this.selectedTimelines.forEach(timeline => {
-          this.timelineService.deleteTimeline(timeline['id']).subscribe();
+          this.timelineService.deleteTimeline(timeline['id'], timeline['service_id']).subscribe();
         });
 
         this.timelines = this.timelines.filter((val) => !this.selectedTimelines?.includes(val));
@@ -101,9 +104,11 @@ export class AdminTimelineComponent implements OnInit {
     });
   }
 
-  editTimeline(timeline: TimelineModel) {
+  editTimeline(timeline: TimelineModel): string {
     this.timeline = { ...timeline };
+    if (!this.timelineDialog) this.originalService = this.timeline.service_id
     this.timelineDialog = true;
+    return this.socketUrl + '/images/services/service' + this.originalService + '/timeline' + timeline.id + '/' + timeline.image;
   }
 
   deleteTimeline(timeline: TimelineModel) {
@@ -112,7 +117,7 @@ export class AdminTimelineComponent implements OnInit {
       header: 'Confirmation',
       icon: 'pi pi-exclamation-triangle m-2',
       accept: () => {
-        this.timelineService.deleteTimeline(timeline['id']).subscribe(() => {
+        this.timelineService.deleteTimeline(timeline['id'], timeline['service_id']).subscribe(() => {
           this.timelines = this.timelines.filter((val) => val.id !== timeline['id']);
           this.timeline = new TimelineModel();
           this.messageService.add({ severity: 'success', summary: 'Réussite', detail: 'Timeline supprimé', life: 3000 });
@@ -129,10 +134,10 @@ export class AdminTimelineComponent implements OnInit {
     this.imageUrl = null;
     this.imageFile = null;
     this.fileInput.nativeElement.value = '';
+
   }
 
   onFileSelected(event: any) {
-    console.log(event.target.files[0]);
     const file: File = event.target.files[0];
     if (file) {
       this.imageFile = file;
@@ -146,17 +151,40 @@ export class AdminTimelineComponent implements OnInit {
     this.fileInput.nativeElement.value = '';
   }
 
+  createFormData() {
+
+    const formDataWithImage = new FormData();
+    if (this.timeline.id) formDataWithImage.append('id', String(this.timeline.id));
+    formDataWithImage.append('title', this.timeline.title);
+    formDataWithImage.append('text', this.timeline.text);
+    formDataWithImage.append('date_start', String(this.timeline.date_start));
+    formDataWithImage.append('date_end', String(this.timeline.date_end));
+    formDataWithImage.append('service_id', String(this.timeline.service_id));
+    formDataWithImage.append('type', 'timeline');
+    formDataWithImage.append('image', this.imageFile, this.imageFile.name);
+    return formDataWithImage;
+  }
+
   saveTimeline() {
     this.submitted = true;
 
     if (this.timeline.title?.trim()) {
 
-      console.log(this.timeline);
-
       if (this.timeline.id) {
-        this.timelines[this.findIndexById(String(this.timeline.id))] = this.timeline;
-        this.timelineService.updateTimeline(this.timeline.id, this.timeline).subscribe(() => {
+
+        this.timeline.service_id = Number(this.timeline.service_id);
+
+        const DATA = this.imageFile ? this.createFormData() : this.timeline;
+
+        const index = this.findIndexById(String(this.timeline.id));
+        this.timelineService.updateTimeline(this.timeline.id, DATA).subscribe(reponse => {
+          this.createAssociation();
+          this.removeAssocation();
+          this.timelines[index] = this.timeline;
+          this.timelines[index].image = reponse.image;
           this.messageService.add({ severity: 'success', summary: 'Réussite', detail: 'Timeline Modifier', life: 3000 });
+          this.timelines = [...this.timelines];
+          this.timeline = new TimelineModel();
         });
       } else {
 
@@ -170,41 +198,23 @@ export class AdminTimelineComponent implements OnInit {
           Thematics: this.timeline.Thematics
         };
 
-        this.timelines.push(this.timeline);
         this.timelineService.createTimeline(formData).subscribe(response => {
+
+          this.timeline = response.timeline;
+          this.timelines.push(this.timeline);
+          this.createAssociation(true);
           this.messageService.add({ severity: 'success', summary: 'Réussite', detail: 'Timeline Créer', life: 3000 });
+          this.timelines = [...this.timelines];
+          this.timeline = new TimelineModel();
         });
 
       }
 
-      this.thematicAssociationsToCreate.forEach(element => {
-
-        this.timeline.Thematics.push(element.thematic);
-
-        const data = {
-          timeline_id: element.timeline_id,
-          thematic_id: element.thematic.id
-        };
-
-        this.AssociationService.createAssociation(data).subscribe(() => {
-          this.thematicAssociationsToCreate = [];
-        });
-      });
-
-      this.thematicAssociationsToDelete.forEach(element => {
-
-        const valueToDelete = element.thematic.id;
-        const index = this.timeline.Thematics.findIndex(element => element.id === valueToDelete);
-        if (index !== -1) { this.timeline.Thematics.splice(index, 1) }
-        this.AssociationService.deleteAssociation(element.timeline_id, element.thematic.id).subscribe(response => {
-          this.thematicAssociationsToDelete = [];
-        });
-      });
-
-      this.timelines = [...this.timelines];
       this.timelineDialog = false;
       this.createTimeline = false;
-      this.timeline = new TimelineModel();
+  
+
+
     }
   }
 
@@ -222,6 +232,7 @@ export class AdminTimelineComponent implements OnInit {
   }
 
   isChecked(thematics: any[], thematicId: number) {
+    if(!thematics) return false;
     return thematics.some(thematic => thematic.id === thematicId);
   }
 
@@ -237,6 +248,40 @@ export class AdminTimelineComponent implements OnInit {
     } else {
       this.thematicAssociationsToDelete.push(data);
     }
+  }
+
+  createAssociation(isNew: boolean = false) {
+    this.thematicAssociationsToCreate.forEach(element => {
+
+      this.timeline.Thematics.push(element.thematic);
+
+      if(isNew) element.timeline_id = this.timeline.id;
+
+      const data = {
+        timeline_id: element.timeline_id,
+        thematic_id: element.thematic.id
+      };
+
+      this.AssociationService.createAssociation(data).subscribe(() => {
+        this.thematicAssociationsToCreate = [];
+      });
+
+
+    });
+
+  }
+
+  removeAssocation() {
+
+    this.thematicAssociationsToDelete.forEach(element => {
+
+      const valueToDelete = element.thematic.id;
+      const index = this.timeline.Thematics.findIndex(element => element.id === valueToDelete);
+      if (index !== -1) { this.timeline.Thematics.splice(index, 1) }
+      this.AssociationService.deleteAssociation(element.timeline_id, element.thematic.id).subscribe(response => {
+        this.thematicAssociationsToDelete = [];
+      });
+    });
   }
 
 }
