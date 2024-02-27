@@ -106,6 +106,12 @@ export class AdminServiceComponent implements OnInit {
     this.fileInput.nativeElement.value = '';
   }
 
+  validService(): boolean {
+    return (
+      Boolean(this.service.name) &&
+      Boolean(this.service.description)
+    );
+  }
 
   onFileSelected(event: any) {
     const file: File = event.target.files[0];
@@ -138,12 +144,17 @@ export class AdminServiceComponent implements OnInit {
 
       if (this.service.id) {
 
+        if (!this.validService()) {
+          this.messageService.add({ severity: 'error', summary: 'Erreur', detail: 'Veuillez remplir tous les champs', life: 3000 });
+          return;
+        }
+
         const DATA = this.imageFile ? this.createFormData() : this.service;
 
         const index = this.findIndexById(String(this.service.id));
         this.serviceService.updateservice(this.service.id, DATA).subscribe(reponse => {
           this.services[index] = this.service;
-          this.services[index].image = reponse.image;
+          if(this.imageFile) this.services[index].image = reponse.image;
           this.messageService.add({ severity: 'success', summary: 'Réussite', detail: 'Service Modifié', life: 3000 });
           this.services = [...this.services];
           this.service = new ServiceModel();
@@ -155,6 +166,11 @@ export class AdminServiceComponent implements OnInit {
           name: this.service.name,
           description: this.service.description,
         };
+
+        if (!this.validService()) {
+          this.messageService.add({ severity: 'error', summary: 'Erreur', detail: 'Veuillez remplir tous les champs', life: 3000 });
+          return;
+        }
 
         this.serviceService.createservice(formData).subscribe(response => {
 
@@ -169,6 +185,9 @@ export class AdminServiceComponent implements OnInit {
             if (!this.service.image) this.service.image = null;
             this.endOfSubmitService();
           }
+
+          console.log(this.service);
+          console.log(this.services);
 
         });
 

@@ -4,7 +4,7 @@ export class TimelineModel {
     id!: number;
     title!: string;
     text!: string;
-    image?: string;
+    image?: any;
     date_start!: Date;
     date_end!: Date;
     service_id!: number;

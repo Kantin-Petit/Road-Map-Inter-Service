@@ -21,7 +21,6 @@ export class AdminTimelineComponent implements OnInit {
   @ViewChild('dt') dt!: Table;
   @ViewChild('fileInput') fileInput: any;
 
-
   timelines!: TimelineModel[];
   timeline!: TimelineModel
   timelineDialog: boolean = false;
@@ -83,6 +82,16 @@ export class AdminTimelineComponent implements OnInit {
     this.imageFile = null;
     if(this.fileInput) this.fileInput.nativeElement.value = '';
 
+  }
+
+  validTimeline(): boolean {
+    return (
+      Boolean(this.timeline.title) &&
+      Boolean(this.timeline.text) &&
+      Boolean(this.timeline.date_start) &&
+      Boolean(this.timeline.date_end) &&
+      Boolean(this.timeline.service_id)
+    );
   }
 
   deleteSelectedTimelines() {
@@ -172,6 +181,13 @@ export class AdminTimelineComponent implements OnInit {
 
       if (this.timeline.id) {
 
+        if (!this.validTimeline()) {
+          this.messageService.add({ severity: 'error', summary: 'Erreur', detail: 'Veuillez remplir tous les champs', life: 3000 });
+          return;
+        }
+
+        console.log(this.timeline);
+
         this.timeline.service_id = Number(this.timeline.service_id);
 
         const DATA = this.imageFile ? this.createFormData() : this.timeline;
@@ -181,7 +197,7 @@ export class AdminTimelineComponent implements OnInit {
           this.createAssociation();
           this.removeAssocation();
           this.timelines[index] = this.timeline;
-          this.timelines[index].image = reponse.image;
+          if (this.imageFile) this.timelines[index].image = reponse.image;
           this.messageService.add({ severity: 'success', summary: 'Réussite', detail: 'Timeline Modifier', life: 3000 });
           this.timelines = [...this.timelines];
           this.timeline = new TimelineModel();
@@ -198,24 +214,47 @@ export class AdminTimelineComponent implements OnInit {
           Thematics: this.timeline.Thematics
         };
 
+        if (!this.validTimeline()) {
+          this.messageService.add({ severity: 'error', summary: 'Erreur', detail: 'Veuillez remplir tous les champs', life: 3000 });
+          return;
+        }
+
         this.timelineService.createTimeline(formData).subscribe(response => {
 
           this.timeline = response.timeline;
-          this.timelines.push(this.timeline);
           this.createAssociation(true);
-          this.messageService.add({ severity: 'success', summary: 'Réussite', detail: 'Timeline Créer', life: 3000 });
-          this.timelines = [...this.timelines];
-          this.timeline = new TimelineModel();
+
+          if (this.imageFile) {
+            this.timelineService.updateTimeline(this.timeline.id, this.createFormData()).subscribe(reponse => {
+              this.timeline.image = reponse.image;
+              this.endOfSubmitTimeline();
+            });
+          } else {
+            if (!this.timeline.image) this.timeline.image = null;
+            this.endOfSubmitTimeline();
+          }
+
         });
 
       }
 
       this.timelineDialog = false;
       this.createTimeline = false;
-  
-
 
     }
+  }
+
+  endOfSubmitTimeline() {
+    this.timelines.push(this.timeline);
+    this.messageService.add({ severity: 'success', summary: 'Réussite', detail: 'Timeline Créer', life: 3000 });
+    this.timelines = [...this.timelines];
+
+    console.log(this.timeline);
+    console.log(this.timelines);
+
+    this.timeline = new TimelineModel();
+    this.imageUrl = null;
+    this.imageFile = null;
   }
 
   findIndexById(id: string): number {
@@ -252,6 +291,8 @@ export class AdminTimelineComponent implements OnInit {
 
   createAssociation(isNew: boolean = false) {
     this.thematicAssociationsToCreate.forEach(element => {
+
+      console.log(this.thematicAssociationsToCreate);
 
       this.timeline.Thematics.push(element.thematic);
 
