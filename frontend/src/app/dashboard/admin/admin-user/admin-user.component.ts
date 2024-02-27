@@ -145,7 +145,7 @@ export class AdminUserComponent implements OnInit {
       Boolean(this.utilisateur.first_name) &&
       Boolean(this.utilisateur.last_name) &&
       Boolean(this.utilisateur.email) &&
-      Boolean(this.utilisateur.password) &&
+      Boolean(this.utilisateur.password || !this.createUser) &&
       Boolean(this.utilisateur.service_id || this.utilisateur.role === 'admin') &&
       Boolean(this.utilisateur.role)
     );
@@ -193,6 +193,11 @@ export class AdminUserComponent implements OnInit {
             return;
           }
 
+        }
+
+        if (!this.validateUser()) {
+          this.messageService.add({ severity: 'error', summary: 'Erreur', detail: 'Veuillez remplir tous les champs', life: 3000 });
+          return;
         }
 
         this.utilisateurs[this.findIndexById(String(this.utilisateur.id))] = this.utilisateur;

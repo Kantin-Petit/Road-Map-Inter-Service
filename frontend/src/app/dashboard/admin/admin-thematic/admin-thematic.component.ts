@@ -103,6 +103,12 @@ export class AdminThematicComponent implements OnInit {
     this.submitted = false;
   }
 
+  validThematic(): boolean {
+    return (
+      Boolean(this.thematic.name) &&
+      Boolean(this.thematic.description)
+    );
+  }
 
   saveThematic() {
     this.submitted = true;
@@ -110,6 +116,12 @@ export class AdminThematicComponent implements OnInit {
     if (this.thematic.name?.trim()) {
 
       if (this.thematic.id) {
+
+        if (!this.validThematic()) {
+          this.messageService.add({ severity: 'error', summary: 'Erreur', detail: 'Veuillez remplir tous les champs', life: 3000 });
+          return;
+        }
+
           this.thematics[this.findIndexById(String(this.thematic.id))] = this.thematic;
           this.thematicService.updatethematic(this.thematic.id, this.thematic).subscribe(() => {
           this.thematics = [...this.thematics];
@@ -125,6 +137,10 @@ export class AdminThematicComponent implements OnInit {
           color: this.thematic.color,
         };
 
+        if (!this.validThematic()) {
+          this.messageService.add({ severity: 'error', summary: 'Erreur', detail: 'Veuillez remplir tous les champs', life: 3000 });
+          return;
+        }
 
         this.thematicService.createthematic(formData).subscribe(response => {
           this.thematic = response.thematic;
