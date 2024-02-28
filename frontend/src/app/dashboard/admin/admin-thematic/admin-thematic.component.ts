@@ -1,12 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
-import { ServiceService } from '../../../services/service.service'
 import { ThematicModel } from '../../../models/thematic-model';
 import { AuthService } from '../../../services/auth.service';
 import { ThematicService } from '../../../services/thematic.service';
-import { of, map } from 'rxjs';
-import { AssociationService } from '../../../services/association.service';
 
 @Component({
   selector: 'app-admin-thematic',
@@ -32,7 +29,7 @@ export class AdminThematicComponent implements OnInit {
   constructor(
     private thematicService: ThematicService,
     private messageService: MessageService,
-    private AssociationService: AssociationService,
+    private authService: AuthService,
     private confirmationService: ConfirmationService) { }
 
   ngOnInit() {
@@ -40,6 +37,11 @@ export class AdminThematicComponent implements OnInit {
       this.thematics = response;
     });
   }
+
+  getRole() {
+    return this.authService.getRole();
+  }
+
 
   filterGlobal(event: Event) {
     const inputValue = (event.target as HTMLInputElement).value;
@@ -143,6 +145,10 @@ export class AdminThematicComponent implements OnInit {
         }
 
         this.thematicService.createthematic(formData).subscribe(response => {
+          if (!response.thematic) {
+            this.thematic = new ThematicModel();
+            return;
+          }
           this.thematic = response.thematic;
           this.thematics.push(this.thematic);
           this.thematics = [...this.thematics];

@@ -2,7 +2,7 @@
     <p-toast></p-toast>
 
     <div class="card">
-        <p-toolbar styleClass="mb-4 gap-2">
+        <p-toolbar *ngIf="getRole() === 'admin' || getRole() === 'admin_service'" styleClass="mb-4 gap-2">
             <ng-template pTemplate="left">
                 <button pButton pRipple label="Nouveau" icon="pi pi-plus mr-2" class="p-button-success mr-2" (click)="openNew()"></button>
                 <button pButton pRipple [label]="Delete" icon="pi pi-trash" class="p-button-danger" (click)="deleteSelectedThematics()" [disabled]="!selectedThematics || !selectedThematics.length"></button>
@@ -39,18 +39,18 @@
                     <th pSortableColumn="name" style="min-width:15rem">Nom <p-sortIcon field="name"></p-sortIcon></th>
                     <th pSortableColumn="description" style="min-width:15rem">Description <p-sortIcon field="description"></p-sortIcon></th>
                     <th pSortableColumn="color" style="min-width:15rem">Couleur <p-sortIcon field="color"></p-sortIcon></th>
-                    <th></th>
+                    <th *ngIf="getRole() === 'admin' || getRole() === 'admin_service'"></th>
                 </tr>
             </ng-template>
             <ng-template pTemplate="body" let-thematic>
                 <tr>
                     <td>
-                        <p-tableCheckbox [value]="thematic"></p-tableCheckbox>
+                        <p-tableCheckbox *ngIf="getRole() === 'admin' || getRole() === 'admin_service'" [value]="thematic"></p-tableCheckbox>
                     </td>
                     <td>{{ thematic.name }}</td>
                     <td>{{ thematic.description }}</td>
                     <td><span [style.background-color]="thematic.color" class="puce"></span></td>
-                    <td>
+                    <td *ngIf="getRole() === 'admin' || getRole() === 'admin_service'">
                         <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editThematic(thematic)"></button>
                         <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="deleteThematic(thematic)"></button>
                     </td>

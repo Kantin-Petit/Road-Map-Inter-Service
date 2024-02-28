@@ -22,7 +22,6 @@ const routes: Routes = [
       },
       {
         path: 'thematiques', component: AdminThematicComponent,
-        // canActivate: [adminGuard]
       },
       {
         path: 'utilisateurs', component: AdminUserComponent,
