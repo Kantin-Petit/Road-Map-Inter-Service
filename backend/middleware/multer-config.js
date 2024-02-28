@@ -21,6 +21,10 @@ const storage = multer.diskStorage({
             if (!(req.auth.userRole === 'admin' || req.auth.userRole === 'admin_service')) return
         }
 
+        if (req.body.type === 'timeline' && req.auth.userRole !== 'admin') {
+            if (req.body.service_id != req.auth.userServiceId) return
+        }
+
         let serviceNamePath = servicesPath;
 
         if (req.body.type === 'service' || req.body.type === 'timeline') {
@@ -44,6 +48,10 @@ const storage = multer.diskStorage({
 
         if (req.body.type === 'service') {
             if (!(req.auth.userRole === 'admin' || req.auth.userRole === 'admin_service')) return
+        }
+
+        if (req.body.type === 'timeline' && req.auth.userRole !== 'admin') {
+            if (req.body.service_id != req.auth.userServiceId) return
         }
 
         const name = file.originalname.split(' ').join('_').replace(/\.[^/.]+$/, "").toLowerCase();

@@ -61,13 +61,17 @@ exports.getFilteredTimelines = async (req, res, next) => {
 
 exports.getListTimelines = (req, res, next) => {
 
-  const { serviceName } = req.body;
+  let serviceID
+
+  if (req.auth.userRole === 'admin_service' || req.auth.userRole === 'user') { serviceID = { id: req.auth.userServiceId } }
+  else if (req.auth.userRole === 'admin') { serviceID = '' }
+  else return res.send([]);
 
   Timeline.findAll({
     include: [
       {
         model: Service,
-        where: serviceName,
+        where: serviceID,
         attributes: ['name'],
       },
       {
@@ -80,22 +84,21 @@ exports.getListTimelines = (req, res, next) => {
   })
     .then(timelines => res.send(timelines))
     .catch(error => res.status(500).json({ error }));
-};
 
-exports.getOneTimeline = (req, res, next) => {
-
-  Timeline.findOne({ where: { id: req.params.id } })
-    .then(service => res.send(service))
-    .catch(error => res.status(500).json({ error }));
 
 };
-
 
 
 exports.createTimeline = (req, res, next) => {
 
   const { title, text, date_start, date_end, service_id } = req.body;
-  const timeline = new Timeline({ title, text, date_start, date_end, service_id })
+  let serviceID
+
+  if (req.auth.userRole === 'admin_service' || req.auth.userRole === 'user') { serviceID = req.auth.userServiceId }
+  else if (req.auth.userRole === 'admin') { serviceID = service_id }
+  else throw new Error('Access denied');
+
+  const timeline = new Timeline({ title, text, date_start, date_end, service_id: serviceID })
 
   timeline.save()
     .then((savedTimeline) => {
@@ -124,10 +127,19 @@ exports.createTimeline = (req, res, next) => {
 exports.deleteTimeline = (req, res, next) => {
 
   const id = req.params.id;
-  const service_id = req.params.service_id;
+  const auth = req.auth
 
   Timeline.findOne({ where: { id: id } })
     .then(timeline => {
+
+      const service_id = timeline.dataValues.service_id;
+
+      if (auth.userRole === 'admin_service' || auth.userRole === 'user' || auth.userRole === 'admin') {
+        if (auth.userRole !== 'admin' && service_id != auth.userServiceId) throw new Error('Access denied');
+      } else {
+        throw new Error('Access denied');
+      }
+
       timeline.destroy()
         .then(() => {
 
@@ -136,6 +148,7 @@ exports.deleteTimeline = (req, res, next) => {
           res.status(201).json({ message: 'Timeline supprimé !' });
         })
         .catch(error => res.status(400).json({ error }));
+
     })
     .catch(error => res.status(500).json({ error }));
 
@@ -144,12 +157,23 @@ exports.deleteTimeline = (req, res, next) => {
 exports.updateTimeline = (req, res, next) => {
 
   const id = req.params.id;
+  const auth = req.auth;
   const { title, text, date_start, date_end, service_id } = req.body;
 
   Timeline.findOne({ where: { id: id } })
     .then(timeline => {
+
       if (!timeline) {
         return res.status(404).json({ message: 'Timeline non trouvé' });
+      }
+
+       const serviceID = timeline.dataValues.service_id;
+
+      if (auth.userRole === 'admin_service' || auth.userRole === 'user' || auth.userRole === 'admin') {
+        if (auth.userRole !== 'admin' && serviceID != auth.userServiceId) throw new Error('Access denied');
+        if (auth.userRole !== 'admin' && service_id != auth.userServiceId) throw new Error('Access denied');
+      } else {
+        throw new Error('Access denied');
       }
 
       let oldImage = timeline.image;

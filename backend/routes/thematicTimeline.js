@@ -4,7 +4,7 @@ const thematicTimelineCtrl = require('../controllers/thematicTimeline');
 const auth = require('../middleware/auth');
 
 router.get('/:id', thematicTimelineCtrl.getAssociation);
-router.post('/', thematicTimelineCtrl.createAssociation);
-router.delete('/:timelineId/:thematicId', thematicTimelineCtrl.deleteAssociation);
+router.post('/', auth, thematicTimelineCtrl.createAssociation);
+router.delete('/:timelineId/:thematicId', auth, thematicTimelineCtrl.deleteAssociation);
 
 module.exports = router;

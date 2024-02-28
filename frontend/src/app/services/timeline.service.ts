@@ -28,16 +28,12 @@ export class TimelineService {
     return this.http.get<TimelineModelWithService[]>(`${this.apiUrl}/${API.TIMELINE}`);
   }
 
-  getTimelineById(id: number): Observable<TimelineModel> {
-    return this.http.get<TimelineModel>(`${this.apiUrl}/${API.TIMELINE}/${id}`);
+  getListTimeline(): Observable<TimelineModel[]> {
+    return this.http.get<TimelineModel[]>(`${this.apiUrl}/${API.TIMELINE_LIST}`);
   }
 
   getFilteredTimeline(data: any): Observable<TimelineModelWithService[]> {
     return this.http.post<TimelineModelWithService[]>(`${this.apiUrl}/${API.TIMELINE_FILTERED}`, data);
-  }
-
-  getListTimeline(data: string): Observable<TimelineModel[]> {
-    return this.http.post<TimelineModel[]>(`${this.apiUrl}/${API.TIMELINE_LIST}`, data);
   }
 
   createTimeline(timeline: TimelineModel | FormData): Observable<any> {
@@ -48,8 +44,8 @@ export class TimelineService {
     return this.http.put<TimelineModel>(`${this.apiUrl}/${API.TIMELINE}/${id}`, timeline);
   }
 
-  deleteTimeline(id: number, service_id: number): Observable<TimelineModel> {
-    return this.http.delete<TimelineModel>(`${this.apiUrl}/${API.TIMELINE}/${id}/${service_id}`);
+  deleteTimeline(id: number): Observable<TimelineModel> {
+    return this.http.delete<TimelineModel>(`${this.apiUrl}/${API.TIMELINE}/${id}`);
   }
 
 }

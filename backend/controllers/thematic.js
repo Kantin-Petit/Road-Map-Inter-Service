@@ -14,7 +14,7 @@ exports.getOneThematic = (req, res, next) => {
 
 exports.createThematic = (req, res, next) => {
 
-  if (!(req.auth.userRole === 'admin' || req.auth.userRole === 'admin_service')) return
+  if (!(req.auth.userRole === 'admin' || req.auth.userRole === 'admin_service')) throw new Error('Access denied');
 
   const name = req.body.name;
   const description = req.body.description;
@@ -35,7 +35,7 @@ exports.createThematic = (req, res, next) => {
 
 exports.deleteThematic = (req, res, next) => {
 
-  if (!(req.auth.userRole === 'admin' || req.auth.userRole === 'admin_service')) return
+  if (!(req.auth.userRole === 'admin' || req.auth.userRole === 'admin_service')) throw new Error('Access denied');
 
   const id = req.params.id;
 
@@ -51,7 +51,7 @@ exports.deleteThematic = (req, res, next) => {
 
 exports.updateThematic = (req, res, next) => {
 
-  if (!(req.auth.userRole === 'admin' || req.auth.userRole === 'admin_service')) return
+  if (!(req.auth.userRole === 'admin' || req.auth.userRole === 'admin_service')) throw new Error('Access denied');
 
   const id = req.params.id;
   const name = req.body.name;
