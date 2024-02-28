@@ -63,6 +63,8 @@ export class FilterComponent implements OnInit {
 
     let checkedArray;
 
+    if (thematic) this.filterService.checkedServices = [...this.filterService.checkedServicesInit];
+
     checkedArray = thematic ? this.filterService.checkedThematics : this.filterService.checkedServices;
 
     if (event.target.checked) {
