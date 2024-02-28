@@ -6,6 +6,12 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
+import { ConfirmationService, MessageService } from 'primeng/api';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ToastModule } from 'primeng/toast';
+import { SidebarModule } from 'primeng/sidebar';
+import { DialogModule } from 'primeng/dialog';
+
 import { AppRoutingModule } from './app-routing.module';
 import { InterceptorService } from './services/interceptor.service';
 
@@ -20,11 +26,6 @@ import { HeaderComponent } from './header/header.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { FilterComponent } from './filter/filter.component';
 
-import { ConfirmationService, MessageService } from 'primeng/api';
-import { ConfirmDialogModule } from 'primeng/confirmdialog';
-import { MessageModule } from 'primeng/message';
-import { SidebarModule } from 'primeng/sidebar';
-import { DialogModule } from 'primeng/dialog';
 
 
 @NgModule({
@@ -39,17 +40,17 @@ import { DialogModule } from 'primeng/dialog';
     FilterComponent,
     ],
   imports: [
-    BrowserModule,
     CommonModule,
+    BrowserModule,
     HttpClientModule,
-    AppRoutingModule,
     BrowserAnimationsModule,
     ReactiveFormsModule,
     FormsModule,
+    ToastModule,
     DialogModule,
     ConfirmDialogModule,
-    MessageModule,
     SidebarModule,
+    AppRoutingModule,
     MarkdownModule.forRoot()
   ],
   providers: [
