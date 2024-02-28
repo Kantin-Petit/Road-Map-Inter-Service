@@ -19,7 +19,7 @@ export class FilterComponent implements OnInit {
   constructor(
     public serviceService: ServiceService,
     public thematicService: ThematicService,
-      public filterService: FilterService,
+    public filterService: FilterService,
     public TimelineService: TimelineService,
     private router: Router) {
 
@@ -42,6 +42,11 @@ export class FilterComponent implements OnInit {
 
   ngOnDestroy() {
     this.subscription.unsubscribe();
+  }
+
+  resetFilter() {
+    this.filterService.resetVariables();
+    this.ngOnInit()
   }
 
   setServices() {

@@ -3,6 +3,6 @@
 </div>
 <h2>{{sidebarData.title}}</h2>
 <markdown [data]="sidebarData.text"></markdown>
-<p>{{ sidebarData.image }}</p>
+<img *ngIf="sidebarData.image" [src]="getImageUrl(sidebarData)" alt="image_sujet"/>
 <p>Date de début: {{ sidebarData.date_start | date: 'dd-MM-yyyy' }}</p>
 <p>Date de fin: {{ sidebarData.date_end | date: 'dd-MM-yyyy' }}</p>
