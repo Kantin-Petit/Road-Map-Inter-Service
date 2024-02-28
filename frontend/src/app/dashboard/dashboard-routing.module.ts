@@ -22,11 +22,11 @@ const routes: Routes = [
       },
       {
         path: 'thematiques', component: AdminThematicComponent,
-        canActivate: [adminGuard]
+        // canActivate: [adminGuard]
       },
       {
         path: 'utilisateurs', component: AdminUserComponent,
-        canActivate: [adminGuard]
+        // canActivate: [adminGuard]
       },
       {
         path: 'timelines', component: AdminTimelineComponent,

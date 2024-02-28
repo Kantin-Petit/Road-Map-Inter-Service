@@ -4,6 +4,7 @@ import { Table } from 'primeng/table';
 import { ServiceService } from '../../../services/service.service'
 import { ServiceModel } from '../../../models/service-model';
 import { environment } from 'src/environments/environment';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-admin-service',
@@ -30,12 +31,17 @@ export class AdminServiceComponent implements OnInit {
   constructor(
     private serviceService: ServiceService,
     private messageService: MessageService,
+    private authService: AuthService,
     private confirmationService: ConfirmationService) { }
 
   ngOnInit() {
     this.serviceService.getAllService().subscribe(response => {
       this.services = response;
     });
+  }
+
+  getRole() {
+    return this.authService.getRole();
   }
 
   filterGlobal(event: Event) {

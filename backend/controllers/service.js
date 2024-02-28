@@ -5,21 +5,36 @@ const fs = require('fs');
 
 exports.getAllServices = (req, res, next) => {
 
-  Service.findAll()
-    .then(services => res.send(services))
-    .catch(error => res.status(500).json({ error }));
+  if (req.auth.userRole === 'admin_service') {
+    if (req.auth.userServiceId) this.getOneService(req, res, next);
+  }
+  else if (req.auth.userRole === 'admin') {
+    Service.findAll()
+      .then(services => res.send(services))
+      .catch(error => res.status(500).json({ error }));
+  } else {
+    return res.send([]);
+  }
 
 };
 
 exports.getOneService = (req, res, next) => {
 
+  const role = req.auth.userRole;
+
+  if (role === 'admin_service') { req.params.id = req.auth.userServiceId }
+  else if (role === 'admin') { req.params.id = req.params.id }
+  else { return res.send([]) }
+
   Service.findOne({ where: { id: req.params.id } })
-    .then(service => res.send(service))
+    .then(service => res.send([service]))
     .catch(error => res.status(500).json({ error }));
 
 };
 
 exports.createService = (req, res, next) => {
+
+  if (req.auth.userRole !== 'admin') return
 
   const { name, description } = req.body;
 
@@ -35,6 +50,9 @@ exports.createService = (req, res, next) => {
 }
 
 exports.deleteService = (req, res, next) => {
+
+  if (req.auth.userRole !== 'admin') return
+
   const id = req.params.id;
 
   sequelize.transaction(async (transaction) => {
@@ -54,6 +72,13 @@ exports.deleteService = (req, res, next) => {
 };
 
 exports.updateService = (req, res, next) => {
+
+  const role = req.auth.userRole;
+
+  if (role === 'admin_service') { req.params.id = req.auth.userServiceId }
+  else if (role === 'admin') { req.params.id = req.params.id }
+  else { return }
+
   const id = req.params.id;
   const { name, description } = req.body;
 

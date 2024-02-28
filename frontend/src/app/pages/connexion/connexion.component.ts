@@ -54,7 +54,8 @@ export class ConnexionComponent {
           });
         },
         error: (error) => {
-          this.messageService.add({ severity: 'error', summary: 'Erreur', detail: 'Adresse e-mail ou mot de passe incorrect.' });
+          const message = error.status === 429 ? 'Trop de tentatives de connexion. Veuillez réessayer plus tard.' : 'Adresse e-mail ou mot de passe incorrect.';
+            this.messageService.add({ severity: 'error', summary: 'Erreur', detail: message });
         }
       });
     } else {
