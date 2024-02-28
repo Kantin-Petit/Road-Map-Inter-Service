@@ -1,6 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { UserModel } from '../../../models/user-model';
-import { Validators } from '@angular/forms';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { UserService } from '../../../services/user.service';
 import { Table } from 'primeng/table';
