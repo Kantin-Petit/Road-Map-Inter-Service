@@ -16,6 +16,10 @@ $secondary-text-color: #dee2ec;
     background-color: color(nav-color);
     height: 100%;
 
+    ul {
+      width: 180px;
+    }
+
     nav {
       margin-top: 25px;
     }
