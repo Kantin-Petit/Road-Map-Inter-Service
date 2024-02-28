@@ -10,6 +10,8 @@ import { ShareService } from '../../../services/share.service';
 import { environment } from 'src/environments/environment';
 import { ServiceService } from '../../../services/service.service';
 import { ServiceModel } from 'src/app/models/service-model';
+import { AuthService } from '../../../services/auth.service';
+
 
 @Component({
   selector: 'app-admin-timeline',
@@ -28,7 +30,6 @@ export class AdminTimelineComponent implements OnInit {
   submitted: boolean = false;
   Delete!: string;
   createTimeline: boolean = false
-  serviceName: string = '';
   thematicList: ThematicModel[] = [];
   serviceList!: ServiceModel[];
   socketUrl: string = environment.socketUrl;
@@ -44,13 +45,14 @@ export class AdminTimelineComponent implements OnInit {
     private messageService: MessageService,
     private thematicService: ThematicService,
     private serviceService: ServiceService,
+    private authService: AuthService,
     private AssociationService: AssociationService,
     public shareService: ShareService,
     private confirmationService: ConfirmationService) {}
 
   ngOnInit() {
 
-    this.timelineService.getListTimeline(this.serviceName).subscribe(response => {
+    this.timelineService.getListTimeline().subscribe(response => {
       this.timelines = response;
     });
 
@@ -58,9 +60,18 @@ export class AdminTimelineComponent implements OnInit {
       this.thematicList = response;
     });
 
-    this.serviceService.getAllService().subscribe(services => {
-      this.serviceList = services;
-    });
+    if (this.getRole() !== 'admin') {
+      this.serviceList = [];
+    } else {
+      this.serviceService.getAllService().subscribe(services => {
+        this.serviceList = services;
+      });
+    }
+
+  }
+
+  getRole() {
+    return this.authService.getRole();
   }
 
   filterGlobal(event: Event) {
@@ -102,7 +113,7 @@ export class AdminTimelineComponent implements OnInit {
       accept: () => {
         if (!this.selectedTimelines) return
         this.selectedTimelines.forEach(timeline => {
-          this.timelineService.deleteTimeline(timeline['id'], timeline['service_id']).subscribe();
+          this.timelineService.deleteTimeline(timeline['id']).subscribe();
         });
 
         this.timelines = this.timelines.filter((val) => !this.selectedTimelines?.includes(val));
@@ -126,7 +137,7 @@ export class AdminTimelineComponent implements OnInit {
       header: 'Confirmation',
       icon: 'pi pi-exclamation-triangle m-2',
       accept: () => {
-        this.timelineService.deleteTimeline(timeline['id'], timeline['service_id']).subscribe(() => {
+        this.timelineService.deleteTimeline(timeline['id']).subscribe(() => {
           this.timelines = this.timelines.filter((val) => val.id !== timeline['id']);
           this.timeline = new TimelineModel();
           this.messageService.add({ severity: 'success', summary: 'Réussite', detail: 'Timeline supprimé', life: 3000 });

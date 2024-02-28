@@ -124,7 +124,7 @@
                       </div>
                   </div>
 
-                  <div class="field flex flex-column mt-5">
+                  <div *ngIf="getRole() === 'admin'" class="field flex flex-column mt-5">
                     <label for="service">Service</label>
                     <select class="h-2rem" id="service" [(ngModel)]="timeline.service_id" required autofocus>
                         <option *ngFor="let service of serviceList" value="{{service.id}}">{{service.name | titlecase}}</option>

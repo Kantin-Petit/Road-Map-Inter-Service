@@ -49,7 +49,7 @@ describe('TimelineService', () => {
             image: 'image1.jpg',
             date_start: new Date('2024-01-01'),
             date_end: new Date('2024-01-15'),
-            serviceId: 1,
+            service_id: 1,
             Thematics: [
               { color: 'blue', name: 'Thematic 1', id: 1 },
               { color: 'red', name: 'Thematic 2', id: 2 }
@@ -62,7 +62,7 @@ describe('TimelineService', () => {
             image: 'image2.jpg',
             date_start: new Date('2024-02-01'),
             date_end: new Date('2024-02-15'),
-            serviceId: 1,
+            service_id: 1,
             Thematics: [
               { color: 'green', name: 'Thematic 3', id: 3 },
               { color: 'yellow', name: 'Thematic 4', id: 4 }
@@ -98,7 +98,7 @@ describe('TimelineService', () => {
             image: 'image1.jpg',
             date_start: new Date('2024-01-01'),
             date_end: new Date('2024-01-15'),
-            serviceId: 1,
+            service_id: 1,
             Thematics: [
               { color: 'blue', name: 'Thematic 1', id: 1 },
               { color: 'red', name: 'Thematic 2', id: 2 }
@@ -111,7 +111,7 @@ describe('TimelineService', () => {
             image: 'image2.jpg',
             date_start: new Date('2024-02-01'),
             date_end: new Date('2024-02-15'),
-            serviceId: 1,
+            service_id: 1,
             Thematics: [
               { color: 'green', name: 'Thematic 3', id: 3 },
               { color: 'yellow', name: 'Thematic 4', id: 4 }
@@ -133,7 +133,6 @@ describe('TimelineService', () => {
   });
 
   it('should get list of timelines', () => {
-    const dummyData = 'dummyData';
     const dummyTimelineList: TimelineModel[] = [
       {
         id: 1,
@@ -142,7 +141,7 @@ describe('TimelineService', () => {
         image: 'image.jpg',
         date_start: new Date(),
         date_end: new Date(),
-        serviceId: 1,
+        service_id: 1,
         Thematics: [
           { id: 1, color: 'red', name: 'Thématique 1' },
           { id: 2, color: 'green', name: 'Thématique 2' },
@@ -151,41 +150,14 @@ describe('TimelineService', () => {
       }
     ];
 
-    service.getListTimeline(dummyData).subscribe(timelines => {
+    service.getListTimeline().subscribe(timelines => {
       expect(timelines.length).toBe(1);
       expect(timelines).toEqual(dummyTimelineList);
     });
 
     const req = http.expectOne(`${apiUrl}/${API.TIMELINE_LIST}`);
-    expect(req.request.method).toBe('POST');
-    expect(req.request.body).toEqual(dummyData);
-    req.flush(dummyTimelineList);
-  });
-
-  it('should get timeline by id', () => {
-    const dummyId = 1;
-    const dummyTimeline: TimelineModel = {
-      id: 1,
-      title: 'Titre de la barre latérale',
-      text: 'Texte de la barre latérale',
-      image: 'image.jpg',
-      date_start: new Date(),
-      date_end: new Date(),
-      serviceId: 1,
-      Thematics: [
-        { id: 1, color: 'red', name: 'Thématique 1' },
-        { id: 2, color: 'green', name: 'Thématique 2' },
-        { id: 3, color: 'blue', name: 'Thématique 3' }
-      ]
-    };
-
-    service.getTimelineById(dummyId).subscribe(timeline => {
-      expect(timeline).toEqual(dummyTimeline);
-    });
-
-    const req = http.expectOne(`${apiUrl}/${API.TIMELINE}/${dummyId}`);
     expect(req.request.method).toBe('GET');
-    req.flush(dummyTimeline);
+    req.flush(dummyTimelineList);
   });
 
   it('should create timeline', () => {
@@ -196,7 +168,7 @@ describe('TimelineService', () => {
       image: 'image.jpg',
       date_start: new Date(),
       date_end: new Date(),
-      serviceId: 1,
+      service_id: 1,
       Thematics: [
         { id: 1, color: 'red', name: 'Thématique 1' },
         { id: 2, color: 'green', name: 'Thématique 2' },
@@ -210,7 +182,7 @@ describe('TimelineService', () => {
       image: 'image.jpg',
       date_start: new Date(),
       date_end: new Date(),
-      serviceId: 1,
+      service_id: 1,
       Thematics: [
         { id: 1, color: 'red', name: 'Thématique 1' },
         { id: 2, color: 'green', name: 'Thématique 2' },
@@ -237,7 +209,7 @@ describe('TimelineService', () => {
       image: 'image.jpg',
       date_start: new Date(),
       date_end: new Date(),
-      serviceId: 1,
+      service_id: 1,
       Thematics: [
         { id: 1, color: 'red', name: 'Thématique 1' },
         { id: 2, color: 'green', name: 'Thématique 2' },
@@ -251,7 +223,7 @@ describe('TimelineService', () => {
       image: 'ima51ge.jpg',
       date_start: new Date(),
       date_end: new Date(),
-      serviceId: 1,
+      service_id: 1,
       Thematics: [
         { id: 1, color: 'red', name: 'Thématique 1' },
         { id: 2, color: 'green', name: 'Thématique 2' },
@@ -278,7 +250,7 @@ describe('TimelineService', () => {
       image: 'image.jpg',
       date_start: new Date(),
       date_end: new Date(),
-      serviceId: 1,
+      service_id: 1,
       Thematics: [
         { id: 1, color: 'red', name: 'Thématique 1' },
         { id: 2, color: 'green', name: 'Thématique 2' },

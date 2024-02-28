@@ -34,7 +34,7 @@ exports.getOneService = (req, res, next) => {
 
 exports.createService = (req, res, next) => {
 
-  if (req.auth.userRole !== 'admin') return
+  if (req.auth.userRole !== 'admin') throw new Error('Access denied');
 
   const { name, description } = req.body;
 
@@ -51,7 +51,7 @@ exports.createService = (req, res, next) => {
 
 exports.deleteService = (req, res, next) => {
 
-  if (req.auth.userRole !== 'admin') return
+  if (req.auth.userRole !== 'admin') throw new Error('Access denied');
 
   const id = req.params.id;
 
@@ -77,7 +77,7 @@ exports.updateService = (req, res, next) => {
 
   if (role === 'admin_service') { req.params.id = req.auth.userServiceId }
   else if (role === 'admin') { req.params.id = req.params.id }
-  else { return }
+  else { throw new Error('Access denied'); }
 
   const id = req.params.id;
   const { name, description } = req.body;
