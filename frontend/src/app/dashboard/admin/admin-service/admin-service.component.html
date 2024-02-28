@@ -46,7 +46,7 @@
             <ng-template pTemplate="body" let-service>
                 <tr>
                     <td>
-                        <p-tableCheckbox [value]="service"></p-tableCheckbox>
+                        <p-tableCheckbox *ngIf="getRole() === 'admin'" [value]="service"></p-tableCheckbox>
                     </td>
                     <td>{{ service.name }}</td>
                     <td><img *ngIf="service.image" [src]="socketUrl + '/images/services/service'+ service.id + '/' + service.image" [alt]="'service_image'" width="50" class="shadow-4" /></td>
