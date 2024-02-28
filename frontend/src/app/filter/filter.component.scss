@@ -11,13 +11,34 @@
     background-color: $nav-color;
     width: inherit;
 
+    .reset_btn {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px;
+      background-color: white;
+      color: black;
+      border-radius: 8px;
+      margin-bottom: 8px;
+
+      span:first-child {
+        font-weight: 600;
+      }
+
+      span:last-child {
+        &:hover {
+          color: $primary-color;
+          cursor: pointer;
+        }
+      }
+    }
+
     &.collapsed {
 
       .toggle-sidebar {
         transform: rotate(180deg);
       }
 
-      .menu details{
+      .menu details, .menu .reset_btn{
         display: none;
       }
 

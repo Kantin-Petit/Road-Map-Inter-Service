@@ -14,7 +14,7 @@
             [value]="timelines"
             [rows]="10"
             [paginator]="true"
-            [globalFilterFields]="['title', 'date_start', 'date_end', 'service_id']"
+            [globalFilterFields]="['title', 'date_start', 'date_end', 'service_id', 'Thematics']"
             [tableStyle]="{ 'min-width': '75rem' }"
             [(selection)]="selectedTimelines"
             [rowHover]="true"
@@ -37,9 +37,10 @@
                         <!-- <p-tableHeaderCheckbox></p-tableHeaderCheckbox> -->
                     </th>
                     <th pSortableColumn="title" style="min-width:15rem">Titre <p-sortIcon field="title"></p-sortIcon></th>
-                    <th pSortableColumn="date_start" style="min-width:15rem">Date de début <p-sortIcon field="date_start"></p-sortIcon></th>
-                    <th pSortableColumn="date_end" style="min-width:15rem">Date de fin <p-sortIcon field="date_end"></p-sortIcon></th>
+                    <th pSortableColumn="date_start" style="min-width:10rem">Date de début <p-sortIcon field="date_start"></p-sortIcon></th>
+                    <th pSortableColumn="date_end" style="min-width:10rem">Date de fin <p-sortIcon field="date_end"></p-sortIcon></th>
                     <th pSortableColumn="service_id" style="min-width:15rem">Service <p-sortIcon field="service_id"></p-sortIcon></th>
+                    <th pSortableColumn="Thematics" style="min-width:8rem">Thématique <p-sortIcon field="Thematics"></p-sortIcon></th>
                     <th></th>
                 </tr>
             </ng-template>
@@ -52,7 +53,10 @@
                     <td>{{ timeline.date_start | date: 'dd-MM-YYY'}}</td>
                     <td>{{ timeline.date_end | date: 'dd-MM-YYY'}}</td>
                     <td>{{ timeline.Service.name }}</td>
-                    <td>
+                    <td class="thematic_list">
+                      <span *ngFor="let thematic of timeline.Thematics" [style.background-color]="thematic.color" class="puce"></span>
+                    </td>
+                    <td class="btn_action">
                         <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editTimeline(timeline)"></button>
                         <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="deleteTimeline(timeline)"></button>
                     </td>

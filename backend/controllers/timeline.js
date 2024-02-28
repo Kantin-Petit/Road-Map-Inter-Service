@@ -72,7 +72,7 @@ exports.getListTimelines = (req, res, next) => {
       },
       {
         model: Thematic,
-        attributes: ['name', 'id'],
+        attributes: ['name', 'id', 'color'],
         through: { attributes: [] },
       }
     ],

@@ -4,6 +4,21 @@
   padding: 0 30px;
 }
 
+.thematic_list {
+
+  .puce {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 5px;
+  }
+}
+
+.btn_action {
+  display: flex;
+}
+
 .thematicList {
   display: flex;
   flex-direction: column;
