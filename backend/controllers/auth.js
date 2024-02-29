@@ -10,11 +10,21 @@ exports.token = (req, res, next) => {
 
 exports.signup = (req, res, next) => {
 
+    let service = req.body.service
+    let role = req.body.role
+
+    if (req.auth.userRole === 'admin_service') {
+        service = req.auth.userServiceId;
+        role = 'admin_service'
+    }
+    else if (req.auth.userRole === 'admin') {
+        service = req.body.service;
+        role = req.body.role
+    }
+    else { throw new Error('Access denied'); }
+
     bcrypt.hash(req.body.password, 10)
         .then(hash => {
-
-            let service = req.body.service
-            let role = req.body.role
 
             if (role === 'admin') { service = null; }
             if ((role === 'admin_service' || role === 'user') && typeof service === 'string') { service = Number(service); }
@@ -24,9 +34,10 @@ exports.signup = (req, res, next) => {
                 first_name: req.body.firstName,
                 email: req.body.email,
                 password: hash,
-                role: req.body.role,
+                role: role,
                 service_id: service
             })
+
             user.save()
                 .then((response) => {
                     delete response.dataValues.password
@@ -40,7 +51,6 @@ exports.signup = (req, res, next) => {
 exports.signin = (req, res, next) => {
     User.findOne({ where: { email: req.body.email } })
         .then(user => {
-            console.log(req.body.password, user.password)
             if (!user) return res.status(401).json({ error: 'Utilisateur non trouvé !' });
             bcrypt.compare(req.body.password, user.password)
                 .then(valid => {
