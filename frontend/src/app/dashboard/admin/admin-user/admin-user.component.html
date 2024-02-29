@@ -102,7 +102,7 @@
                         <small class="p-error" *ngIf="submitted && !newPassword && createUser">Confirmer le mot de passe est requis.</small>
                     </div>
                 </p-accordionTab>
-                <p-accordionTab *ngIf="myRole == 'admin'" header="Option admin">
+                <p-accordionTab *ngIf="getRole() === 'admin'" header="Option admin">
                    <div class="field flex flex-column">
                     <label for="role">Role</label>
                     <select class="h-2rem" id="role" [(ngModel)]="utilisateur.role" required autofocus>

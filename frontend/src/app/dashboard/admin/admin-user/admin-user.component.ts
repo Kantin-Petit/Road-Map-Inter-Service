@@ -30,42 +30,34 @@ export class AdminUserComponent implements OnInit {
   createUser: boolean = false
   serviceList!: ServiceModel[];
   roleList!: string[];
-  myRole!: string;
   newPassword!: string;
 
   constructor(
     private userService: UserService,
-    private ServiceService: ServiceService,
+    private serviceService: ServiceService,
     private messageService: MessageService,
     private authService: AuthService,
     private confirmationService: ConfirmationService) { }
 
   ngOnInit() {
 
-    if (this.authService.getUser().role === 'admin') {
+    this.userService.getAllUser().subscribe(users => {
+      this.utilisateurs = users;
+    });
 
-      this.userService.getAllUser().subscribe(users => {
-        this.utilisateurs = users;
-      });
-
-      this.ServiceService.getAllService().subscribe(services => {
+    if (this.getRole() === 'admin') {
+      this.roleList = ['admin', 'admin_service', 'user'];
+      this.serviceService.getAllService().subscribe(services => {
         this.serviceList = services;
       });
-
-      this.roleList = ['admin', 'admin_service', 'user'];
     } else {
-
-      const userServiceId = this.authService.getUser().service_id;
-
-      this.userService.getAllUserByService(userServiceId).subscribe(users => {
-        this.utilisateurs = users;
-      });
-
+      this.serviceList = [];
     }
 
-    this.myRole = this.authService.getUser().role;
+  }
 
-
+   getRole() {
+    return this.authService.getRole();
   }
 
   filterGlobal(event: Event) {
@@ -145,8 +137,8 @@ export class AdminUserComponent implements OnInit {
       Boolean(this.utilisateur.last_name) &&
       Boolean(this.utilisateur.email) &&
       Boolean(this.utilisateur.password || !this.createUser) &&
-      Boolean(this.utilisateur.service_id || this.utilisateur.role === 'admin') &&
-      Boolean(this.utilisateur.role)
+      Boolean(this.utilisateur.service_id || this.utilisateur.role === 'admin' || this.getRole() !== 'admin') &&
+      Boolean(this.utilisateur.role || this.getRole() !== 'admin')
     );
   }
 
