@@ -9,7 +9,7 @@
                     Profil
                 </a>
             </li>
-            <li class="menu-item">
+            <li *ngIf="getRole() === 'admin' || getRole() === 'admin_service'" class="menu-item">
                 <a [routerLink]="['/dashboard/utilisateurs']">
                     Utilisateurs
                 </a>

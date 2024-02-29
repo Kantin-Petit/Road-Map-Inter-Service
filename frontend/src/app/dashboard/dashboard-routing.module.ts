@@ -25,7 +25,7 @@ const routes: Routes = [
       },
       {
         path: 'utilisateurs', component: AdminUserComponent,
-        // canActivate: [adminGuard]
+        canActivate: [adminGuard]
       },
       {
         path: 'timelines', component: AdminTimelineComponent,

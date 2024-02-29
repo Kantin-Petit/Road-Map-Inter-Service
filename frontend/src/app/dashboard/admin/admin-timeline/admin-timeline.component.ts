@@ -60,12 +60,12 @@ export class AdminTimelineComponent implements OnInit {
       this.thematicList = response;
     });
 
-    if (this.getRole() !== 'admin') {
-      this.serviceList = [];
-    } else {
+    if (this.getRole() === 'admin') {
       this.serviceService.getAllService().subscribe(services => {
         this.serviceList = services;
       });
+    } else {
+      this.serviceList = [];
     }
 
   }
@@ -101,7 +101,7 @@ export class AdminTimelineComponent implements OnInit {
       Boolean(this.timeline.text) &&
       Boolean(this.timeline.date_start) &&
       Boolean(this.timeline.date_end) &&
-      Boolean(this.timeline.service_id)
+      Boolean(this.timeline.service_id || this.getRole() !== 'admin')
     );
   }
 
@@ -196,8 +196,6 @@ export class AdminTimelineComponent implements OnInit {
           this.messageService.add({ severity: 'error', summary: 'Erreur', detail: 'Veuillez remplir tous les champs', life: 3000 });
           return;
         }
-
-        console.log(this.timeline);
 
         this.timeline.service_id = Number(this.timeline.service_id);
 

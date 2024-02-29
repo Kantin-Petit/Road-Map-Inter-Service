@@ -63,15 +63,15 @@ exports.getListTimelines = (req, res, next) => {
 
   let serviceID
 
-  if (req.auth.userRole === 'admin_service' || req.auth.userRole === 'user') { serviceID = { id: req.auth.userServiceId } }
+  if (req.auth.userRole === 'admin_service' || req.auth.userRole === 'user') { serviceID = { service_id: req.auth.userServiceId } }
   else if (req.auth.userRole === 'admin') { serviceID = '' }
   else return res.send([]);
 
   Timeline.findAll({
+    where: serviceID,
     include: [
       {
         model: Service,
-        where: serviceID,
         attributes: ['name'],
       },
       {
