@@ -25,8 +25,8 @@ import { ConnexionComponent } from './pages/connexion/connexion.component';
 import { HeaderComponent } from './header/header.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { FilterComponent } from './filter/filter.component';
-
-
+import { ResetPasswordComponent } from './pages/reset-password/reset-password.component';
+import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password.component';
 
 @NgModule({
   declarations: [
@@ -38,6 +38,8 @@ import { FilterComponent } from './filter/filter.component';
     CommunicationComponent,
     SidebarComponent,
     FilterComponent,
+    ResetPasswordComponent,
+    ForgotPasswordComponent
     ],
   imports: [
     CommonModule,

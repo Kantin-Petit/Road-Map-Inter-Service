@@ -13,12 +13,14 @@
   }
  }
 
+ .markdown_detail {
+  hr {
+    display: none;
+  }
+ }
+
  .communication-markdown > *:not(p) {
     display: none;
  }
 
-p-sidebar {
-  .p-sidebar {
-    width: 450px !important;
-  }
-}
+

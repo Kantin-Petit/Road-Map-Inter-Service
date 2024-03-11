@@ -13,6 +13,12 @@ import { AuthService } from './auth.service';
   providedIn: 'root'
 })
 export class InterceptorService implements HttpInterceptor {
+  getOptionThematic(): any {
+    throw new Error('Method not implemented.');
+  }
+  setOptionThematic(optionThematic: number) {
+    throw new Error('Method not implemented.');
+  }
   constructor(private authService: AuthService) { }
 
   intercept(
@@ -21,7 +27,7 @@ export class InterceptorService implements HttpInterceptor {
   ): Observable<HttpEvent<unknown>> {
 
     return this.authService.getToken().pipe(
-      take(1), 
+      take(1),
       mergeMap(token => {
         if (token) {
           request = request.clone({

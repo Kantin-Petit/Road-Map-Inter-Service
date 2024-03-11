@@ -2,29 +2,29 @@ import { ActivatedRouteSnapshot, CanActivateFn, RouterStateSnapshot, UrlTree } f
 import { AuthService } from '../services/auth.service';
 import { inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable, map, of } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { Observable, catchError, map, of, } from 'rxjs';
 
-export const authGuard: CanActivateFn = (route: ActivatedRouteSnapshot,
+export const resetPasswordGuard: CanActivateFn = (route: ActivatedRouteSnapshot,
   state: RouterStateSnapshot
-): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree => {
+): Observable<boolean | UrlTree> => {
 
   const authService = inject(AuthService);
   const router = inject(Router);
 
-  return authService.getToken().pipe(
-    map(hasOne => {
-      if (!hasOne) {
-        router.navigate(['connexion']);
+  const tokenData = { token: route.params['token'] };
+
+  return authService.checkToken(tokenData).pipe(
+    map(reponse => {
+      if (!reponse.accessToken) {
+        router.navigate(['']);
         return false;
       }
       return true;
     }),
     catchError(() => {
-      router.navigate(['connexion']);
+      router.navigate(['']);
       return of(false);
     })
-
   );
 
 }

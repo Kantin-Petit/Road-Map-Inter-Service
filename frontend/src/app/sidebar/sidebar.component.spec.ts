@@ -32,7 +32,7 @@ describe('SidebarComponent', () => {
       image: 'image.jpg',
       date_start: new Date(),
       date_end: new Date(),
-      serviceId: 1,
+      service_id: 1,
       //Cannot read properties of undefined (reading 'Thematics')
       Thematics: [
         { id: 1, color: 'red', name: 'Thématique 1' },

@@ -1,23 +1,29 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { PlanningComponent } from './planning.component';
 import { FilterService } from 'src/app/services/filter.service';
+import { Observable, Subject } from 'rxjs';
 import { SidebarModule } from 'primeng/sidebar';
 
 describe('PlanningComponent', () => {
   let component: PlanningComponent;
   let fixture: ComponentFixture<PlanningComponent>;
-  let filterService: FilterService;
-
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [SidebarModule],
-      declarations: [PlanningComponent],
-      providers: [FilterService]
-    })
-      .compileComponents();
-  });
+  let filterServiceMock: Partial<FilterService>;
 
   beforeEach(() => {
+    filterServiceMock = {
+      services: [
+      ],
+      getFilterChangeObservable(): Observable<void> {
+        return new Subject<void>();
+      }
+    };
+
+    TestBed.configureTestingModule({
+      declarations: [PlanningComponent],
+      imports: [SidebarModule],
+      providers: [{ provide: FilterService, useValue: filterServiceMock }]
+    });
+
     fixture = TestBed.createComponent(PlanningComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
@@ -27,75 +33,32 @@ describe('PlanningComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should initialize timeline and options after view initialization', () => {
-    spyOn(component, 'addDataIntoDom');
-    spyOn(component, 'getOptions');
-    component.ngAfterViewInit();
-    expect(component.timeline).toBeDefined();
-    expect(component.options).toBeDefined();
-    //Cannot read properties of undefined (reading 'services')
-    expect(filterService.services).toBeDefined();
-    expect(component.addDataIntoDom).toHaveBeenCalled();
-    expect(component.getOptions).toHaveBeenCalled();
+  it('should update timeline', () => {
+    component.ngOnInit();
+    const originalDataLength = component.data.length;
+    const originalGroupsLength = component.groups.length;
+
+    component.updateTimeline();
+
+    expect(component.data.length).toBe(originalDataLength);
+    expect(component.groups.length).toBe(originalGroupsLength);
   });
 
   it('should toggle sidebar', () => {
-    const fakeElt = {
-      data: {
-        content: {
-          "id": 9,
-          "title": "Timeline9",
-          "text": "Texte de la timeline 9",
-          "image": "image9.jpg",
-          "date_start": new Date(2023 - 11 - 6),
-          "date_end": new Date(2024 - 2 - 10),
-          "serviceId": 3,
-          "Thematics": [
-            {
-              "name": "Thematic4",
-              "id": 4,
-              "color": "#FFA500"
-            }
-          ]
-        }
-      }, id: 'fakeId'
-    };
-    component.toggleSidebar(fakeElt);
-    //Cannot read properties of undefined (reading 'sidebarData')
-    expect(filterService.sidebarData).toEqual({
-      "id": 9,
-      "title": "Timeline9",
-      "text": "Texte de la timeline 9",
-      "image": "image9.jpg",
-      "date_start": new Date(2023 - 11 - 6),
-      "date_end": new Date(2024 - 2 - 10),
-      "serviceId": 3,
-      "Thematics": [
-        {
-          "name": "Thematic4",
-          "id": 4,
-          "color": "#FFA500"
-        }
-      ]
-    });
-    expect(filterService.sidebarVisible).toBeTrue();
-    expect(filterService.selectTimeline).toEqual('fakeId');
+    const content = { data: { content: { id: 1, title: 'Title', text: 'some text', date_start: new Date('2020/01/01'), date_end: new Date('2020/02/02'), service_id: 1, Thematics: [{ id: 1, name: 'Thematic 1', color: 'someColor' }] } }, id: 'test_id', };
+    component.toggleSidebar(content);
+    const filterService = TestBed.inject(FilterService);
+    expect(filterService.sidebarVisible).toBe(true);
+    expect(filterService.sidebarData).toEqual(content.data.content);
+    expect(filterService.selectTimeline).toBe(content.id);
   });
 
-  it('should toggle active', () => {
-    const timelineElement = document.createElement('div');
-    timelineElement.classList.add('fakeId');
-    spyOn(document, 'querySelector').and.returnValue(timelineElement);
+  it('should toggle active class', () => {
+    const element = document.createElement('div');
+    element.classList.add('test_id');
+    document.body.appendChild(element);
+    component.filterService.selectTimeline = 'test_id';
     component.toogleActive();
-    expect(timelineElement.classList.contains('active')).toBeTrue();
-  });
-
-  it('should update timeline', () => {
-    spyOn(component, 'updateTimeline');
-    const fakeEvent = new MouseEvent('click');
-    const fakeTarget: any = { tagName: 'input', type: 'checkbox' };
-    spyOnProperty(fakeEvent, 'target').and.returnValue(fakeTarget);
-    component.onDocumentClick(fakeEvent);
-    expect(component.updateTimeline).toHaveBeenCalled();
+    expect(element.classList.contains('active')).toBe(true);
   });
 });

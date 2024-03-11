@@ -41,6 +41,18 @@ export class AuthService {
     return this.http.get(`${this.apiUrl}/${API.TOKEN}`, { withCredentials: true });
   }
 
+  checkToken(token: Object): Observable<any> {
+    return this.http.post(`${this.apiUrl}/${API.CHECK_TOKEN}`, token, { withCredentials: true });
+  }
+
+  resetPassword(email: Object): Observable<any> {
+    return this.http.post(`${this.apiUrl}/${API.RESET_PASSWORD}`, email, { withCredentials: true });
+  }
+
+  resetNewPassword(resetData: Object): Observable<any> {
+    return this.http.post(`${this.apiUrl}/${API.RESET_NEW_PASSWORD}`, resetData, { withCredentials: true });
+  }
+
   setUser(user: UserModel) {
     this.User = user;
   }

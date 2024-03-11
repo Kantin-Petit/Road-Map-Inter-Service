@@ -6,6 +6,9 @@ const limitCtrl = require('../middleware/rateLimit');
 const auth = require('../middleware/auth');
 
 router.get('/token', authCtrl.token);
+router.post('/checkToken', authCtrl.checkToken);
+router.post('/resetPassword', limitCtrl, authCtrl.resetPassword);
+router.post('/resetNewPassword', passwordCtrl, authCtrl.resetNewPassword);
 router.post('/signup', auth, passwordCtrl, authCtrl.signup);
 router.post('/signin', limitCtrl, authCtrl.signin);
 router.get('/signout', authCtrl.signout);

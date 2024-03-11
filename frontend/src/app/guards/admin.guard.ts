@@ -2,7 +2,8 @@ import { ActivatedRouteSnapshot, CanActivateFn, RouterStateSnapshot, UrlTree } f
 import { AuthService } from '../services/auth.service';
 import { inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable, map } from 'rxjs';
+import { Observable, map, of } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 
 export const adminGuard: CanActivateFn = (route: ActivatedRouteSnapshot,
   state: RouterStateSnapshot
@@ -18,6 +19,10 @@ export const adminGuard: CanActivateFn = (route: ActivatedRouteSnapshot,
       }
       router.navigate(['dashboard']);
       return false;
+    }),
+    catchError(() => {
+      router.navigate(['dashboard']);
+      return of(false);
     })
   );
 
