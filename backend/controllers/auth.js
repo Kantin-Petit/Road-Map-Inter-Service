@@ -96,7 +96,10 @@ exports.resetPassword = (req, res, next) => {
             const token = jwt.sign({ userId: user.id }, process.env.SECRETKEY, { expiresIn: '8m' });
             const resetLink = `${process.env.APP_HOST}/reset-password/${token}`;
 
-            return res.status(200).json({ message: "Email de réinitialisation de mot de passe envoyé avec succès", link: resetLink });
+            // Send email
+            // You need to implement your own email sending function here
+
+            return res.status(200).json({ message: "Email de réinitialisation de mot de passe envoyé avec succès" });
         })
         .catch(error => res.status(500).json({ error }));
 };
