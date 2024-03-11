@@ -38,6 +38,10 @@ export class FilterService {
     this.filterChangeThematic.next();
   }
 
+  getFilterChangeThematic(): Subject<void> {
+    return this.filterChangeThematic;
+  }
+
   resetVariables() {
     this.checkedServices = [];
     this.checkedThematics = [];

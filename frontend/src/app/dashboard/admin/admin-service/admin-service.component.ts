@@ -192,9 +192,6 @@ export class AdminServiceComponent implements OnInit {
             this.endOfSubmitService();
           }
 
-          console.log(this.service);
-          console.log(this.services);
-
         });
 
       }

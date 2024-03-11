@@ -1,12 +1,23 @@
 const bcrypt = require('bcrypt');
 const User = require('../models/User');
 const func = require('../function');
+const jwt = require('jsonwebtoken');
+const SECRETKEY = process.env.SECRETKEY;
 
 exports.token = (req, res, next) => {
     const Token = req.cookies['jwt'];
     if (Token === null) return res.sendStatus(401)
     func.verifCookie(Token, req, res)
 };
+
+exports.checkToken = (req, res, next) => {
+    const { token } = req.body;
+    return jwt.verify(token, SECRETKEY, (err) => {
+        if (err) return res.sendStatus(401)
+        res.status(200).json({ Message: 'Token is valid', accessToken: token })
+    })
+};
+
 
 exports.signup = (req, res, next) => {
 
@@ -71,3 +82,40 @@ exports.signout = (req, res, next) => {
     const setCookie = func.clearCookies(res, verifToken)
     setCookie.status(201).json({ message: 'Cookies expired' })
 }
+
+
+exports.resetPassword = (req, res, next) => {
+
+    const { email } = req.body;
+
+    User.findOne({ where: { email } })
+        .then(user => {
+
+            if (!user) { throw new Error('Access denied') }
+
+            const token = jwt.sign({ userId: user.id }, process.env.SECRETKEY, { expiresIn: '8m' });
+            const resetLink = `${process.env.APP_HOST}/reset-password/${token}`;
+
+            return res.status(200).json({ message: "Email de réinitialisation de mot de passe envoyé avec succès", link: resetLink });
+        })
+        .catch(error => res.status(500).json({ error }));
+};
+
+exports.resetNewPassword = (req, res, next) => {
+
+    const { token, password } = req.body;
+
+    jwt.verify(token, SECRETKEY, (err, decoded) => {
+        if (err) return res.sendStatus(401)
+
+        const userId = decoded.userId;
+        bcrypt.hash(password, 10)
+            .then(hash => {
+                User.update({ password: hash }, { where: { id: userId } })
+                    .then(() => res.status(200).json({ message: 'Mot de passe réinitialisé avec succès' }))
+                    .catch(error => res.status(500).json({ error }));
+            })
+            .catch(error => res.status(500).json({ error }));
+    })
+
+};

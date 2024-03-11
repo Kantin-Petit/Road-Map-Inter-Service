@@ -262,7 +262,7 @@ describe('TimelineService', () => {
       expect(timeline).toEqual(dummyDeletedTimeline);
     });
 
-    const req = http.expectOne(`${apiUrl}/${API.THEMATIC}/${dummyId}`);
+    const req = http.expectOne(`${apiUrl}/${API.TIMELINE}/${dummyId}`);
     expect(req.request.method).toBe('DELETE');
     req.flush(dummyDeletedTimeline);
   });

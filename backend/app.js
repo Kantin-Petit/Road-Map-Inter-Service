@@ -6,6 +6,7 @@ const cookieParser = require('cookie-parser');
 const path = require('path');
 const cors = require('cors');
 const helmet = require('helmet');
+const APP_HOST = process.env.APP_HOST;
 
 connection;
 
@@ -29,14 +30,14 @@ app.use((req, res, next) => {
     next();
 });
 
-app.use(cors({ origin: 'http://localhost:4200', credentials: true }))
+app.use(cors({ origin: APP_HOST, credentials: true }))
 app.use(express.json());
 app.use('/images', express.static(path.join(__dirname, 'images')));
 app.use(cookieParser());
 app.disable('x-powered-by');
 app.use(
     helmet({
-        contentSecurityPolicy: false, 
+        contentSecurityPolicy: false,
         xPoweredBy: false,
     })
 )

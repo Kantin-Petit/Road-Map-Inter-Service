@@ -258,9 +258,6 @@ export class AdminTimelineComponent implements OnInit {
     this.messageService.add({ severity: 'success', summary: 'Réussite', detail: 'Timeline Créer', life: 3000 });
     this.timelines = [...this.timelines];
 
-    console.log(this.timeline);
-    console.log(this.timelines);
-
     this.timeline = new TimelineModel();
     this.imageUrl = null;
     this.imageFile = null;
@@ -300,8 +297,6 @@ export class AdminTimelineComponent implements OnInit {
 
   createAssociation(isNew: boolean = false) {
     this.thematicAssociationsToCreate.forEach(element => {
-
-      console.log(this.thematicAssociationsToCreate);
 
       this.timeline.Thematics.push(element.thematic);
 

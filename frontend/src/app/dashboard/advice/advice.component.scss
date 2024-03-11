@@ -1,0 +1,39 @@
+$table-border-color: #ccc;
+
+:host {
+  width: calc(100% - 180px);
+  margin: 50px auto;
+  padding: 0 60px;
+}
+
+.title {
+  text-align: center;
+}
+
+.table-wrapper {
+  overflow-x: auto;
+  table {
+    min-width: 500px;
+
+  }
+}
+
+.table-bordered {
+  border: 1px solid $table-border-color;
+
+  th,
+  td {
+    border: 1px solid $table-border-color;
+    padding: 8px;
+  }
+}
+
+.thead-light {
+  background-color: #f8f9fa;
+}
+
+code {
+  background-color: #f8f9fa;
+  padding: 2px 4px;
+  border-radius: 4px;
+}

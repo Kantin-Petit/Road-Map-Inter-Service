@@ -5,15 +5,17 @@ import { AuthService } from './auth.service';
 import { environment } from 'src/environments/environment';
 import { API } from 'src/app/routes/api';
 import { UserModel, UserRole } from '../models/user-model';
+import { Router } from '@angular/router';
 
 describe('AuthService', () => {
   let service: AuthService;
   let http: HttpTestingController;
+  let router = { navigate: jasmine.createSpy('navigate')};
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, RouterTestingModule],
-      providers: [AuthService]
+      providers: [AuthService, { provide: Router, useValue: router }]
     });
 
     service = TestBed.inject(AuthService);
@@ -100,9 +102,9 @@ describe('AuthService', () => {
     const req = http.expectOne(`${environment.apiUrl}/${API.SIGNOUT}`);
     expect(req.request.method).toBe('GET');
     req.flush({});
-    // Expected Observable({ source: BehaviorSubject({ closed: false, currentObservers: [  ], observers: [  ], isStopped: false, hasError: false, thrownError: null, _value: null }) }) to be falsy.
-    expect(service.getToken()).toBeFalsy();
+    expect(service.getToken().subscribe(token => expect(token).toBe(null)));
     expect(service.getUser()).toEqual(new UserModel());
+    expect(router.navigate).toHaveBeenCalledWith(['/']); 
   });
 
   it('should get user role', () => {

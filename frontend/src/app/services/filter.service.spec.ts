@@ -1,48 +1,50 @@
 import { TestBed } from '@angular/core/testing';
 import { FilterService } from './filter.service';
-import { Subject } from 'rxjs';
 
 describe('FilterService', () => {
   let service: FilterService;
-  let filterChangeSubject: Subject<void>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [FilterService]
     });
     service = TestBed.inject(FilterService);
-    filterChangeSubject = new Subject<void>();
-    spyOn(service, 'getFilterChangeObservable').and.returnValue(filterChangeSubject.asObservable());
   });
 
   it('should be created', () => {
     expect(service).toBeTruthy();
   });
 
-  it('should set services filter and emit change', () => {
-    const status = true;
-    const spy = spyOn(filterChangeSubject, 'next').and.callThrough();
-
-    service.setServicesFilter(status);
-
-    expect(service.isFullLoad).toBe(status);
-    // Expected spy next to have been called.
-    expect(spy).toHaveBeenCalled();
-  });
-
-  it('should reset variables', () => {
+  it('should reset variables properly', () => {
     service.checkedServices = [1, 2, 3];
     service.checkedThematics = [4, 5, 6];
 
     service.resetVariables();
 
-    expect(service.checkedServices.length).toBe(0);
-    expect(service.checkedThematics.length).toBe(0);
+    expect(service.checkedServices.length).toEqual(0);
+    expect(service.checkedThematics.length).toEqual(0);
   });
 
-  it('should get service id', () => {
-    const value = 123;
+  it('should return service ID', () => {
+    const id = 5;
+    expect(service.getServiceId(id)).toEqual(id);
+  });
 
-    expect(service.getServiceId(value)).toBe(value);
+  it('should set services filter and trigger filter change', () => {
+    const status = true;
+    const filterChangeSpy = spyOn(service.getFilterChangeThematic(), 'next').and.callThrough();
+
+    service.setServicesFilter(status);
+
+    expect(service.isFullLoad).toEqual(status);
+    expect(filterChangeSpy).toHaveBeenCalled();
+  });
+
+  it('should emit filter change observable', (done: DoneFn) => {
+    service.getFilterChangeObservable().subscribe(() => {
+      done();
+    });
+
+    service.setServicesFilter(true);
   });
 });
