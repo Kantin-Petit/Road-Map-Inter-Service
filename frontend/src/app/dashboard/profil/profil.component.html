@@ -36,13 +36,11 @@
             <p-accordionTab header="Mot de Passe">
                 <div class="field flex flex-column">
                     <label for="password">Nouveau Mot de Passe</label>
-                    <input class="h-2rem" type="password" pInputText id="password" [(ngModel)]="utilisateur.password" required autofocus />
-                    <small class="p-error" *ngIf="submitted && !utilisateur.password">Le nouveau mot de passe.</small>
+                    <input class="h-2rem" type="password" pInputText id="password" [(ngModel)]="utilisateur.password" autofocus />
                 </div>
                 <div class="field flex flex-column">
                     <label for="confirmpassword">Confirmer le nouveau Mot de Passe</label>
                     <input class="h-2rem" type="password" pInputText id="confirmpassword"  [(ngModel)]="newPassword" autofocus />
-                    <small class="p-error" *ngIf="submitted && !newPassword">Confirmer le nouveau mot de passe.</small>
                 </div>
             </p-accordionTab>
         </p-accordion>

@@ -2,7 +2,7 @@
     <div *ngFor="let thematic of sidebarData.Thematics" [style.background-color]="thematic.color" class="puce"></div>
 </div>
 <h2>{{sidebarData.title}}</h2>
-<p>{{ sidebarData.text }}</p>
-<p>{{ sidebarData.image }}</p>
+<markdown class="markdown_detail" [data]="sidebarData.text"></markdown>
+<img *ngIf="sidebarData.image" [src]="getImageUrl(sidebarData)" alt="image_sujet"/>
 <p>Date de début: {{ sidebarData.date_start | date: 'dd-MM-yyyy' }}</p>
 <p>Date de fin: {{ sidebarData.date_end | date: 'dd-MM-yyyy' }}</p>

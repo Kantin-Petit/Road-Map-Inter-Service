@@ -30,7 +30,7 @@ describe('LoginGuard', () => {
   beforeEach(() => {
 
     route = {} as ActivatedRouteSnapshot;
-    state = {} as RouterStateSnapshot;
+    state = {} as RouterStateSnapshot; 
   });
   
   it('should return true and not navigate if token is not present', () => {

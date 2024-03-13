@@ -14,6 +14,8 @@ exports.getOneThematic = (req, res, next) => {
 
 exports.createThematic = (req, res, next) => {
 
+  if (!(req.auth.userRole === 'admin' || req.auth.userRole === 'admin_service')) throw new Error('Access denied');
+
   const name = req.body.name;
   const description = req.body.description;
   const color = req.body.color ? req.body.color : '#000000';
@@ -25,13 +27,15 @@ exports.createThematic = (req, res, next) => {
   })
 
   thematic.save()
-    .then(() => res.status(201).json({ message: 'Thématique créé !' }))
+    .then((response) => res.status(201).json({ message: 'Thématique créé !', thematic: response }))
     .catch(error => res.status(400).json({ error }));
 
 }
 
 
 exports.deleteThematic = (req, res, next) => {
+
+  if (!(req.auth.userRole === 'admin' || req.auth.userRole === 'admin_service')) throw new Error('Access denied');
 
   const id = req.params.id;
 
@@ -47,6 +51,8 @@ exports.deleteThematic = (req, res, next) => {
 
 exports.updateThematic = (req, res, next) => {
 
+  if (!(req.auth.userRole === 'admin' || req.auth.userRole === 'admin_service')) throw new Error('Access denied');
+
   const id = req.params.id;
   const name = req.body.name;
   const description = req.body.description;
@@ -54,13 +60,13 @@ exports.updateThematic = (req, res, next) => {
 
   Thematic.findOne({ where: { id: id } })
     .then(thematic => {
-        thematic.update({
-          name: name,
-          description: description,
-          color: color
-        })
-          .then(() => res.status(201).json({ message: 'Thématique modifié !' }))
-          .catch(error => res.status(400).json({ error }));
+      thematic.update({
+        name: name,
+        description: description,
+        color: color
       })
+        .then(() => res.status(201).json({ message: 'Thématique modifié !' }))
+        .catch(error => res.status(400).json({ error }));
+    })
     .catch(error => res.status(500).json({ error }));
 }

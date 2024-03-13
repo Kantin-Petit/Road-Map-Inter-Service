@@ -14,7 +14,16 @@ const types = Object.values(MIME_TYPES);
 const servicesPath = 'images/services/';
 
 const storage = multer.diskStorage({
+
     destination: function (req, file, cb) {
+
+        if (req.body.type === 'service') {
+            if (!(req.auth.userRole === 'admin' || req.auth.userRole === 'admin_service')) return
+        }
+
+        if (req.body.type === 'timeline' && req.auth.userRole !== 'admin') {
+            if (req.body.service_id != req.auth.userServiceId) return
+        }
 
         let serviceNamePath = servicesPath;
 
@@ -36,6 +45,15 @@ const storage = multer.diskStorage({
         cb(null, serviceNamePath)
     },
     filename: function (req, file, cb) {
+
+        if (req.body.type === 'service') {
+            if (!(req.auth.userRole === 'admin' || req.auth.userRole === 'admin_service')) return
+        }
+
+        if (req.body.type === 'timeline' && req.auth.userRole !== 'admin') {
+            if (req.body.service_id != req.auth.userServiceId) return
+        }
+
         const name = file.originalname.split(' ').join('_').replace(/\.[^/.]+$/, "").toLowerCase();
         const extension = MIME_TYPES[file.mimetype];
         const isValid = types.some((type) => type === extension)

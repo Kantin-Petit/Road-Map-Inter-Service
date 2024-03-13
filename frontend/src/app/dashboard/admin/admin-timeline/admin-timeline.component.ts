@@ -6,17 +6,22 @@ import { TimelineService } from '../../../services/timeline.service';
 import { ThematicModel } from 'src/app/models/thematic-model';
 import { ThematicService } from 'src/app/services/thematic.service';
 import { AssociationService } from '../../../services/association.service';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ShareService } from '../../../services/share.service';
+import { environment } from 'src/environments/environment';
+import { ServiceService } from '../../../services/service.service';
+import { ServiceModel } from 'src/app/models/service-model';
+import { AuthService } from '../../../services/auth.service';
+
 
 @Component({
   selector: 'app-admin-timeline',
   templateUrl: './admin-timeline.component.html',
   styleUrls: ['./admin-timeline.component.scss']
 })
-export class AdminTimelineComponent {
-
+export class AdminTimelineComponent implements OnInit {
 
   @ViewChild('dt') dt!: Table;
+  @ViewChild('fileInput') fileInput: any;
 
   timelines!: TimelineModel[];
   timeline!: TimelineModel
@@ -25,10 +30,12 @@ export class AdminTimelineComponent {
   submitted: boolean = false;
   Delete!: string;
   createTimeline: boolean = false
-  serviceName: string = '';
   thematicList: ThematicModel[] = [];
-  currentDate!: Date;
-  timelineForm!: FormGroup;
+  serviceList!: ServiceModel[];
+  socketUrl: string = environment.socketUrl;
+  imageUrl: any = null;
+  imageFile: any = null;
+  originalService!: string | number;
 
   thematicAssociationsToCreate: { timeline_id: number, thematic: ThematicModel }[] = [];
   thematicAssociationsToDelete: { timeline_id: number, thematic: ThematicModel }[] = [];
@@ -37,30 +44,34 @@ export class AdminTimelineComponent {
     private timelineService: TimelineService,
     private messageService: MessageService,
     private thematicService: ThematicService,
+    private serviceService: ServiceService,
+    private authService: AuthService,
     private AssociationService: AssociationService,
-    private formBuilder: FormBuilder,
-    private confirmationService: ConfirmationService) {
-      this.timelineForm = this.formBuilder.group({
-        id: ['', Validators.required],
-        title: ['', Validators.required],
-        text: ['', Validators.required],
-        image: ['', Validators.required],
-        date_start: ['', Validators.required],
-        date_end: ['', Validators.required],
-        serviceId: ['', Validators.required],
-        Thematics: ['', Validators.required]
-      });
-    }
+    public shareService: ShareService,
+    private confirmationService: ConfirmationService) {}
 
   ngOnInit() {
-    this.currentDate = new Date();
-    this.timelineService.getListTimeline(this.serviceName).subscribe(response => {
+
+    this.timelineService.getListTimeline().subscribe(response => {
       this.timelines = response;
     });
 
     this.thematicService.getAllthematic().subscribe(response => {
       this.thematicList = response;
     });
+
+    if (this.getRole() === 'admin') {
+      this.serviceService.getAllService().subscribe(services => {
+        this.serviceList = services;
+      });
+    } else {
+      this.serviceList = [];
+    }
+
+  }
+
+  getRole() {
+    return this.authService.getRole();
   }
 
   filterGlobal(event: Event) {
@@ -73,10 +84,25 @@ export class AdminTimelineComponent {
     this.timeline = new TimelineModel();
     this.submitted = false;
     this.timelineDialog = true;
+
   }
 
   onDialogHide() {
     if (!this.timelineDialog) this.createTimeline = false;
+    this.imageUrl = null;
+    this.imageFile = null;
+    if(this.fileInput) this.fileInput.nativeElement.value = '';
+
+  }
+
+  validTimeline(): boolean {
+    return (
+      Boolean(this.timeline.title) &&
+      Boolean(this.timeline.text) &&
+      Boolean(this.timeline.date_start) &&
+      Boolean(this.timeline.date_end) &&
+      Boolean(this.timeline.service_id || this.getRole() !== 'admin')
+    );
   }
 
   deleteSelectedTimelines() {
@@ -98,9 +124,11 @@ export class AdminTimelineComponent {
     });
   }
 
-  editTimeline(timeline: TimelineModel) {
+  editTimeline(timeline: TimelineModel): string {
     this.timeline = { ...timeline };
+    if (!this.timelineDialog) this.originalService = this.timeline.service_id
     this.timelineDialog = true;
+    return this.socketUrl + '/images/services/service' + this.originalService + '/timeline' + timeline.id + '/' + timeline.image;
   }
 
   deleteTimeline(timeline: TimelineModel) {
@@ -123,8 +151,39 @@ export class AdminTimelineComponent {
     this.timelineDialog = false;
     this.createTimeline = false;
     this.submitted = false;
+    this.imageUrl = null;
+    this.imageFile = null;
+    this.fileInput.nativeElement.value = '';
+
   }
 
+  onFileSelected(event: any) {
+    const file: File = event.target.files[0];
+    if (file) {
+      this.imageFile = file;
+      this.imageUrl = URL.createObjectURL(file);
+    }
+  }
+
+  resetImage() {
+    this.imageUrl = null;
+    this.imageFile = null;
+    this.fileInput.nativeElement.value = '';
+  }
+
+  createFormData() {
+
+    const formDataWithImage = new FormData();
+    if (this.timeline.id) formDataWithImage.append('id', String(this.timeline.id));
+    formDataWithImage.append('title', this.timeline.title);
+    formDataWithImage.append('text', this.timeline.text);
+    formDataWithImage.append('date_start', String(this.timeline.date_start));
+    formDataWithImage.append('date_end', String(this.timeline.date_end));
+    formDataWithImage.append('service_id', String(this.timeline.service_id));
+    formDataWithImage.append('type', 'timeline');
+    formDataWithImage.append('image', this.imageFile, this.imageFile.name);
+    return formDataWithImage;
+  }
 
   saveTimeline() {
     this.submitted = true;
@@ -132,9 +191,25 @@ export class AdminTimelineComponent {
     if (this.timeline.title?.trim()) {
 
       if (this.timeline.id) {
-        this.timelines[this.findIndexById(String(this.timeline.id))] = this.timeline;
-        this.timelineService.updateTimeline(this.timeline.id, this.timeline).subscribe(() => {
+
+        if (!this.validTimeline()) {
+          this.messageService.add({ severity: 'error', summary: 'Erreur', detail: 'Veuillez remplir tous les champs', life: 3000 });
+          return;
+        }
+
+        this.timeline.service_id = Number(this.timeline.service_id);
+
+        const DATA = this.imageFile ? this.createFormData() : this.timeline;
+
+        const index = this.findIndexById(String(this.timeline.id));
+        this.timelineService.updateTimeline(this.timeline.id, DATA).subscribe(reponse => {
+          this.createAssociation();
+          this.removeAssocation();
+          this.timelines[index] = this.timeline;
+          if (this.imageFile) this.timelines[index].image = reponse.image;
           this.messageService.add({ severity: 'success', summary: 'Réussite', detail: 'Timeline Modifier', life: 3000 });
+          this.timelines = [...this.timelines];
+          this.timeline = new TimelineModel();
         });
       } else {
 
@@ -142,49 +217,50 @@ export class AdminTimelineComponent {
           id: this.timeline.id,
           title: this.timeline.title,
           text: this.timeline.text,
-          image: this.timeline.image,
           date_start: this.timeline.date_start,
           date_end: this.timeline.date_end,
-          serviceId: this.timeline.serviceId,
+          service_id: this.timeline.service_id,
           Thematics: this.timeline.Thematics
         };
 
-        this.timelines.push(this.timeline);
+        if (!this.validTimeline()) {
+          this.messageService.add({ severity: 'error', summary: 'Erreur', detail: 'Veuillez remplir tous les champs', life: 3000 });
+          return;
+        }
+
         this.timelineService.createTimeline(formData).subscribe(response => {
-          this.messageService.add({ severity: 'success', summary: 'Réussite', detail: 'Timeline Créer', life: 3000 });
+
+          this.timeline = response.timeline;
+          this.createAssociation(true);
+
+          if (this.imageFile) {
+            this.timelineService.updateTimeline(this.timeline.id, this.createFormData()).subscribe(reponse => {
+              this.timeline.image = reponse.image;
+              this.endOfSubmitTimeline();
+            });
+          } else {
+            if (!this.timeline.image) this.timeline.image = null;
+            this.endOfSubmitTimeline();
+          }
+
         });
 
       }
 
-      this.thematicAssociationsToCreate.forEach(element => {
-
-        this.timeline.Thematics.push(element.thematic);
-
-        const data = {
-          timeline_id: element.timeline_id,
-          thematic_id: element.thematic.id
-        };
-
-        this.AssociationService.createAssociation(data).subscribe(() => {
-          this.thematicAssociationsToCreate = [];
-        });
-      });
-
-      this.thematicAssociationsToDelete.forEach(element => {
-
-        const valueToDelete = element.thematic.id;
-        const index = this.timeline.Thematics.findIndex(element => element.id === valueToDelete);
-        if (index !== -1) { this.timeline.Thematics.splice(index, 1) }
-        this.AssociationService.deleteAssociation(element.timeline_id, element.thematic.id).subscribe(response => {
-          this.thematicAssociationsToDelete = [];
-        });
-      });
-
-      this.timelines = [...this.timelines];
       this.timelineDialog = false;
       this.createTimeline = false;
-      this.timeline = new TimelineModel();
+
     }
+  }
+
+  endOfSubmitTimeline() {
+    this.timelines.push(this.timeline);
+    this.messageService.add({ severity: 'success', summary: 'Réussite', detail: 'Timeline Créer', life: 3000 });
+    this.timelines = [...this.timelines];
+
+    this.timeline = new TimelineModel();
+    this.imageUrl = null;
+    this.imageFile = null;
   }
 
   findIndexById(id: string): number {
@@ -201,6 +277,7 @@ export class AdminTimelineComponent {
   }
 
   isChecked(thematics: any[], thematicId: number) {
+    if(!thematics) return false;
     return thematics.some(thematic => thematic.id === thematicId);
   }
 
@@ -216,6 +293,40 @@ export class AdminTimelineComponent {
     } else {
       this.thematicAssociationsToDelete.push(data);
     }
+  }
+
+  createAssociation(isNew: boolean = false) {
+    this.thematicAssociationsToCreate.forEach(element => {
+
+      this.timeline.Thematics.push(element.thematic);
+
+      if(isNew) element.timeline_id = this.timeline.id;
+
+      const data = {
+        timeline_id: element.timeline_id,
+        thematic_id: element.thematic.id
+      };
+
+      this.AssociationService.createAssociation(data).subscribe(() => {
+        this.thematicAssociationsToCreate = [];
+      });
+
+
+    });
+
+  }
+
+  removeAssocation() {
+
+    this.thematicAssociationsToDelete.forEach(element => {
+
+      const valueToDelete = element.thematic.id;
+      const index = this.timeline.Thematics.findIndex(element => element.id === valueToDelete);
+      if (index !== -1) { this.timeline.Thematics.splice(index, 1) }
+      this.AssociationService.deleteAssociation(element.timeline_id, element.thematic.id).subscribe(response => {
+        this.thematicAssociationsToDelete = [];
+      });
+    });
   }
 
 }

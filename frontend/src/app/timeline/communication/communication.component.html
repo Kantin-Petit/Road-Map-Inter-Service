@@ -8,12 +8,12 @@
   </div>
   <ol>
     <li *ngFor="let timeline of service.sujets">
-      <div  [class.card_selected]="filterService.sidebarVisible && filterService.selectedItemIndex === service.name + timeline.id" (click)="toggleSidebar(service.name, timeline)">
+      <div [class.card_selected]="filterService.sidebarVisible && filterService.selectedItemIndex === service.name + timeline.id" (click)="toggleSidebar(service.name, timeline)">
           <p class="puces">
             <span *ngFor="let thematic of timeline.Thematics" [style.background-color]="thematic.color" class="puce"></span>
           </p>
           <h2>{{ timeline.title }}</h2>
-          <p>{{ timeline.text }}</p>
+          <markdown class="communication-markdown" *ngIf="timeline.text" [data]="shareService.truncateText(timeline.text)"></markdown>
       </div>
     </li>
   </ol>

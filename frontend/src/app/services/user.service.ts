@@ -21,10 +21,6 @@ export class UserService {
     return this.http.get<UserModel[]>(`${this.apiUrl}/${API.USER}`);
   }
 
-  getAllUserByService(serviceId: number | null): Observable<UserModel[]> {
-    return this.http.get<UserModel[]>(`${this.apiUrl}/${API.USER_SERVICE}/${serviceId}`);
-  }
-
   getOneUser(userId: number): Observable<UserModel> {
     return this.http.get<UserModel>(`${this.apiUrl}/${API.USER}/${userId}`);
   }

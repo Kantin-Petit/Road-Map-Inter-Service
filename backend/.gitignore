@@ -6,4 +6,4 @@
 # .env
 
 # Images
-/images/user_*
+/images/*

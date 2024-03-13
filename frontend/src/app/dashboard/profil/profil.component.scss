@@ -3,6 +3,14 @@
 
 $black: #070707;
 
+:host {
+  display: block;
+  width: 100%;
+  max-width: 750px;
+  padding: 0 30px;
+  margin: 50px auto;
+}
+
 
 body {
   background: linear-gradient(to right, $fourth-color, $fifth-color);

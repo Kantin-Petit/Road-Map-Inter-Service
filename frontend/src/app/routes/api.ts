@@ -3,6 +3,9 @@ export const API = {
     SIGNIN: 'auth/signin',
     SIGNOUT: 'auth/signout',
     TOKEN: 'auth/token',
+    CHECK_TOKEN: 'auth/checkToken',
+    RESET_PASSWORD: 'auth/resetPassword',
+    RESET_NEW_PASSWORD: 'auth/resetNewPassword',
     USER: 'user',
     USER_SERVICE: 'user/service',
     SERVICE: 'service',
@@ -11,5 +14,4 @@ export const API = {
     TIMELINE_FILTERED: 'timeline/filter',
     TIMELINE_LIST: 'timeline/list',
     ASSOCIATION: 'association',
-    ASSOCIATION_ALL: 'association/all',
 };

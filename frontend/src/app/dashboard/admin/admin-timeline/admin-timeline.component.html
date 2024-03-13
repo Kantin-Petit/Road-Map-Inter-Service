@@ -1,4 +1,4 @@
-<div class="timeline container">
+<div class="timeline">
     <p-toast></p-toast>
 
     <div class="card">
@@ -14,7 +14,7 @@
             [value]="timelines"
             [rows]="10"
             [paginator]="true"
-            [globalFilterFields]="['title', 'date_start', 'date_end', 'service_id']"
+            [globalFilterFields]="['title', 'date_start', 'date_end', 'service_id', 'Thematics']"
             [tableStyle]="{ 'min-width': '75rem' }"
             [(selection)]="selectedTimelines"
             [rowHover]="true"
@@ -24,7 +24,7 @@
         >
             <ng-template pTemplate="caption">
                 <div class=" search_bar flex align-items-center justify-content-between">
-                    <h5 class="m-0">Timeline</h5>
+                    <h3 class="m-0">Timeline</h3>
                     <span class="p-input-icon-left">
                         <i class="pi pi-search"></i>
                         <input class="p-inputtext p-component p-element" pInputText type="text" (input)="filterGlobal($event)" placeholder="Recherce" />
@@ -37,21 +37,26 @@
                         <!-- <p-tableHeaderCheckbox></p-tableHeaderCheckbox> -->
                     </th>
                     <th pSortableColumn="title" style="min-width:15rem">Titre <p-sortIcon field="title"></p-sortIcon></th>
-                    <th pSortableColumn="date_start" style="min-width:15rem">Date de début <p-sortIcon field="date_start"></p-sortIcon></th>
-                    <th pSortableColumn="date_end" style="min-width:15rem">Date de fin <p-sortIcon field="date_end"></p-sortIcon></th>
+                    <th pSortableColumn="date_start" style="min-width:10rem">Date de début <p-sortIcon field="date_start"></p-sortIcon></th>
+                    <th pSortableColumn="date_end" style="min-width:10rem">Date de fin <p-sortIcon field="date_end"></p-sortIcon></th>
                     <th pSortableColumn="service_id" style="min-width:15rem">Service <p-sortIcon field="service_id"></p-sortIcon></th>
+                    <th pSortableColumn="Thematics" style="min-width:8rem">Thématique <p-sortIcon field="Thematics"></p-sortIcon></th>
                     <th></th>
                 </tr>
             </ng-template>
             <ng-template pTemplate="body" let-timeline>
                 <tr>
                     <td>
+                        <p-tableCheckbox [value]="timeline"></p-tableCheckbox>
                     </td>
                     <td>{{ timeline.title }}</td>
-                    <td>{{ timeline.date_start }}</td>
-                    <td>{{ timeline.date_end }}</td>
+                    <td>{{ timeline.date_start | date: 'dd-MM-YYY'}}</td>
+                    <td>{{ timeline.date_end | date: 'dd-MM-YYY'}}</td>
                     <td>{{ timeline.Service.name }}</td>
-                    <td>
+                    <td class="thematic_list">
+                      <span *ngFor="let thematic of timeline.Thematics" [style.background-color]="thematic.color" class="puce"></span>
+                    </td>
+                    <td class="btn_action">
                         <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editTimeline(timeline)"></button>
                         <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="deleteTimeline(timeline)"></button>
                     </td>
@@ -73,18 +78,36 @@
 
                     <div class="field flex flex-column">
                       <label for="texte">Texte</label>
-                      <input class="h-2rem" type="text" pInputText id="texte" [(ngModel)]="timeline.text" required autofocus />
+                      <textarea pInputText name="texte" id="texte" cols="30" rows="10" [(ngModel)]="timeline.text"></textarea>
                       <small class="p-error" *ngIf="submitted && !timeline.text">La text est requis.</small>
                     </div>
 
-                   <div class="card flex flex-column justify-content-center">
-                        <label for="date_start">Date de Début</label>
-                        <input type="date" id="date_start" name="date_start" [value]="timeline.date_start" [(ngModel)]="timeline.date_start" />
+                    <div *ngIf="timeline.text" class="field flex-column markdown">
+                      <label for="excerpt">Extrait</label>
+                      <markdown [data]="shareService.truncateText(timeline.text)"></markdown>
                     </div>
 
-                    <div class="card flex flex-column justify-content-center">
-                        <label for="date_end">Date de fin</label>
-                        <input type="date" id="date_end" name="date_end"  [value]="timeline.date_end" [(ngModel)]="timeline.date_end" />
+                    <div class="field flex flex-column image-section">
+                      <div class="file-upload-wrapper">
+                        <label for="myImage" class="custom-file-upload">{{ createTimeline ? 'Ajouter une image' : 'Modifier l\'image' }}</label>
+                        <span [ngClass]="{'show': !imageUrl}" class="custom-file-upload reset" (click)="resetImage()">Réinitialiser</span>
+                      </div>
+                      <input #fileInput id="myImage" type="file" (change)="onFileSelected($event)" accept="image/*">
+                      <img *ngIf="imageUrl" [src]="imageUrl" width="200" height="200" />
+                      <img *ngIf="!imageUrl && !createTimeline && timeline.image" [src]="editTimeline(timeline)" width="200" height="200" />
+                    </div>
+
+                   <div class="field flex gap-5 date flex-wrap mt-5">
+                      <div class="flex gap-2 flex-wrap">
+                        <label for="date_start">Date de Début:</label>
+                        <input type="date" id="date_start" name="date_start" [(ngModel)]="timeline.date_start" required autofocus/>
+                        <small class="p-error" *ngIf="submitted && !timeline.date_start">Une date est requise.</small>
+                      </div>
+                      <div class="flex gap-2 flex-wrap">
+                        <label for="date_end">Date de fin:</label>
+                        <input type="date" id="date_end" name="date_end" [(ngModel)]="timeline.date_end" required autofocus/>
+                        <small class="p-error" *ngIf="submitted && !timeline.date_end">Une date est requise.</small>
+                      </div>
                     </div>
 
                     <div class="thematicList">
@@ -101,6 +124,13 @@
                       </div>
                   </div>
 
+                  <div *ngIf="getRole() === 'admin'" class="field flex flex-column mt-5">
+                    <label for="service">Service</label>
+                    <select class="h-2rem" id="service" [(ngModel)]="timeline.service_id" required autofocus>
+                        <option *ngFor="let service of serviceList" value="{{service.id}}">{{service.name | titlecase}}</option>
+                    </select>
+                    <small class="p-error" *ngIf="submitted && !timeline.service_id">Le service est requis.</small>
+                  </div>
 
         </ng-template>
         <ng-template pTemplate="footer">

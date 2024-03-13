@@ -28,28 +28,24 @@ export class TimelineService {
     return this.http.get<TimelineModelWithService[]>(`${this.apiUrl}/${API.TIMELINE}`);
   }
 
+  getListTimeline(): Observable<TimelineModel[]> {
+    return this.http.get<TimelineModel[]>(`${this.apiUrl}/${API.TIMELINE_LIST}`);
+  }
+
   getFilteredTimeline(data: any): Observable<TimelineModelWithService[]> {
     return this.http.post<TimelineModelWithService[]>(`${this.apiUrl}/${API.TIMELINE_FILTERED}`, data);
   }
 
-  getListTimeline(data: string): Observable<TimelineModel[]> {
-    return this.http.post<TimelineModel[]>(`${this.apiUrl}/${API.TIMELINE_LIST}`, data);
+  createTimeline(timeline: TimelineModel | FormData): Observable<any> {
+    return this.http.post<TimelineModel>(`${this.apiUrl}/${API.TIMELINE}`, timeline);
   }
 
-  getTimelineById(id: number): Observable<TimelineModel> {
-    return this.http.get<TimelineModel>(`${this.apiUrl}/${API.TIMELINE}/${id}`);
-  }
-
-  createTimeline(data: any): Observable<TimelineModel> {
-    return this.http.post<TimelineModel>(`${this.apiUrl}/${API.TIMELINE}`, data);
-  }
-
-  updateTimeline(id: number, data: any): Observable<TimelineModel> {
-    return this.http.put<TimelineModel>(`${this.apiUrl}/${API.TIMELINE}/${id}`, data);
+  updateTimeline(id: number, timeline: TimelineModel | FormData): Observable<TimelineModel> {
+    return this.http.put<TimelineModel>(`${this.apiUrl}/${API.TIMELINE}/${id}`, timeline);
   }
 
   deleteTimeline(id: number): Observable<TimelineModel> {
-    return this.http.delete<TimelineModel>(`${this.apiUrl}/${API.THEMATIC}/${id}`);
+    return this.http.delete<TimelineModel>(`${this.apiUrl}/${API.TIMELINE}/${id}`);
   }
 
 }
