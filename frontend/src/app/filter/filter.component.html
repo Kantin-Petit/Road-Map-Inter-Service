@@ -1,6 +1,10 @@
 
   <div id="side_menu" class="side_menu" [ngClass]="{ 'collapsed': filterService.isCollapsed }">
     <div class="menu">
+      <div *ngIf="filterService.checkedServices.length > 0 || filterService.checkedThematics.length > 0" class="reset_btn" >
+        <span>Filtre</span>
+        <span (click)="resetFilter()">Tout effacer</span>
+      </div>
       <details>
         <summary>
           <span>Thematiques</span>

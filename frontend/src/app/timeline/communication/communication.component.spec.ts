@@ -37,13 +37,13 @@ describe('CommunicationComponent', () => {
 
     component.toggleSidebar(service, timelineData);
 
-    // expect(filterService.selectedItemIndex).toEqual(service + timelineData.id);
-    // expect(filterService.sidebarData).toEqual(timelineData);
-    // expect(filterService.sidebarVisible).toBeTruthy();
+    expect(filterService.selectedItemIndex).toEqual(service + timelineData.id);
+    expect(filterService.sidebarData).toEqual(timelineData);
+    expect(filterService.sidebarVisible).toBeTruthy();
     
     component.toggleSidebar(service, timelineData);
-    // expect(filterService.selectedItemIndex).toBeNull();
-    // expect(filterService.sidebarVisible).toBeFalsy();
-    // expect(filterService.sidebarData).toEqual(new TimelineModel());
+    expect(filterService.selectedItemIndex).toBeNull();
+    expect(filterService.sidebarVisible).toBeFalsy();
+    expect(filterService.sidebarData).toEqual(new TimelineModel());
   });
 });

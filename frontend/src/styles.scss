@@ -5,8 +5,22 @@
 @import './assets/scss/fonts';
 @import './assets/scss/vis-timeline';
 
- app-profil {
-   width: 100%;
-   max-width: 750px;
-   padding: 0 45px;
+ .markdown {
+  margin-bottom: 30px;
+
+  p {
+    margin-top: 0;
+  }
  }
+
+ .markdown_detail {
+  hr {
+    display: none;
+  }
+ }
+
+ .communication-markdown > *:not(p) {
+    display: none;
+ }
+
+

@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FilterService } from '../../services/filter.service';
 import { TimelineModel } from '../../models/timeline-model';
 import { environment } from '../../../environments/environment';
+import { ShareService } from '../../services/share.service';
 
 @Component({
   selector: 'app-communication',
@@ -12,7 +13,9 @@ export class CommunicationComponent {
 
   socketUrl: string = environment.socketUrl;
 
-  constructor(public filterService: FilterService) { }
+  constructor(public filterService: FilterService,
+    public shareService: ShareService) { }
+
 
   toggleSidebar(service: string, timelineData: TimelineModel): void {
     const filterService = this.filterService;

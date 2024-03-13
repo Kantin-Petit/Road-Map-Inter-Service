@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 
 @Component({
@@ -14,7 +15,6 @@ export class HeaderComponent {
 
   ngOnInit() {
     this.authService.getToken().subscribe(hasOne => {
-      console.log(hasOne);
       this.hasToken = hasOne;
     });
   }

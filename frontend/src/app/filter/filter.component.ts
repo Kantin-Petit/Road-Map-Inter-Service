@@ -19,7 +19,7 @@ export class FilterComponent implements OnInit {
   constructor(
     public serviceService: ServiceService,
     public thematicService: ThematicService,
-      public filterService: FilterService,
+    public filterService: FilterService,
     public TimelineService: TimelineService,
     private router: Router) {
 
@@ -30,22 +30,27 @@ export class FilterComponent implements OnInit {
     });
   }
 
-  getSubscription() {
-    return this.subscription;
-  }
 
   ngOnInit() {
     this.setServices();
     this.setThematics();
   }
 
+  getRouter() {
+    return this.router;
+  }
+
   ngOnDestroy() {
     this.subscription.unsubscribe();
   }
 
+  resetFilter() {
+    this.filterService.resetVariables();
+    this.ngOnInit()
+  }
+
   setServices() {
     this.TimelineService.getAllTimeline().subscribe(service => {
-      console.log(service);
       this.filterService.services = service;
       this.filterService.servicesFilter = [...service];
       this.filterService.setServicesFilter(true);
@@ -62,6 +67,8 @@ export class FilterComponent implements OnInit {
   onCheckboxChange(event: any, id: number, thematic: boolean): void {
 
     let checkedArray;
+
+    if (thematic) this.filterService.checkedServices = [...this.filterService.checkedServicesInit];
 
     checkedArray = thematic ? this.filterService.checkedThematics : this.filterService.checkedServices;
 

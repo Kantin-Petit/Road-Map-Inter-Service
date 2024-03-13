@@ -4,11 +4,21 @@
 $text-color: #7d84ab;
 $secondary-text-color: #dee2ec;
 
+:host {
+  display: block;
+  width: 180px;
+  min-width: 180px;
+  min-height: calc(100vh - 100px);
+}
+
 .side_menu {
     display: flex;
-    flex-direction: column;
     background-color: color(nav-color);
     height: 100%;
+
+    ul {
+      width: 180px;
+    }
 
     nav {
       margin-top: 25px;

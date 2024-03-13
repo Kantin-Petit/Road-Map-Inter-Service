@@ -4,13 +4,25 @@ import { HomeComponent } from './pages/home/home.component';
 import { ConnexionComponent } from './pages/connexion/connexion.component';
 import { authGuard } from './guards/auth.guard';
 import { loginGuard } from './guards/login.guard';
-import { AuthService } from './services/auth.service';
+import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password.component';
+import { ResetPasswordComponent } from './pages/reset-password/reset-password.component';
+import { resetPasswordGuard } from './guards/reset-password.guard';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
   {
     path: 'connexion',
     component: ConnexionComponent,
+    canActivate: [loginGuard],
+  },
+  {
+    path: 'reset-password/:token',
+    component: ResetPasswordComponent,
+    canActivate: [resetPasswordGuard],
+  },
+  {
+    path: 'forgot-password',
+    component: ForgotPasswordComponent,
     canActivate: [loginGuard],
   },
   {

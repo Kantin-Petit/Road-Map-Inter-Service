@@ -14,7 +14,7 @@ const Service = connection.define('Service', {
         unique: true,
     },
     image: {
-        type: DataTypes.STRING(100),
+        type: DataTypes.STRING(255),
         allowNull: true,
     },
     description: {
