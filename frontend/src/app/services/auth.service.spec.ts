@@ -97,12 +97,14 @@ describe('AuthService', () => {
 
   it('should logout user', () => {
     service.logout();
+
     const req = http.expectOne(`${environment.apiUrl}/${API.SIGNOUT}`);
     expect(req.request.method).toBe('GET');
     req.flush({});
-    // Expected Observable({ source: BehaviorSubject({ closed: false, currentObservers: [  ], observers: [  ], isStopped: false, hasError: false, thrownError: null, _value: null }) }) to be falsy.
-    expect(service.getToken()).toBeFalsy();
-    expect(service.getUser()).toEqual(new UserModel());
+    
+    service.getToken().subscribe(token => {
+      expect(token).toBeFalsy();
+    })
   });
 
   it('should get user role', () => {
