@@ -98,6 +98,7 @@ exports.resetPassword = (req, res, next) => {
 
             // Send email
             // You need to implement your own email sending function here
+            // you need to send the resetLink to the user's email
 
             return res.status(200).json({ message: "Email de réinitialisation de mot de passe envoyé avec succès" });
         })

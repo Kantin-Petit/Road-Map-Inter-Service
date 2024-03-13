@@ -185,6 +185,13 @@ export class AdminTimelineComponent implements OnInit {
     return formDataWithImage;
   }
 
+  compareDate(): boolean {
+    if (this.timeline.date_end && this.timeline.date_start) {
+      return new Date(this.timeline.date_end) > new Date(this.timeline.date_start);
+    }
+    return false;
+  }
+
   saveTimeline() {
     this.submitted = true;
 
@@ -194,6 +201,11 @@ export class AdminTimelineComponent implements OnInit {
 
         if (!this.validTimeline()) {
           this.messageService.add({ severity: 'error', summary: 'Erreur', detail: 'Veuillez remplir tous les champs', life: 3000 });
+          return;
+        }
+
+        if (!this.compareDate()) {
+          this.messageService.add({ severity: 'error', summary: 'Erreur', detail: 'La date de fin doit être supérieure à la date de début', life: 3000 });
           return;
         }
 
@@ -225,6 +237,11 @@ export class AdminTimelineComponent implements OnInit {
 
         if (!this.validTimeline()) {
           this.messageService.add({ severity: 'error', summary: 'Erreur', detail: 'Veuillez remplir tous les champs', life: 3000 });
+          return;
+        }
+
+        if (!this.compareDate()) {
+          this.messageService.add({ severity: 'error', summary: 'Erreur', detail: 'La date de fin doit être supérieure à la date de début', life: 3000 });
           return;
         }
 

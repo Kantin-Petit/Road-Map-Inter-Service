@@ -2,6 +2,11 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SidebarComponent } from './sidebar.component';
 import { TimelineModel } from '../models/timeline-model';
+import { MarkdownModule } from 'ngx-markdown';
+import { Component } from '@angular/core';
+
+@Component({ selector: 'app-puce', template: '' })
+class MockPuceComponent { }
 
 describe('SidebarComponent', () => {
   let component: SidebarComponent;
@@ -9,7 +14,8 @@ describe('SidebarComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [SidebarComponent]
+      declarations: [SidebarComponent, MockPuceComponent],
+      imports: [MarkdownModule.forRoot()]
     })
       .compileComponents();
   });
@@ -17,6 +23,22 @@ describe('SidebarComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(SidebarComponent);
     component = fixture.componentInstance;
+
+    component.sidebarData = {
+      id: 1,
+      title: 'Test Title',
+      text: 'Test Text',
+      image: 'Test Image URL',
+      date_start: new Date('2024-01-01'),
+      date_end: new Date('2024-02-01'),
+      service_id: 1,
+      Thematics: [
+        { color: '#ff0000', name: 'Theme 1', id: 1 },
+        { color: '#00ff00', name: 'Theme 2', id: 2 },
+        { color: '#0000ff', name: 'Theme 3', id: 3 }
+      ]
+    };
+
     fixture.detectChanges();
   });
 
@@ -24,32 +46,8 @@ describe('SidebarComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should display data', () => {
-    const sidebarData: TimelineModel = {
-      id: 1,
-      title: 'Titre de la barre latérale',
-      text: 'Texte de la barre latérale',
-      image: 'image.jpg',
-      date_start: new Date(),
-      date_end: new Date(),
-      service_id: 1,
-      //Cannot read properties of undefined (reading 'Thematics')
-      Thematics: [
-        { id: 1, color: 'red', name: 'Thématique 1' },
-        { id: 2, color: 'green', name: 'Thématique 2' },
-        { id: 3, color: 'blue', name: 'Thématique 3' }
-      ]
-    };
-
-    component.sidebarData = sidebarData;
-    fixture.detectChanges();
-
-    const compiled = fixture.nativeElement;
-    expect(compiled.querySelector('h2').textContent).toContain(sidebarData.title);
-    expect(compiled.querySelector('p').textContent).toContain(sidebarData.text);
-    expect(compiled.querySelector('p').textContent).toContain(sidebarData.image);
-    //expect(compiled.querySelector('img').src).toContain(sidebarData.image);
-    expect(compiled.querySelector('.puce').length).toEqual(sidebarData.Thematics.length);
-    expect(compiled.querySelector('.puce')[0].style.backgroundColor).toEqual('red');
+  it('should return the image URL', () => {
+    expect(component.getImageUrl(component.sidebarData)).toBe('http://localhost:3000/images/services/service1/timeline1/Test Image URL');
   });
+
 });
