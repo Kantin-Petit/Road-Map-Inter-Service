@@ -19,7 +19,7 @@ const getTimelines = async (req, res, next, servicesFilter, thematicFilter) => {
           where: thematicFilter,
         }
       ],
-      order: [['date_start', 'ASC']],
+      order: [['id', 'DESC']],
     });
 
     const result = timelines.reduce((acc, timeline) => {
@@ -38,6 +38,9 @@ const getTimelines = async (req, res, next, servicesFilter, thematicFilter) => {
 
       return acc;
     }, []);
+
+    // Sort by service name
+    result.sort((a, b) => a.name.localeCompare(b.name));
 
     res.send(result);
   } catch (error) {
@@ -92,6 +95,11 @@ exports.getListTimelines = (req, res, next) => {
 exports.createTimeline = (req, res, next) => {
 
   const { title, text, date_start, date_end, service_id } = req.body;
+
+  if (new Date(date_end) < new Date(date_start)) {
+    return res.status(400).json({ message: 'La date de fin doit être supérieure à la date de début' });
+  }
+  
   let serviceID
 
   if (req.auth.userRole === 'admin_service' || req.auth.userRole === 'user') { serviceID = req.auth.userServiceId }
@@ -160,6 +168,10 @@ exports.updateTimeline = (req, res, next) => {
   const auth = req.auth;
   const { title, text, date_start, date_end, service_id } = req.body;
 
+  if (new Date(date_end) < new Date(date_start)) {
+    return res.status(400).json({ message: 'La date de fin doit être supérieure à la date de début' });
+  }
+
   Timeline.findOne({ where: { id: id } })
     .then(timeline => {
 
@@ -167,7 +179,7 @@ exports.updateTimeline = (req, res, next) => {
         return res.status(404).json({ message: 'Timeline non trouvé' });
       }
 
-       const serviceID = timeline.dataValues.service_id;
+      const serviceID = timeline.dataValues.service_id;
 
       if (auth.userRole === 'admin_service' || auth.userRole === 'user' || auth.userRole === 'admin') {
         if (auth.userRole !== 'admin' && serviceID != auth.userServiceId) throw new Error('Access denied');

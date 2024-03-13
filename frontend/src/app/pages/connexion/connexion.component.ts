@@ -17,6 +17,7 @@ export class ConnexionComponent {
 
   loginForm!: FormGroup;
   loginObserver$!: Observable<UserLogin>;
+  form: any;
 
   constructor(private formBuilder: FormBuilder,
     private authService: AuthService,

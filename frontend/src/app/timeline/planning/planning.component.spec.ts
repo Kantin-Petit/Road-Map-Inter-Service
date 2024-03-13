@@ -61,4 +61,5 @@ describe('PlanningComponent', () => {
     component.toogleActive();
     expect(element.classList.contains('active')).toBe(true);
   });
+  
 });

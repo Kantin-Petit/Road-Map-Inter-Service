@@ -59,6 +59,7 @@ export class FilterComponent implements OnInit {
 
   setThematics() {
       this.thematicService.getAllthematic().subscribe(thematics => {
+      thematics.sort((a, b) => a.name.localeCompare(b.name));
       this.filterService.thematics = thematics;
       this.filterService.setServicesFilter(true);
     });
