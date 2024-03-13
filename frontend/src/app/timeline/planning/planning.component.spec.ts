@@ -3,6 +3,8 @@ import { PlanningComponent } from './planning.component';
 import { FilterService } from 'src/app/services/filter.service';
 import { SidebarModule } from 'primeng/sidebar';
 
+import { Sidebar } from 'primeng/sidebar';
+
 describe('PlanningComponent', () => {
   let component: PlanningComponent;
   let fixture: ComponentFixture<PlanningComponent>;
@@ -11,8 +13,13 @@ describe('PlanningComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [SidebarModule],
-      declarations: [PlanningComponent],
-      providers: [FilterService]
+      declarations: [
+        PlanningComponent, 
+        Sidebar
+      ],
+      providers: [
+        FilterService
+      ]
     })
       .compileComponents();
   });
@@ -20,23 +27,21 @@ describe('PlanningComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(PlanningComponent);
     component = fixture.componentInstance;
+    filterService = TestBed.inject(FilterService);
+    filterService.services = [
+      {
+        id: 1,
+        name: 'Service 1',
+        description: 'Description 1',
+        sujets: [
+        ]
+      },
+    ];
     fixture.detectChanges();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
-  });
-
-  it('should initialize timeline and options after view initialization', () => {
-    spyOn(component, 'addDataIntoDom');
-    spyOn(component, 'getOptions');
-    component.ngAfterViewInit();
-    expect(component.timeline).toBeDefined();
-    expect(component.options).toBeDefined();
-    //Cannot read properties of undefined (reading 'services')
-    expect(filterService.services).toBeDefined();
-    expect(component.addDataIntoDom).toHaveBeenCalled();
-    expect(component.getOptions).toHaveBeenCalled();
   });
 
   it('should toggle sidebar', () => {

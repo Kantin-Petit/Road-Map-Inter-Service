@@ -30,6 +30,9 @@ export class FilterComponent implements OnInit {
     });
   }
 
+  getSubscription() {
+    return this.subscription;
+  }
 
   ngOnInit() {
     this.setServices();
@@ -42,6 +45,7 @@ export class FilterComponent implements OnInit {
 
   setServices() {
     this.TimelineService.getAllTimeline().subscribe(service => {
+      console.log(service);
       this.filterService.services = service;
       this.filterService.servicesFilter = [...service];
       this.filterService.setServicesFilter(true);
