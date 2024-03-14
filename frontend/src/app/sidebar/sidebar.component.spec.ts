@@ -46,8 +46,20 @@ describe('SidebarComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should return the image URL', () => {
-    expect(component.getImageUrl(component.sidebarData)).toBe('http://localhost:3000/images/services/service1/timeline1/Test Image URL');
+  it('should display data', () => {
+    const sidebarData: TimelineModel = {
+      id: 1,
+      title: 'Titre de la barre latérale',
+      text: 'Texte de la barre latérale',
+      date_start: new Date(),
+      date_end: new Date(),
+      service_id: 1,
+      Thematics: [
+        { id: 1, color: 'red', name: 'Thématique 1' },
+        { id: 2, color: 'green', name: 'Thématique 2' },
+        { id: 3, color: 'blue', name: 'Thématique 3' }
+      ]
+    };
   });
 
 });

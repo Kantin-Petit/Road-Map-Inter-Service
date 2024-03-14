@@ -1,47 +1,102 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ConfirmationService, MessageService } from 'primeng/api';
-import { ConfirmDialogModule } from 'primeng/confirmdialog';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { FilterComponent } from './../../filter/filter.component';
-import { MessageModule } from 'primeng/message';
-import { ThematicService } from '../../services/thematic.service';
-import { ToastModule } from 'primeng/toast';
-import { ToolbarModule } from 'primeng/toolbar';
-import { TableModule } from 'primeng/table';
-import { DialogModule } from 'primeng/dialog';
-import { HttpClientModule } from '@angular/common/http';
-import { AuthService } from 'src/app/services/auth.service';
-import { of } from 'rxjs';
 import { ProfilComponent } from './profil.component';
+import { MessageService } from 'primeng/api';
+import { AuthService } from 'src/app/services/auth.service';
+import { UserService } from 'src/app/services/user.service';
+import { UserModel, UserRole } from 'src/app/models/user-model';
+import { of } from 'rxjs';
+
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ReactiveFormsModule } from '@angular/forms';
+
+import { AccordionModule } from 'primeng/accordion';
+import { InputTextModule } from 'primeng/inputtext';
+import { ButtonModule } from 'primeng/button';
+import { DialogModule } from 'primeng/dialog';
+import { ToastModule } from 'primeng/toast';
 
 describe('ProfilComponent', () => {
   let component: ProfilComponent;
   let fixture: ComponentFixture<ProfilComponent>;
+  let authService: jasmine.SpyObj<AuthService>;
+  let userService: jasmine.SpyObj<UserService>;
+  let messageService: jasmine.SpyObj<MessageService>;
 
   beforeEach(async () => {
-    const authServiceSpy = jasmine.createSpyObj('AuthService', ['getRole', 'getUser']);
-    authServiceSpy.getRole.and.returnValue(of('admin'));
-    authServiceSpy.getUser.and.returnValue(of({ role: 'admin' }));
+    const authServiceSpy = jasmine.createSpyObj('AuthService', ['getUser']);
+    const userServiceSpy = jasmine.createSpyObj('UserService', ['modifyUser']);
+    const messageServiceSpy = jasmine.createSpyObj('MessageService', ['add']);
 
     await TestBed.configureTestingModule({
-      declarations: [ProfilComponent, FilterComponent],
-      imports: [HttpClientTestingModule, ConfirmDialogModule, DialogModule, HttpClientModule, MessageModule, ToastModule, ToolbarModule, TableModule],
+      declarations: [
+        ProfilComponent,
+      ],
+      imports: [
+        ToastModule,
+        BrowserAnimationsModule,
+        ReactiveFormsModule,
+        AccordionModule,
+        InputTextModule,
+        ButtonModule,
+        DialogModule,
+      ],
       providers: [
-        ConfirmationService,
-        ThematicService,
-        MessageService,
-        { provide: AuthService, useValue: authServiceSpy }
+        { provide: AuthService, useValue: authServiceSpy },
+        { provide: UserService, useValue: userServiceSpy },
+        { provide: MessageService, useValue: messageServiceSpy }
       ]
-    }).compileComponents();
+    })
+      .compileComponents();
 
-    fixture = TestBed.createComponent(ProfilComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+    authService = TestBed.inject(AuthService) as jasmine.SpyObj<AuthService>;
+    userService = TestBed.inject(UserService) as jasmine.SpyObj<UserService>;
+    messageService = TestBed.inject(MessageService) as jasmine.SpyObj<MessageService>;
   });
 
+  beforeEach(() => {
+    fixture = TestBed.createComponent(ProfilComponent);
+    component = fixture.componentInstance;
+
+    component.utilisateur = {
+      id: 1,
+      first_name: 'John',
+      last_name: 'Doe',
+      email: 'john.doe@example.com',
+      password: 'password',
+      role: UserRole.USER,
+      service_id: null,
+      Service: { name: 'SomeService' }
+    };
+  });
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should initialize utilisateur with user from authService on ngOnInit', () => {
+    const user: UserModel = {
+      id: 1,
+      first_name: 'John',
+      last_name: 'Doe',
+      email: 'john.doe@example.com',
+      password: 'password',
+      role: UserRole.USER,
+      service_id: null,
+      Service: { name: 'SomeService' }
+    };
+    authService.getUser.and.returnValue(user);
+
+    component.ngOnInit();
+
+    expect(component.utilisateur).toEqual(user);
+  });
+
+  it('should set utilisateurDialog to true and reset submitted and newPassword in editUser', () => {
+    component.editUser();
+
+    expect(component.utilisateurDialog).toBe(true);
+    expect(component.submitted).toBe(false);
+    expect(component.newPassword).toEqual('');
   });
 
 
