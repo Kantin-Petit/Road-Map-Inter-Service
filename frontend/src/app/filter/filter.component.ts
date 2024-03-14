@@ -36,6 +36,10 @@ export class FilterComponent implements OnInit {
     this.setThematics();
   }
 
+  getSubscription() {
+    return this.subscription;
+  }
+
   getRouter() {
     return this.router;
   }

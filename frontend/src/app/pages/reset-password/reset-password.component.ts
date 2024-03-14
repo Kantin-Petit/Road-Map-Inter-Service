@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -10,9 +10,13 @@ import { MessageService } from 'primeng/api';
 @Component({
   selector: 'app-reset-password',
   templateUrl: './reset-password.component.html',
-  styleUrl: './reset-password.component.scss'
+  styleUrls: ['./reset-password.component.scss']
 })
-export class ResetPasswordComponent {
+export class ResetPasswordComponent implements OnInit {
+
+  ngOnInit(): void {
+    
+  }
 
   resetForm!: FormGroup;
   resetObserver$!: Observable<Object>;

@@ -2,6 +2,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SidebarComponent } from './sidebar.component';
 import { TimelineModel } from '../models/timeline-model';
+import { MarkdownModule, MarkdownService } from 'ngx-markdown';
+import { InjectionToken } from '@angular/core';
 
 describe('SidebarComponent', () => {
   let component: SidebarComponent;
@@ -9,7 +11,13 @@ describe('SidebarComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [SidebarComponent]
+      declarations: [SidebarComponent],
+      imports: [
+        MarkdownModule
+      ],
+      providers: [
+        MarkdownService
+      ]
     })
       .compileComponents();
   });
@@ -25,7 +33,7 @@ describe('SidebarComponent', () => {
       image: 'Test Image URL',
       date_start: new Date('2024-01-01'),
       date_end: new Date('2024-02-01'),
-      serviceId: 1,
+      service_id: 1,
       Thematics: [
         { color: '#ff0000', name: 'Theme 1', id: 1 },
         { color: '#00ff00', name: 'Theme 2', id: 2 },
@@ -48,7 +56,7 @@ describe('SidebarComponent', () => {
       image: 'https://placehold.co/400',
       date_start: new Date(),
       date_end: new Date(),
-      serviceId: 1,
+      service_id: 1,
       Thematics: [
         { id: 1, color: 'red', name: 'Thématique 1' },
         { id: 2, color: 'green', name: 'Thématique 2' },

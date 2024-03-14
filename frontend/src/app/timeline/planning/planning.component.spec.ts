@@ -54,7 +54,7 @@ describe('PlanningComponent', () => {
           "image": "image9.jpg",
           "date_start": new Date(2023 - 11 - 6),
           "date_end": new Date(2024 - 2 - 10),
-          "serviceId": 3,
+          "service_id": 3,
           "Thematics": [
             {
               "name": "Thematic4",
@@ -74,7 +74,7 @@ describe('PlanningComponent', () => {
       "image": "image9.jpg",
       "date_start": new Date(2023 - 11 - 6),
       "date_end": new Date(2024 - 2 - 10),
-      "serviceId": 3,
+      "service_id": 3,
       "Thematics": [
         {
           "name": "Thematic4",

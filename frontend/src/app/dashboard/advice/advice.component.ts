@@ -5,7 +5,7 @@ import { Component } from '@angular/core';
   standalone: true,
   imports: [],
   templateUrl: './advice.component.html',
-  styleUrl: './advice.component.scss'
+  styleUrls: ['./advice.component.scss']
 })
 export class AdviceComponent {
 
