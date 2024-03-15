@@ -7,7 +7,6 @@ export const API = {
     RESET_PASSWORD: 'auth/resetPassword',
     RESET_NEW_PASSWORD: 'auth/resetNewPassword',
     USER: 'user',
-    USER_SERVICE: 'user/service',
     SERVICE: 'service',
     THEMATIC: 'thematic',
     TIMELINE: 'timeline',

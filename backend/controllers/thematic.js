@@ -6,11 +6,6 @@ exports.getAllThematics = (req, res, next) => {
     .catch(error => res.status(500).json({ error }));
 };
 
-exports.getOneThematic = (req, res, next) => {
-  Thematic.findOne({ where: { id: req.params.id } })
-    .then(thematic => res.send(thematic))
-    .catch(error => res.status(500).json({ error }));
-}
 
 exports.createThematic = (req, res, next) => {
 

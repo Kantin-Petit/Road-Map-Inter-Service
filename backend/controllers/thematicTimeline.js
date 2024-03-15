@@ -1,17 +1,6 @@
 const ThematicTimeline = require('../models/ThematicTimeline');
 const Timeline = require('../models/Timeline');
 
-exports.getAssociation = (req, res, next) => {
-    ThematicTimeline.findAll({
-        where: { timeline_id: req.params.id }
-    })
-        .then(results => res.json(results))
-        .catch(error => {
-            console.error('Error fetching ThematicTimeline:', error);
-            res.status(500).json({ error: 'Internal Server Error' });
-        });
-};
-
 exports.createAssociation = (req, res, next) => {
 
     Timeline.findByPk(req.body.timeline_id)
@@ -40,7 +29,7 @@ exports.createAssociation = (req, res, next) => {
 
 exports.deleteAssociation = (req, res, next) => {
 
-    Timeline.findByPk(req.body.timeline_id)
+    Timeline.findByPk(req.params.timelineId)
         .then(timeline => {
             if (timeline) {
                 const serviceIdOfTimeline = timeline.dataValues.service_id
