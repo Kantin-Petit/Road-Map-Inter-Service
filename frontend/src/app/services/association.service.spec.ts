@@ -27,23 +27,6 @@ describe('AssociationService', () => {
     expect(service).toBeTruthy();
   });
 
-  it('should fetch association by id', () => {
-    const dummyAssociation: AssociationModel[] = [
-      { timeline_id: 3, thematic_id: 3 },
-      { timeline_id: 1, thematic_id: 1 }
-    ];
-
-    const id = 1;
-    service.getAssociation(id).subscribe(associations => {
-      expect(associations.length).toBe(2);
-      expect(associations).toEqual(dummyAssociation);
-    });
-
-    const req = http.expectOne(`${environment.apiUrl}/${API.ASSOCIATION}/${id}`);
-    expect(req.request.method).toBe('GET');
-    req.flush(dummyAssociation);
-  });
-
   it('should create association', () => {
     const newAssociation: AssociationModel = { timeline_id: 3, thematic_id: 1 };
 

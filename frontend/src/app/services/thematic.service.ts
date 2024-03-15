@@ -18,10 +18,6 @@ export class ThematicService {
     return this.http.get<ThematicModel[]>(`${this.apiUrl}/${API.THEMATIC}`);
   }
 
-  getOnethematic(id: number): Observable<ThematicModel> {
-    return this.http.get<ThematicModel>(`${this.apiUrl}/${API.THEMATIC}/${id}`);
-  }
-
   createthematic(thematic: ThematicModel): Observable<any> {
     return this.http.post<ThematicModel>(`${this.apiUrl}/${API.THEMATIC}`, thematic);
   }

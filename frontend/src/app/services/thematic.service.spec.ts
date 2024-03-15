@@ -39,17 +39,6 @@ describe('ThematicService', () => {
     req.flush(dummyThematics);
   });
 
-  it('should fetch one thematic by id', () => {
-    const dummyThematic: ThematicModel = { id: 1, name: 'Thematic 1', description: 'Description 1', color: '#ff0000' };
-
-    service.getOnethematic(1).subscribe(thematic => {
-      expect(thematic).toEqual(dummyThematic);
-    });
-
-    const req = http.expectOne(`${environment.apiUrl}/${API.THEMATIC}/1`);
-    expect(req.request.method).toBe('GET');
-    req.flush(dummyThematic);
-  });
 
   it('should create a thematic', () => {
     const newThematic: ThematicModel = { id: 3, name: 'New Thematic', description: 'New Description', color: '#0000ff' };

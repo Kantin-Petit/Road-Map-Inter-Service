@@ -83,7 +83,6 @@ exports.getListTimelines = (req, res, next) => {
         through: { attributes: [] },
       }
     ],
-    // order: [['date_start', 'ASC']],
   })
     .then(timelines => res.send(timelines))
     .catch(error => res.status(500).json({ error }));

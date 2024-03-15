@@ -14,10 +14,6 @@ export class AssociationService {
 
   constructor(private http: HttpClient) { }
 
-  getAssociation(id: number): Observable<AssociationModel[]> {
-    return this.http.get<AssociationModel[]>(`${this.apiUrl}/${API.ASSOCIATION}/${id}`);
-  }
-
   createAssociation(data: AssociationModel): Observable<AssociationModel> {
     return this.http.post<AssociationModel>(`${this.apiUrl}/${API.ASSOCIATION}`, data);
   }
