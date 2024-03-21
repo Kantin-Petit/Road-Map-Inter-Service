@@ -1,8 +1,6 @@
 .vis-label {
   background-color: #3b3d4b;
-  color: #dfffff !important;
-  position: relative;
-  display: inline-block;
+  color: white !important;
 }
 
 .vis-group,
@@ -31,12 +29,17 @@
   border-radius: 0 !important;
 }
 
+.vis-panel.vis-left {
+  width: 20% !important;
+  min-width: 150px !important;
+}
+
 .vis-label.vis-group-level-0,
 .vis-groupe {
   min-height: 45px !important;
 
   .vis-inner {
-    font-size: 1.2rem;
+    font-size: 18px;
     width: 100%;
     text-align: center;
   }

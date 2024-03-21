@@ -1,4 +1,4 @@
-// const http = require('https');
+// const https = require('https');
 const http = require('http');
 const app = require('./app');
 const fs = require('fs');
@@ -13,7 +13,7 @@ const normalizePort = val => {
 
 };
 
-const port = normalizePort(process.env.PORT || '3000');
+const port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
 
 const errorHandler = error => {
@@ -36,12 +36,16 @@ const errorHandler = error => {
   }
 };
 
+
+// ces certifs ne sont pas valides pour une utilisation en production. 
+// Veuillez générer vos propres certificats pour une utilisation en production.
 const options = {
-  key: fs.readFileSync(path.join(__dirname, 'certifs', 'key.pem')), 
-  cert: fs.readFileSync(path.join(__dirname, 'certifs', 'cert.pem'))
+  key: fs.readFileSync(path.join(__dirname, 'certifs', 'key.pem')),
+  cert: fs.readFileSync(path.join(__dirname, 'certifs', 'cert.pem')),
+  passphrase: 'hello'
 };
 
-// const server = http.createServer(options, app);
+// const server = https.createServer(options, app);
 const server = http.createServer(app);
 
 server.on('error', errorHandler);

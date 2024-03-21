@@ -11,6 +11,10 @@
   grid-template-columns: 320px auto;
   grid-gap: 20px;
 
+  @media screen and (max-width: 749px) {
+    grid-template-columns: auto;
+  }
+
   &:not(:last-of-type) {
       padding-bottom: 60px;
   }
@@ -60,6 +64,10 @@
       height: 5px;
       background: color(primary-color);
       scroll-snap-align: start;
+
+      & > div {
+        cursor: pointer;
+      }
 
       &:not(:first-child) {
         margin-left: 14px;

@@ -4,8 +4,8 @@
   <section class="timeline">
 
     <ul class="choice">
-      <li><a (click)="showTimeLine('communication')">communication</a></li>
-      <li><a (click)="showTimeLine('planning')">Planning</a></li>
+      <li [class.active]="displayCommunication"><a (click)="showTimeLine('communication')">communication</a></li>
+      <li [class.active]="displayPlanning"><a (click)="showTimeLine('planning')">Planning</a></li>
     </ul>
 
     <app-communication *ngIf="displayCommunication"></app-communication>
