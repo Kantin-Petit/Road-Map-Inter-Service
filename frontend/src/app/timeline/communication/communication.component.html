@@ -1,6 +1,6 @@
 <section class="timeline-communication" *ngFor="let service of filterService.services">
   <div class="info">
-    <div class="image-wrapper">
+    <div *ngIf="service.image" class="image-wrapper">
       <img [src]="socketUrl + '/images/services/service'+ service.id + '/' + service.image" alt="image_service"/>
     </div>
     <h2>{{service.name | uppercase }}</h2>

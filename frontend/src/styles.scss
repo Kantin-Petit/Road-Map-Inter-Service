@@ -23,4 +23,32 @@
     display: none;
  }
 
+  @media screen and (max-width: 600px) {
+
+    .prime-btn-override {
+
+      button span {
+        margin: 0 !important;
+      }
+
+      .p-button-label {
+        display: none;
+      }
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+
+    .prime-search-override {
+
+      flex-direction: column !important;
+      gap: 5px !important;
+      align-items: start !important;
+
+      input {
+        width: 100% !important;
+      }
+    }
+  }
+
 

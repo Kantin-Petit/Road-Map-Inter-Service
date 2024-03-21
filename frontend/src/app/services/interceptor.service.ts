@@ -13,12 +13,8 @@ import { AuthService } from './auth.service';
   providedIn: 'root'
 })
 export class InterceptorService implements HttpInterceptor {
-  getOptionThematic(): any {
-    throw new Error('Method not implemented.');
-  }
-  setOptionThematic(optionThematic: number) {
-    throw new Error('Method not implemented.');
-  }
+
+
   constructor(private authService: AuthService) { }
 
   intercept(

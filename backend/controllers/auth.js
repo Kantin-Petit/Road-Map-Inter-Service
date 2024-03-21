@@ -6,7 +6,7 @@ const SECRETKEY = process.env.SECRETKEY;
 
 exports.token = (req, res, next) => {
     const Token = req.cookies['jwt'];
-    if (Token === null) return res.sendStatus(401)
+    if (!Token) return res.status(200).json({ Message: 'Pas de cookie' })
     func.verifCookie(Token, req, res)
 };
 
@@ -21,16 +21,17 @@ exports.checkToken = (req, res, next) => {
 
 exports.signup = (req, res, next) => {
 
-    let service = req.body.service
-    let role = req.body.role
+    let service;
+    let role;
+    const userRole = req.auth.userRole
 
-    if (req.auth.userRole === 'admin_service') {
+    if (userRole === 'admin_service') {
         service = req.auth.userServiceId;
-        role = 'admin_service'
+        role = 'user'
     }
-    else if (req.auth.userRole === 'admin') {
-        service = req.body.service;
-        role = req.body.role
+    else if (userRole === 'admin') {
+        req.auth.userId == req.body.id ? service = null : service = req.body.service
+        req.auth.userId == req.body.id ? role = 'admin' : role = req.body.role
     }
     else { throw new Error('Access denied'); }
 
@@ -62,7 +63,7 @@ exports.signup = (req, res, next) => {
 exports.signin = (req, res, next) => {
     User.findOne({ where: { email: req.body.email } })
         .then(user => {
-            if (!user) return res.status(401).json({ error: 'Utilisateur non trouvé !' });
+            if (!user) return res.status(401).json({ error: 'Erreur !' });
             bcrypt.compare(req.body.password, user.password)
                 .then(valid => {
                     if (!valid) return res.status(401).json({ error: 'Mot de passe incorrect' });

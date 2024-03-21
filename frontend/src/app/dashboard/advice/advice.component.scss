@@ -6,6 +6,15 @@ $table-border-color: #ccc;
   padding: 0 60px;
 }
 
+p {
+  a {
+    color: #007bff;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
 .title {
   text-align: center;
 }
@@ -14,7 +23,7 @@ $table-border-color: #ccc;
   overflow-x: auto;
   table {
     min-width: 500px;
-
+    margin: auto;
   }
 }
 

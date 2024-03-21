@@ -2,7 +2,7 @@
     <p-toast></p-toast>
 
     <div class="card">
-        <p-toolbar styleClass="mb-4 gap-2">
+        <p-toolbar styleClass="mb-4 gap-2 prime-btn-override">
             <ng-template pTemplate="left">
                 <button pButton pRipple label="Nouveau" icon="pi pi-plus mr-2" class="p-button-success mr-2" (click)="openNew()"></button>
                 <button pButton pRipple [label]="Delete" icon="pi pi-trash" class="p-button-danger" (click)="deleteSelectedTimelines()" [disabled]="!selectedTimelines || !selectedTimelines.length"></button>
@@ -23,7 +23,7 @@
             [showCurrentPageReport]="true"
         >
             <ng-template pTemplate="caption">
-                <div class=" search_bar flex align-items-center justify-content-between">
+                <div class="prime-search-override search_bar flex align-items-center justify-content-between">
                     <h3 class="m-0">Timeline</h3>
                     <span class="p-input-icon-left">
                         <i class="pi pi-search"></i>

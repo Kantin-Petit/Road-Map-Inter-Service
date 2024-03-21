@@ -60,6 +60,10 @@ export class AdminUserComponent implements OnInit {
     return this.authService.getRole();
   }
 
+  getUser() {
+    return this.authService.getUser();
+  }
+
   filterGlobal(event: Event) {
     const inputValue = (event.target as HTMLInputElement).value;
     this.dt.filterGlobal(inputValue, 'contains');
@@ -94,6 +98,7 @@ export class AdminUserComponent implements OnInit {
         if (!this.selectedUsers) return
         this.selectedUsers.forEach(user => {
           this.userService.deleteUser(user['id']).subscribe();
+          if(user.id == this.authService.getUser().id) this.authService.logout();
         });
 
         this.utilisateurs = this.utilisateurs.filter((val) => !this.selectedUsers?.includes(val));
@@ -116,6 +121,7 @@ export class AdminUserComponent implements OnInit {
       icon: 'pi pi-exclamation-triangle m-2',
       accept: () => {
         this.userService.deleteUser(utilisateur['id']).subscribe(() => {
+          if (utilisateur['id'] == this.authService.getUser().id) this.authService.logout();
           this.utilisateurs = this.utilisateurs.filter((val) => val.id !== utilisateur.id);
           this.utilisateur = new UserModel();
           this.messageService.add({ severity: 'success', summary: 'Réussite', detail: 'Utilisateur supprimé', life: 3000 });

@@ -54,21 +54,34 @@ exports.modifyUser = (req, res, next) => {
   User.findOne({ where: { id: req.params.id } })
     .then(user => {
 
-      const service = req.body.role === 'admin' ? null : Number(req.body.service_id);
+      const userRole = req.auth.userRole
 
-      if (req.auth.userRole === 'admin_service') {
+      let service;
+      let role;
+
+      if (req.auth.userId == req.body.id || req.auth.userId == user.dataValues.id) {
+        service = user.dataValues.service_id;
+        role = user.dataValues.role;
+      } else {
+        service = req.body.role === 'admin' ? null : Number(req.body.service_id)
+        role = req.body.role
+      }
+
+      req.body.role === 'admin' ? null : Number(req.body.service_id)
+
+      if (userRole === 'admin_service') {
         if (user.dataValues.service_id != req.auth.userServiceId) throw new Error('Access denied');
       }
-      else if (req.auth.userRole === 'user') {
+      else if (userRole === 'user') {
         if (user.dataValues.id != req.auth.userId) throw new Error('Access denied');
       }
-      else if (req.auth.userRole !== 'admin') { throw new Error('Access denied'); }
+      else if (userRole !== 'admin') { throw new Error('Access denied'); }
 
       user.first_name = req.body.first_name
       user.last_name = req.body.last_name
       user.email = req.body.email
       user.service_id = service
-      user.role = req.body.role
+      user.role = role
 
       if (req.body.password) {
         bcrypt.hash(req.body.password, 10)
